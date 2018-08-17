@@ -13,19 +13,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("ALL")
 @Controller
-public class FileUploadController {
+class FileUploadController {
 
     private final StorageService storageService;
 
     @Autowired
-    public FileUploadController(StorageService storageService) {
+    private FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
 
+    @SuppressWarnings("SameReturnValue")
     @GetMapping("/fileupload")
     public String listUploadedFiles(Model model) {
 
@@ -46,6 +47,7 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
+    @SuppressWarnings("SameReturnValue")
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {

@@ -1,6 +1,6 @@
 package com.akarin.webapp.structure;
 
-public class IndexPage {
+class IndexPage {
 
     private long counter;
 

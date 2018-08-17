@@ -3,14 +3,7 @@ package com.akarin.webapp.imageprocessing;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ImageEffects {
-    /**
-     * This is effectively a blurring effect. This version takes the average in
-     * square boxes.
-     *
-     * @param givenImage
-     * @return
-     */
+class ImageEffects {
     public static int[][][] getSquareLocalAverage(final BufferedImage givenImage) {
         final int height = givenImage.getHeight();
         final int width = givenImage.getWidth();
@@ -29,9 +22,6 @@ public class ImageEffects {
                 int countGreen = 0;
                 int countBlue = 0;
 
-                /**
-                 * Iterate around the origin (x,y)
-                 */
                 for (int yIterator = y - range; yIterator < y + range; yIterator++) {
                     for (int xIterator = x - range; xIterator < x + range; xIterator++) {
                         if ((yIterator >= 0) && (yIterator < height) && (xIterator >= 0) && (xIterator < width)) {
@@ -59,14 +49,6 @@ public class ImageEffects {
 
         return result;
     }
-
-    /**
-     * This is effectively a blurring effect. This version takes the average in
-     * circles.
-     *
-     * @param givenImage
-     * @return
-     */
     public static int[][][] getCircleLocalAverage(final BufferedImage givenImage) {
         final int height = givenImage.getHeight();
         final int width = givenImage.getWidth();
@@ -85,18 +67,9 @@ public class ImageEffects {
                 final int countGreen = 0;
                 final int countBlue = 0;
 
-                /**
-                 * Iterate around the origin (x,y)
-                 */
-                for (int yIterator = y - range; yIterator < y + range; yIterator++) {
-                    for (int xIterator = x - yIterator; xIterator < x + range; xIterator++) {
-
-                    }
-                }
-
-                result[y][x][0] = sumRed / countRed;
-                result[y][x][1] = sumGreen / countGreen;
-                result[y][x][2] = sumBlue / countBlue;
+                //result[y][x][0] = sumRed / countRed;
+                //result[y][x][1] = sumGreen / countGreen;
+                //result[y][x][2] = sumBlue / countBlue;
             }
 
         }

@@ -38,28 +38,20 @@ public class ImageHashing {
     }
 
     public static String basicHistogramHash(final IntegerPair[][] histogram) {
-        /**
-         * MOST BASIC CONVERSION, IMAGES WITH THE SAME PIXEL, EXCEPT MOVED AROUND WILL
-         * COLLIDE
-         *
-         * Apparently this hashing algorithm is GOD AWFUL because every frame has the
-         * same value 'EX1' or something
-         */
         int sum = 0;
-        for (int colorValueIndex = 0; colorValueIndex < histogram.length; colorValueIndex++) {
-            if (histogram[colorValueIndex][0] != null) {
-                sum += histogram[colorValueIndex][0].b;
+        for (IntegerPair[] aHistogram : histogram) {
+            if (aHistogram[0] != null) {
+                sum += aHistogram[0].b;
             }
-            if (histogram[colorValueIndex][1] != null) {
-                sum += histogram[colorValueIndex][1].b;
+            if (aHistogram[1] != null) {
+                sum += aHistogram[1].b;
             }
-            if (histogram[colorValueIndex][2] != null) {
-                sum += histogram[colorValueIndex][2].b;
+            if (aHistogram[2] != null) {
+                sum += aHistogram[2].b;
             }
         }
-        final String hashString = Tools.toSixtyTwoRadix(sum);
 
-        return hashString;
+        return Tools.toSixtyTwoRadix(sum);
     }
 
     public static int[] horizontalBinaryHash(final int[][][] array) {
@@ -95,7 +87,7 @@ public class ImageHashing {
 
     public static int[] distinctPartitionHash(final int[][][] array) {
         final int[] hashes = new int[array.length * array[0].length];
-        int tmpValue = 0;
+        int tmpValue;
 
         for (int y = 0; y < array.length; y++) {
             for (int x = 0; x < array[y].length; x++) {

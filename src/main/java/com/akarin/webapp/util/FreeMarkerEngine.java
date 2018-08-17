@@ -35,7 +35,7 @@ import java.io.StringWriter;
  * @author Alex
  * @author Per Wendel
  */
-public class FreeMarkerEngine extends TemplateEngine {
+class FreeMarkerEngine extends TemplateEngine {
 
     /**
      * The FreeMarker configuration
@@ -45,7 +45,7 @@ public class FreeMarkerEngine extends TemplateEngine {
     /**
      * Creates a FreeMarkerEngine
      */
-    public FreeMarkerEngine() {
+    private FreeMarkerEngine() {
         this.configuration = createDefaultConfiguration();
     }
 
@@ -54,7 +54,7 @@ public class FreeMarkerEngine extends TemplateEngine {
      *
      * @param configuration The Freemarker configuration
      */
-    public FreeMarkerEngine(final Configuration configuration) {
+    private FreeMarkerEngine(final Configuration configuration) {
         this.configuration = configuration;
     }
 
@@ -79,6 +79,7 @@ public class FreeMarkerEngine extends TemplateEngine {
      *
      * @param configuration the configuration to set
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     // use constructor
     public void setConfiguration(final Configuration configuration) {

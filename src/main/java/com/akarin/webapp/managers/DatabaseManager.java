@@ -1,9 +1,7 @@
 package com.akarin.webapp.managers;
 
-import com.akarin.webapp.Main;
 import com.akarin.webapp.util.Reference;
 import com.akarin.webapp.util.ScriptCreator;
-import com.akarin.webapp.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +20,7 @@ import java.util.Map;
 
 public class DatabaseManager {
 
-    private static Logger logger = LoggerFactory.getLogger(DatabaseManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseManager.class);
     private static String DATABASE_USERNAME = "postgres";
     private static String DATABASE_PASSWORD = "1234";
 
@@ -33,8 +31,7 @@ public class DatabaseManager {
             StringBuilder sb = new StringBuilder();
             DATABASE_USERNAME = br.readLine();
             DATABASE_PASSWORD = br.readLine();
-            logger.info("Using db with" + System.getProperty("line.separator") + "username:" + DATABASE_USERNAME
-                    + System.getProperty("line.separator") + "password:" + DATABASE_PASSWORD);
+            logger.info("Using db with username:" + DATABASE_USERNAME + " password:" + DATABASE_PASSWORD);
             br.close();
         } catch (FileNotFoundException e) {
             logger.info("Please provide the necessary files for database setup");
@@ -170,10 +167,10 @@ public class DatabaseManager {
         rs = pstmt.executeQuery();
 
         // Prepare arraylist for output from database
-        @SuppressWarnings("rawtypes") final ArrayList<Map> arrayOfPostsFromDatabase = new ArrayList<Map>();
+        @SuppressWarnings("rawtypes") final ArrayList<Map> arrayOfPostsFromDatabase = new ArrayList<>();
 
         while (rs.next()) {
-            final Map<String, String> post = new HashMap<String, String>();
+            final Map<String, String> post = new HashMap<>();
 
             // populate board with the appropriate description of a board
             post.put(TextboardManager.POSTID, rs.getString(TextboardManager.POSTID));
@@ -191,13 +188,13 @@ public class DatabaseManager {
     public static void getAllBoards(final Map<String, Object> model) throws SQLException, URISyntaxException {
         final Connection connection = getConnection();
 
-        @SuppressWarnings("rawtypes") final ArrayList<Map> arrayOfBoardsFromDatabase = new ArrayList<Map>();
+        @SuppressWarnings("rawtypes") final ArrayList<Map> arrayOfBoardsFromDatabase = new ArrayList<>();
 
         final Statement stmt = connection.createStatement();
         final ResultSet rs = stmt.executeQuery(ScriptCreator.SELECT_ALL_FROM_BOARDS);
 
         while (rs.next()) {
-            final Map<String, String> board = new HashMap<String, String>();
+            final Map<String, String> board = new HashMap<>();
 
             // populate board with the appropriate description of a board
             board.put(TextboardManager.BOARDNAME, rs.getString(TextboardManager.BOARDNAME));
@@ -218,7 +215,7 @@ public class DatabaseManager {
         final Connection connection = getConnection();
 
         // Prepare arraylist for output from database
-        @SuppressWarnings("rawtypes") final ArrayList<Map> arrayOfThreadsFromDatabase = new ArrayList<Map>();
+        @SuppressWarnings("rawtypes") final ArrayList<Map> arrayOfThreadsFromDatabase = new ArrayList<>();
 
         // Select all thread based on the given boardlink
         final String script = "SELECT * FROM threads AS thread WHERE thread.boardlink = ?;";
@@ -231,7 +228,7 @@ public class DatabaseManager {
         // this is how you get a column given the colum name in string
         while (rs.next()) {
             // Prepare the map for threadid
-            final Map<String, String> thread = new HashMap<String, String>();
+            final Map<String, String> thread = new HashMap<>();
 
             // populate board with the appropriate description of a board
             thread.put(TextboardManager.THREADID, rs.getString(TextboardManager.THREADID));
@@ -245,20 +242,6 @@ public class DatabaseManager {
 
         pstmt.close();
     }
-
-    /**
-     * public static void getImageDbAverageRGB() { try (Connection connection =
-     * SettingUp.getConnection()) { Statement stmt = connection.createStatement();
-     * ResultSet rs = stmt.executeQuery(ScriptCreator.selectAverageOfImageDb());
-     *
-     * rs.next(); String averageOfRGB = ""; String result = ""; for (int a = 1; a <=
-     * ImageProcessing.DIVISOR_VALUE; a++) { for (int b = 1; b <=
-     * ImageProcessing.DIVISOR_VALUE; b++) { for (int c = 1; c <= 3; c++) { result =
-     * "{" + rs.getString("" + a + ":" + b + ":" + c) + "}"; averageOfRGB += result;
-     * } averageOfRGB += System.lineSeparator(); } } } catch (SQLException e) {
-     * e.printStackTrace(); } catch (URISyntaxException e) { e.printStackTrace(); }
-     * }
-     **/
 
     /**
      * public static void getImageDbMinMax() { try (Connection connection =
@@ -308,7 +291,7 @@ public class DatabaseManager {
 
             final ResultSet rs = pstmt.executeQuery();
 
-            final ArrayList<String> partitionHashResult = new ArrayList<String>();
+            final ArrayList<String> partitionHashResult = new ArrayList<>();
             while (rs.next()) {
                 partitionHashResult
                         .add(rs.getString("name") + " " + rs.getString("episode") + " " + rs.getString("frame") + " "
@@ -316,9 +299,7 @@ public class DatabaseManager {
             }
 
             model.put("partitionHashResult", partitionHashResult);
-        } catch (final SQLException e) {
-            logger.warn(e.getMessage());
-        } catch (final URISyntaxException e) {
+        } catch (final SQLException | URISyntaxException e) {
             logger.warn(e.getMessage());
         }
     }

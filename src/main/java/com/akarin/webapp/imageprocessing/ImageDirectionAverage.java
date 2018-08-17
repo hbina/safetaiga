@@ -3,7 +3,7 @@ package com.akarin.webapp.imageprocessing;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ImageDirectionAverage {
+class ImageDirectionAverage {
     public static int[][][] getHorizontalAverage(final BufferedImage givenImage) {
         final int height = givenImage.getHeight();
         final int width = givenImage.getWidth();

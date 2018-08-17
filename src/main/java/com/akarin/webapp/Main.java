@@ -1,6 +1,5 @@
 package com.akarin.webapp;
 
-import com.akarin.webapp.controllers.FavIconController;
 import com.akarin.webapp.managers.DatabaseManager;
 import com.akarin.webapp.storage.StorageProperties;
 import com.akarin.webapp.storage.StorageService;
@@ -20,7 +19,7 @@ import java.util.Arrays;
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
 public class Main {
-    Logger logger = LoggerFactory.getLogger(Main.class);
+    private final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -33,9 +32,6 @@ public class Main {
     public static void oldMain(final String[] args) {
         final long tStart = System.currentTimeMillis();
 
-        /**
-         * Check if the akarin is running on a Heroku. If so, disable debugging
-         **/
         if (System.getenv("IS_HEROKU") == null) {
             Tools.cout("Debug screen enabled");
             Tools.coutln("No .env file specified, defaulting to port:5000");
@@ -49,26 +45,17 @@ public class Main {
         //staticFiles.externalLocation("public");
         //staticFiles.expireTime(600L);
 
-        /**
-         * GET ROUTES
-         */
         //get(Reference.Web.ROOT, RootController.serveRootPage);
         //get(Reference.Web.TEXTBOARD_ROOT, TextboardController.serveTextboardHome);
         //get(Reference.Web.TEXTBOARD_BOARD, TextboardController.serveTextboardBoard);
         //get(Reference.Web.TEXTBOARD_BOARD_THREAD, TextboardController.serveTextboardThread);
         //get(Reference.Web.IMAGEPROCESSING_ROOT, ImageProcessingController.serveImageUpload);
         //get(Reference.Web.MANIFESTO_ROOT, ManifestoController.serveManifestoPage);
-        /**
-         * POST ROUTES
-         */
         //post(Reference.Web.TEXTBOARD_ROOT, TextboardController.handleCreateBoard);
         //post(Reference.Web.TEXTBOARD_BOARD, TextboardController.handleCreateThread);
         //post(Reference.Web.TEXTBOARD_BOARD_THREAD, TextboardController.handleCreatePost);
         //post(Reference.Web.IMAGEPROCESSING_ROOT, ImageProcessingController.handleImageUpload);
 
-        /**
-         * NOT FOUND
-         */
         //get("*", (req, res) -> {throw new Exception("Exceptions everywhere!");});
 
         DatabaseManager.setDbLogin();

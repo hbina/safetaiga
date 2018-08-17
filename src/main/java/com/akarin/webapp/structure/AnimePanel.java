@@ -1,9 +1,11 @@
 package com.akarin.webapp.structure;
 
-import com.akarin.webapp.util.Tools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AnimePanel {
 
+    private static final Logger logger = LoggerFactory.getLogger(AnimePanel.class);
     private final String name;
     private final int episode, panel;
     private int weight = 0;
@@ -32,7 +34,7 @@ public class AnimePanel {
         } else if (degree == 3) {
             return "" + name + ":" + episode + ":" + panel;
         }
-        Tools.coutln("AnimePanel:ILLEGAL ARGUMENT:getKey");
+        logger.warn("AnimePanel:ILLEGAL ARGUMENT:getKey");
         return null;
     }
 

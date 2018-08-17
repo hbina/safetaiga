@@ -4,7 +4,7 @@ public class AnimeObject {
 
     private final String name;
     private final int numberOfEpisodes;
-    int[] panels = null;
+    private int[] panels = null;
 
     public AnimeObject(final String name, final int numberOfEpisodes, final int numberOfPanels) {
         this.name = name;

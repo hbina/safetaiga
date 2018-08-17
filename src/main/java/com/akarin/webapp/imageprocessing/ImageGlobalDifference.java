@@ -23,7 +23,7 @@ public class ImageGlobalDifference {
             }
         }
 
-        final int globalAverage = Math.round(globalSum / (width * height));
+        final int globalAverage = globalSum / (width * height);
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -60,8 +60,8 @@ public class ImageGlobalDifference {
             }
         }
 
-        final int[] globalAverage = new int[]{Math.round(RGBglobalSum[0] / (width * height)),
-                Math.round(RGBglobalSum[1] / (width * height)), Math.round(RGBglobalSum[2] / (width * height))};
+        final int[] globalAverage = new int[]{RGBglobalSum[0] / (width * height),
+                RGBglobalSum[1] / (width * height), RGBglobalSum[2] / (width * height)};
 
         for (int y = 0; y < height; y++) { // y-axis
             for (int x = 0; x < width; x++) { // x-axis

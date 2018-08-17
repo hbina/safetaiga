@@ -41,7 +41,7 @@ public class Reference {
         public final static String MANIFESTO = "MANIFESTO";
     }
 
-    public static class ErrorHandlers {
+    private static class ErrorHandlers {
 
         /**
          * ERROR HANDLER VOCABULARIES <a href="$RETURN_LINK">$RETURN_NAME</a>
@@ -51,9 +51,9 @@ public class Reference {
         public final static String ERROR = "ERROR";
     }
 
-    public static class Textboard {
+    static class Textboard {
 
-        public static class Database {
+        static class Database {
             /**
              * DATABASE TEXTBOARD VOCABULARIES
              */

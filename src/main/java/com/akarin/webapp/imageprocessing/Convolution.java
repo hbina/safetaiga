@@ -1,23 +1,21 @@
 package com.akarin.webapp.imageprocessing;
 
-import com.akarin.webapp.util.Tools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Convolution {
+class Convolution {
 
-    private static boolean BOOLEAN_DEBUGGING_CONVO = false;
+    private static final Logger logger = LoggerFactory.getLogger(Convolution.class);
 
+    @SuppressWarnings("ConstantConditions")
     public static int[][][] convolute(final int[][][] sourceMatrix, final double scalar,
                                       final int[][] convolutionMatrix) {
 
-        /**
-         * Need to check if the input convolution matrix is an odd N x N matrix
-         */
-
         // Check if convolution matrix sum up to 0
         int checkZero = 0;
-        for (int a = 0; a < convolutionMatrix.length; a++) {
-            for (int b = 0; b < convolutionMatrix[a].length; b++) {
-                checkZero += convolutionMatrix[a][b];
+        for (int[] aConvolutionMatrix : convolutionMatrix) {
+            for (int anAConvolutionMatrix : aConvolutionMatrix) {
+                checkZero += anAConvolutionMatrix;
             }
         }
         if (checkZero != 0) {
@@ -38,21 +36,21 @@ public class Convolution {
                             if (effectiveRowConvIndex >= 0 && effectiveRowConvIndex < sourceMatrix.length
                                     && effectiveColConvIndex >= 0
                                     && effectiveColConvIndex < sourceMatrix[rowSourceIndex].length) {
-                                Tools.coutln("(double) sourceMatrix[" + effectiveRowConvIndex + "]["
+                                logger.info("(double) sourceMatrix[" + effectiveRowConvIndex + "]["
                                         + effectiveColConvIndex + "][" + rgbIndex + "]:"
                                         + ((double) sourceMatrix[effectiveRowConvIndex][effectiveColConvIndex][rgbIndex])
                                         + " with "
                                         + (((double) sourceMatrix[effectiveRowConvIndex][effectiveColConvIndex][rgbIndex]
                                         * (double) convolutionMatrix[rowConvIndex][colConvIndex]))
-                                        + " and therefore tmpMatrixValue:" + tmpMatrixValue, BOOLEAN_DEBUGGING_CONVO);
+                                        + " and therefore tmpMatrixValue:" + tmpMatrixValue);
                                 tmpMatrixValue += (((double) sourceMatrix[effectiveRowConvIndex][effectiveColConvIndex][rgbIndex]
                                         * (double) convolutionMatrix[rowConvIndex][colConvIndex]));
                             }
                         }
                     }
                     // colSourceIndex
-                    Tools.coutln("tmpMatrixValue:" + tmpMatrixValue + " scalar:" + scalar + " result:"
-                            + (tmpMatrixValue * scalar), BOOLEAN_DEBUGGING_CONVO);
+                    logger.info("tmpMatrixValue:" + tmpMatrixValue + " scalar:" + scalar + " result:"
+                            + (tmpMatrixValue * scalar));
                     tmpMatrix[rowSourceIndex][colSourceIndex][rgbIndex] = (int) (tmpMatrixValue * scalar);
 
                     // Limit check
@@ -69,7 +67,7 @@ public class Convolution {
         return tmpMatrix;
     }
 
-    public static class ConvolutionMatrices {
+    private static class ConvolutionMatrices {
         public static final int[][] EDGE_DETECTION_1 = new int[][]{{-1, -1, -1}, {-1, 8, -1}, {-1, -1, -1}};
         public static final int[][] IDENTITY = new int[][]{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
         public static final int[][] EDGE_DETECTION_2 = new int[][]{{1, 0, -1}, {0, 0, 0}, {-1, 0, 1}};

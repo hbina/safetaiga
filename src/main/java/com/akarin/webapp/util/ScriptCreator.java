@@ -59,9 +59,8 @@ public class ScriptCreator {
 
     public static String insertBasicHistogramHash(final String name, final int episode, final int panel,
                                                   final String hash) {
-        final String script = "INSERT INTO imagedb_anime_basic_histogram_hash (name, episode, panel, hash) VALUES ('"
+        return "INSERT INTO imagedb_anime_basic_histogram_hash (name, episode, panel, hash) VALUES ('"
                 + name + "','" + Integer.toString(episode) + "','" + Integer.toString(panel) + "','" + hash + "');";
-        return script;
     }
 
     public static String insertIntoImagedbAnimeRgbInteger(final String name, final int episode, final int panel,
@@ -75,82 +74,69 @@ public class ScriptCreator {
 
     public static String selectAverageOfImageDb() {
 
-        String selectString = "SELECT ";
+        StringBuilder selectString = new StringBuilder("SELECT ");
         for (int a = 1; a <= ImageProcessingTools.DIVISOR_VALUE; a++) {
             for (int b = 1; b <= ImageProcessingTools.DIVISOR_VALUE; b++) {
                 for (int c = 1; c <= 3; c++) {
-                    selectString += "AVG(pixel_rgb[" + a + "][ " + b + "][" + c + "]) AS \"" + a + ":" + b + ":" + c
-                            + "\"";
-                    if (a == ImageProcessingTools.DIVISOR_VALUE && b == ImageProcessingTools.DIVISOR_VALUE && c == 3) {
-                        selectString += "";
-                    } else {
-                        selectString += ", ";
+                    selectString.append("AVG(pixel_rgb[").append(a).append("][ ").append(b).append("][").append(c).append("]) AS \"").append(a).append(":").append(b).append(":").append(c).append("\"");
+                    if (!(a == ImageProcessingTools.DIVISOR_VALUE && b == ImageProcessingTools.DIVISOR_VALUE && c == 3)) {
+                        selectString.append(", ");
                     }
                 }
             }
         }
 
-        selectString += " FROM imagedb_anime_rgb_integer;";
+        selectString.append(" FROM imagedb_anime_rgb_integer;");
 
-        return selectString;
+        return selectString.toString();
     }
 
     public static String getMinMaxOfImageDb() {
 
-        String script = "SELECT ";
+        StringBuilder script = new StringBuilder("SELECT ");
         for (int a = 1; a <= ImageProcessingTools.DIVISOR_VALUE; a++) {
             for (int b = 1; b <= ImageProcessingTools.DIVISOR_VALUE; b++) {
                 for (int c = 1; c <= 3; c++) {
-                    script += "MIN(pixel_rgb[" + a + "][" + b + "][" + c + "]) AS \"MIN:" + a + ":" + b + ":" + c
-                            + "\", ";
-                    script += "MAX(pixel_rgb[" + a + "][" + b + "][" + c + "]) AS \"MAX:" + a + ":" + b + ":" + c
-                            + "\"";
-                    if (a == ImageProcessingTools.DIVISOR_VALUE && b == ImageProcessingTools.DIVISOR_VALUE && c == 3) {
-                        script += "";
-                    } else {
-                        script += ", ";
+                    script.append("MIN(pixel_rgb[").append(a).append("][").append(b).append("][").append(c).append("]) AS \"MIN:").append(a).append(":").append(b).append(":").append(c).append("\", ");
+                    script.append("MAX(pixel_rgb[").append(a).append("][").append(b).append("][").append(c).append("]) AS \"MAX:").append(a).append(":").append(b).append(":").append(c).append("\"");
+                    if (!(a == ImageProcessingTools.DIVISOR_VALUE && b == ImageProcessingTools.DIVISOR_VALUE && c == 3)) {
+                        script.append(", ");
                     }
                 }
             }
         }
 
-        script += " FROM imagedb_anime_rgb_integer;";
-        return script;
+        script.append(" FROM imagedb_anime_rgb_integer;");
+        return script.toString();
     }
 
     public static String insertIntoImageDbUserImageRequest(final String ipAddress, final int[][][] tripleArray) {
-        final String script = "INSERT INTO imagedb_user_image_request (request_ip, pixel_rgb) VALUES ('" + ipAddress
+        return "INSERT INTO imagedb_user_image_request (request_ip, pixel_rgb) VALUES ('" + ipAddress
                 + "', " + convertTripleArrayToQueryString(tripleArray) + ");";
-        return script;
     }
 
     public static String findMatchingImageDataBruteForce(final int[][][] tripleArray) {
 
-        String script = "SELECT name, episode, panel FROM imagedb_anime_rgb_integer WHERE ";
+        StringBuilder script = new StringBuilder("SELECT name, episode, panel FROM imagedb_anime_rgb_integer WHERE ");
 
         for (int a = 2; a <= (ImageProcessingTools.DIVISOR_VALUE - 1); a++) { // Y-axis
             for (int b = 2; b <= (ImageProcessingTools.DIVISOR_VALUE - 1); b++) { // X-axis
                 for (int c = 1; c <= 3; c++) {
-                    script += "(pixel_rgb[" + a + "][" + b + "][" + c + "] BETWEEN " + "("
-                            + tripleArray[a - 1][b - 1][c - 1] + " - " + ImageProcessingTools.BUFFER_VALUE + ") AND ("
-                            + tripleArray[a - 1][b - 1][c - 1] + " + " + ImageProcessingTools.BUFFER_VALUE + "))";
-                    if (a == (ImageProcessingTools.DIVISOR_VALUE - 1) && b == (ImageProcessingTools.DIVISOR_VALUE - 1)
-                            && c == 3) {
-                        script += "";
-                    } else {
-                        script += "AND ";
+                    script.append("(pixel_rgb[").append(a).append("][").append(b).append("][").append(c).append("] BETWEEN ").append("(").append(tripleArray[a - 1][b - 1][c - 1]).append(" - ").append(ImageProcessingTools.BUFFER_VALUE).append(") AND (").append(tripleArray[a - 1][b - 1][c - 1]).append(" + ").append(ImageProcessingTools.BUFFER_VALUE).append("))");
+                    if (c != 3) {
+                        script.append("AND ");
                     }
                 }
             }
         }
 
-        script += ";";
-        return script;
+        script.append(";");
+        return script.toString();
     }
 
     public static String findMatchingImageDataRandomized(final int[][][] tripleArray) {
 
-        String script = "SELECT name, episode, panel FROM imagedb_anime_rgb_integer WHERE ";
+        StringBuilder script = new StringBuilder("SELECT name, episode, panel FROM imagedb_anime_rgb_integer WHERE ");
 
         for (int a = 1; a <= ImageProcessingTools.TRIAL_VALUE; a++) {
 
@@ -158,25 +144,21 @@ public class ScriptCreator {
             final int y = ThreadLocalRandom.current().nextInt(0, ImageProcessingTools.DIVISOR_VALUE);
 
             for (int c = 0; c < 3; c++) {
-                script += "(pixel_rgb[" + (x + 1) + "][" + (y + 1) + "][" + (c + 1) + "] BETWEEN " + "("
-                        + tripleArray[x][y][c] + " - " + ImageProcessingTools.BUFFER_VALUE + ") AND ("
-                        + tripleArray[x][y][c] + " + " + ImageProcessingTools.BUFFER_VALUE + "))";
-                if (a == ImageProcessingTools.TRIAL_VALUE && c == 2) {
-                    script += "";
-                } else {
-                    script += "AND ";
+                script.append("(pixel_rgb[").append(x + 1).append("][").append(y + 1).append("][").append(c + 1).append("] BETWEEN ").append("(").append(tripleArray[x][y][c]).append(" - ").append(ImageProcessingTools.BUFFER_VALUE).append(") AND (").append(tripleArray[x][y][c]).append(" + ").append(ImageProcessingTools.BUFFER_VALUE).append("))");
+                if (c != 2) {
+                    script.append("AND ");
                 }
 
             }
         }
 
-        script += ";";
-        return script;
+        script.append(";");
+        return script.toString();
     }
 
     public static String findMatchingImageDataRandomizedV2(final int[][][] tripleArray) {
 
-        String script = "SELECT name, episode, panel FROM imagedb_anime_rgb_integer WHERE ";
+        StringBuilder script = new StringBuilder("SELECT name, episode, panel FROM imagedb_anime_rgb_integer WHERE ");
 
         final int x = ThreadLocalRandom.current().nextInt(0,
                 (ImageProcessingTools.DIVISOR_VALUE - ImageProcessingTools.TRIAL_VALUE));
@@ -186,22 +168,17 @@ public class ScriptCreator {
         for (int a = 0; a < ImageProcessingTools.TRIAL_VALUE; a++) {
             for (int b = 0; b < ImageProcessingTools.TRIAL_VALUE; b++) {
                 for (int c = 0; c < 3; c++) {
-                    script += "(pixel_rgb[" + (x + a + 1) + "][" + (y + b + 1) + "][" + (c + 1) + "] BETWEEN " + "("
-                            + tripleArray[x + a][y + b][c] + " - " + ImageProcessingTools.BUFFER_VALUE + ") AND ("
-                            + tripleArray[x + a][y + b][c] + " + " + ImageProcessingTools.BUFFER_VALUE + "))";
-                    if (a == (ImageProcessingTools.TRIAL_VALUE - 1) && b == (ImageProcessingTools.TRIAL_VALUE - 1)
-                            && c == 2) {
-                        script += "";
-                    } else {
-                        script += "AND ";
+                    script.append("(pixel_rgb[").append(x + a + 1).append("][").append(y + b + 1).append("][").append(c + 1).append("] BETWEEN ").append("(").append(tripleArray[x + a][y + b][c]).append(" - ").append(ImageProcessingTools.BUFFER_VALUE).append(") AND (").append(tripleArray[x + a][y + b][c]).append(" + ").append(ImageProcessingTools.BUFFER_VALUE).append("))");
+                    if (c != 2) {
+                        script.append("AND ");
                     }
 
                 }
             }
         }
 
-        script += ";";
-        return script;
+        script.append(";");
+        return script.toString();
     }
 
     public static String findMatchingImageDataIncremental(final int x, final int y, final int z, final int value) {
@@ -218,49 +195,44 @@ public class ScriptCreator {
 
     public static String findMatchingImageDataIncrementalRGB(final int x, final int y, final int[] array) {
 
-        String script = "SELECT name, episode, panel FROM imagedb_anime_rgb_integer WHERE ";
+        StringBuilder script = new StringBuilder("SELECT name, episode, panel FROM imagedb_anime_rgb_integer WHERE ");
 
         for (int a = 0; a < 3; a++) {
-            script += "(pixel_rgb[" + (x + 1) + "][" + (y + 1) + "][" + (a + 1) + "] BETWEEN " + "(" + array[a] + " - "
-                    + ImageProcessingTools.BUFFER_VALUE + ") AND (" + array[a] + " + "
-                    + ImageProcessingTools.BUFFER_VALUE + "))";
+            script.append("(pixel_rgb[").append(x + 1).append("][").append(y + 1).append("][").append(a + 1).append("] BETWEEN ").append("(").append(array[a]).append(" - ").append(ImageProcessingTools.BUFFER_VALUE).append(") AND (").append(array[a]).append(" + ").append(ImageProcessingTools.BUFFER_VALUE).append("))");
             if (a < 2) {
-                script += " AND ";
+                script.append(" AND ");
             }
         }
-        script += ";";
-        return script;
+        script.append(";");
+        return script.toString();
     }
 
-    public static String convertTripleArrayToQueryString(final int[][][] tripleArray) {
-        /**
-         * create string for the RGBs
-         */
+    private static String convertTripleArrayToQueryString(final int[][][] tripleArray) {
 
-        String script = "'{";
+        StringBuilder script = new StringBuilder("'{");
         for (int a = 0; a < tripleArray.length; a++) { // y-axis
-            script += "{";
+            script.append("{");
             for (int b = 0; b < tripleArray[a].length; b++) { // x-axis
-                script += "{";
+                script.append("{");
                 for (int c = 0; c < tripleArray[a][b].length; c++) {
-                    script += tripleArray[a][b][c];
+                    script.append(tripleArray[a][b][c]);
                     if (c < (tripleArray[a][b].length - 1)) {
-                        script += ",";
+                        script.append(",");
                     }
                 }
                 if (b < (tripleArray[a].length - 1)) {
-                    script += "},";
+                    script.append("},");
                 } else {
-                    script += "}";
+                    script.append("}");
                 }
             }
             if (a < (tripleArray.length - 1)) {
-                script += "},";
+                script.append("},");
             } else {
-                script += "}";
+                script.append("}");
             }
         }
-        script += "}'";
-        return script;
+        script.append("}'");
+        return script.toString();
     }
 }

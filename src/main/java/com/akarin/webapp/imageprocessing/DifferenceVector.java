@@ -1,21 +1,24 @@
 package com.akarin.webapp.imageprocessing;
 
-import com.akarin.webapp.util.Tools;
 import com.akarin.webapp.util.AkarinMath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 public class DifferenceVector {
 
-    public static final int VECTOR_DIFF_FLOOR_VALUE = 1;
+    private static final int VECTOR_DIFF_FLOOR_VALUE = 1;
+    private static final Logger logger = LoggerFactory.getLogger(DifferenceVector.class);
     //(int) AkarinMath
     //	.euclideanNorm(new int[] { ImageProcessingTools.MAX_RGB_VALUE, ImageProcessingTools.MAX_RGB_VALUE });
 
+    @SuppressWarnings("ConstantConditions")
     public static int[][][] getVectorizedRgbImage(BufferedImage givenImage) {
         int VECTOR_RANGE = 1;
         int VECTOR_SPAN = VECTOR_RANGE * 2 + 1;
@@ -27,22 +30,14 @@ public class DifferenceVector {
         if ((width % VECTOR_SPAN) != 0) {
             needToFix = true;
             width -= width % VECTOR_SPAN;
-            debugString += "image's width is not a multiple of " + VECTOR_SPAN + ", new height is " + width
-                    + System.lineSeparator();
         }
         if ((height % VECTOR_SPAN) != 0) {
             needToFix = true;
             height -= height % VECTOR_SPAN;
-            debugString += "image's height is not a multiple of " + VECTOR_SPAN + ", new height is " + height
-                    + System.lineSeparator();
         }
 
         if (needToFix) {
-            try {
-                givenImage = ImageProcessingTools.resizeImage(givenImage, width, height);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            givenImage = ImageProcessingTools.resizeImage(givenImage, width, height);
         }
 
         int[][][] result = new int[height][width][3];
@@ -51,7 +46,7 @@ public class DifferenceVector {
             writer = new PrintWriter("the-file-name.txt", "UTF-8");
             for (int y = VECTOR_RANGE; y < height; y += VECTOR_SPAN) {
                 for (int x = VECTOR_RANGE; x < width; x += VECTOR_SPAN) {
-                    String internalDebugStr = "current image index:" + x + ", " + y + System.lineSeparator();
+                    StringBuilder internalDebugStr = new StringBuilder("current image index:" + x + ", " + y + System.lineSeparator());
                     int[] diffVert = new int[]{-1, -1, -1};
                     int[] diffHorz = new int[]{-1, -1, -1};
                     int[] diffPost = new int[]{-1, -1, -1};
@@ -70,11 +65,7 @@ public class DifferenceVector {
                     Color index12 = new Color(givenImage.getRGB(x, y + VECTOR_RANGE));
                     Color index22 = new Color(givenImage.getRGB(x + VECTOR_RANGE, y + VECTOR_RANGE));
 
-                    internalDebugStr += "COLOR VALUES:" + System.lineSeparator() + index00.toString() + " "
-                            + index10.toString() + " " + index20.toString() + System.lineSeparator()
-                            + index01.toString() + " " + index11.toString() + " " + index21.toString()
-                            + System.lineSeparator() + index02.toString() + " " + index12.toString() + " "
-                            + index22.toString() + System.lineSeparator();
+                    internalDebugStr.append("COLOR VALUES:").append(System.lineSeparator()).append(index00.toString()).append(" ").append(index10.toString()).append(" ").append(index20.toString()).append(System.lineSeparator()).append(index01.toString()).append(" ").append(index11.toString()).append(" ").append(index21.toString()).append(System.lineSeparator()).append(index02.toString()).append(" ").append(index12.toString()).append(" ").append(index22.toString()).append(System.lineSeparator());
 
                     diffVert[0] = (int) (AkarinMath.euclideanNorm(new int[]{index10.getRed(), index12.getRed()}));
                     diffVert[1] = (int) (AkarinMath
@@ -112,15 +103,15 @@ public class DifferenceVector {
                         }
                     }
 
-                    internalDebugStr += "maxIndex:" + maxIndex + System.lineSeparator();
+                    internalDebugStr.append("maxIndex:").append(Arrays.toString(maxIndex)).append(System.lineSeparator());
 
                     for (int a = -VECTOR_RANGE; a <= VECTOR_RANGE; a++) {
                         for (int b = -VECTOR_RANGE; b <= VECTOR_RANGE; b++) {
-                            internalDebugStr += "y:" + y + " a:" + a + " x:" + x + " b:" + b + System.lineSeparator();
+                            internalDebugStr.append("y:").append(y).append(" a:").append(a).append(" x:").append(x).append(" b:").append(b).append(System.lineSeparator());
                             for (int c = 0; c < 3; c++) {
                                 switch (maxIndex[c]) {
                                     case 0:
-                                        internalDebugStr = "tangent vector is null" + System.lineSeparator();
+                                        internalDebugStr = new StringBuilder("tangent vector is null" + System.lineSeparator());
                                         if ((a == 0) && (b == 0)) {
                                             result[y + a][x + b][c] = ImageProcessingTools.MAX_RGB_VALUE;
                                         } else {
@@ -128,7 +119,7 @@ public class DifferenceVector {
                                         }
                                         break;
                                     case 1:
-                                        internalDebugStr += "tangent vector is horizontal" + System.lineSeparator();
+                                        internalDebugStr.append("tangent vector is horizontal").append(System.lineSeparator());
                                         if (a == 0) {
                                             result[y + a][x + b][c] = ImageProcessingTools.MAX_RGB_VALUE;
                                         } else {
@@ -136,7 +127,7 @@ public class DifferenceVector {
                                         }
                                         break;
                                     case 2:
-                                        internalDebugStr += "tangent vector is vertical" + System.lineSeparator();
+                                        internalDebugStr.append("tangent vector is vertical").append(System.lineSeparator());
                                         if (b == 0) {
                                             result[y + a][x + b][c] = ImageProcessingTools.MAX_RGB_VALUE;
                                         } else {
@@ -145,7 +136,7 @@ public class DifferenceVector {
 
                                         break;
                                     case 3:
-                                        internalDebugStr += "tangent vector is negative" + System.lineSeparator();
+                                        internalDebugStr.append("tangent vector is negative").append(System.lineSeparator());
                                         if (a == b) {
                                             result[y + a][x + b][c] = ImageProcessingTools.MAX_RGB_VALUE;
                                         } else {
@@ -153,7 +144,7 @@ public class DifferenceVector {
                                         }
                                         break;
                                     case 4:
-                                        internalDebugStr += "tangent vector is positive" + System.lineSeparator();
+                                        internalDebugStr.append("tangent vector is positive").append(System.lineSeparator());
                                         if ((a + b) == 0) {
                                             result[y + a][x + b][c] = ImageProcessingTools.MAX_RGB_VALUE;
                                         } else {
@@ -170,15 +161,11 @@ public class DifferenceVector {
             writer.close();
         } catch (
 
-                FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
+                FileNotFoundException | IndexOutOfBoundsException | UnsupportedEncodingException e) {
+            logger.warn(e.getMessage());
         } catch (Exception e) {
-            Tools.coutln("an unspecified exception occured.");
-            e.getMessage();
+            logger.warn("an unspecified exception occured.");
+            logger.warn(e.getMessage());
         }
         return result;
     }

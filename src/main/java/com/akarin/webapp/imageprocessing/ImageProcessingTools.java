@@ -24,7 +24,7 @@ public class ImageProcessingTools {
     public static final int VECTOR_DIRECTIONS = 4;
 
     public static BufferedImage resizeImage(final BufferedImage originalImage, final int imageWidth,
-                                            final int imageHeight) throws IOException {
+                                            final int imageHeight) {
 
         final int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_RGB : originalImage.getType();
         final BufferedImage resizedImage = new BufferedImage(imageWidth, imageHeight, type);
@@ -35,7 +35,7 @@ public class ImageProcessingTools {
         return resizedImage;
     }
 
-    public static BufferedImage resizeImage(final BufferedImage originalImage) throws IOException {
+    public static BufferedImage resizeImage(final BufferedImage originalImage) {
         return resizeImage(originalImage, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
 
@@ -78,8 +78,8 @@ public class ImageProcessingTools {
      * array of boolean of the same size. If the index (X,Y) != (X',Y') then it will
      * return true, returns false otherwise
      *
-     * @param oldArray
-     * @param newArray
+     * @param oldArray -- The old array to be checked
+     * @param newArray -- The new array to be checked
      * @return Returns an double array of equality between old and new array
      */
     public static boolean[][][] checkArrayDifference(final int[][][] oldArray, final int[][][] newArray) {
@@ -119,8 +119,8 @@ public class ImageProcessingTools {
     /**
      * Convert a bufferedImage to bytes array
      *
-     * @param bufferedImage
-     * @return
+     * @param bufferedImage -- BufferedImage to be converted
+     * @return -- converted BufferedImage in its bytes array form
      */
     public static byte[] extractBytes(final BufferedImage bufferedImage) {
         // get DataBufferBytes from Raster
@@ -132,8 +132,8 @@ public class ImageProcessingTools {
     /**
      * Convert an imagefile to bytes array
      *
-     * @param ImageName
-     * @return
+     * @param ImageName -- The name of the image file to be converted to bytes array
+     * @return -- The bytes array of the given image file
      * @throws IOException -- if the file cannot be specified
      */
     public static byte[] extractBytes(final String ImageName) throws IOException {

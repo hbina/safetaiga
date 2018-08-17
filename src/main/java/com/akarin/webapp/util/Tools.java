@@ -1,16 +1,20 @@
 package com.akarin.webapp.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.ArrayList;
 
 public class Tools {
 
-    public static boolean logging = true;
-    public static File IMAGES_INPUT_DIR, IMAGES_OTHER_DIR, IMAGES_OUTPUT_PARTITION_DIR, TEXT_OUTPUT_PARTITION_DIR,
-            IMAGES_OUTPUT_RESIZED_DIR, IMAGES_OUTPUT_GLOBALDIFFERENCE_DIR, TEXT_OUTPUT_GLOBALDIFFERENCE_DIR,
-            IMAGES_OUTPUT_GLOBALDIFFERENCEBINARYRGB_DIR, IMAGES_OUTPUT_GLOBALDIFFERENCEBINARY_DIR,
-            IMAGES_OUTPUT_MINIMIZEDGLOBALDIFFERENCEBINARY_DIR, IMAGES_OUTPUT_HORIZONTALAVERAGERGB_DIR,
-            IMAGES_OUTPUT_SQUARELOCALAVERAGE_DIR, IMAGES_OUTPUT_CONVOLUTION_DIR;
+    private static final boolean logging = true;
+    private static final Logger logger = LoggerFactory.getLogger(Tools.class);
+    public static File IMAGES_INPUT_DIR;
+    public static File TEXT_OUTPUT_PARTITION_DIR;
+    public static File IMAGES_OUTPUT_RESIZED_DIR;
+    public static File TEXT_OUTPUT_GLOBALDIFFERENCE_DIR;
+    public static File IMAGES_OUTPUT_CONVOLUTION_DIR;
 
     @Deprecated
     public static void coutln(final String text) {
@@ -25,7 +29,7 @@ public class Tools {
     }
 
     @Deprecated
-    public static void coutln(final String text, final boolean bool) {
+    private static void coutln(final String text, final boolean bool) {
         if (bool) {
             System.out.println(text);
         }
@@ -74,90 +78,72 @@ public class Tools {
     }
 
     public static String convertTripleArrayToString(final int[][][] array) {
-        String string = "";
-        for (int y = 0; y < array.length; y++) {
-            for (int x = 0; x < array[y].length; x++) {
-                for (int z = 0; z < array[y][x].length; z++) {
-                    string += array[y][x][z] + " ";
+        StringBuilder string = new StringBuilder();
+        for (int[][] anArray : array) {
+            for (int[] anAnArray : anArray) {
+                for (int anAnAnArray : anAnArray) {
+                    string.append(anAnAnArray).append(" ");
                 }
             }
-            string += System.lineSeparator();
+            string.append(System.lineSeparator());
         }
-        return string;
+        return string.toString();
     }
 
     public static void createFolders() {
 
-        /**
-         * Required Directory
-         */
-        IMAGES_OTHER_DIR = new File("public" + System.getProperty("file.separator") + "images"
+        File IMAGES_OTHER_DIR = new File("public" + System.getProperty("file.separator") + "images"
                 + System.getProperty("file.separator") + "other");
         IMAGES_INPUT_DIR = new File("public" + System.getProperty("file.separator") + "images"
                 + System.getProperty("file.separator") + "input");
         IMAGES_OUTPUT_RESIZED_DIR = new File("public" + System.getProperty("file.separator") + "images"
                 + System.getProperty("file.separator") + "output" + System.getProperty("file.separator") + "resized");
 
-        /**
-         * Partition Directory
-         */
-        IMAGES_OUTPUT_PARTITION_DIR = new File("public" + System.getProperty("file.separator") + "images"
+        File IMAGES_OUTPUT_PARTITION_DIR = new File("public" + System.getProperty("file.separator") + "images"
                 + System.getProperty("file.separator") + "output" + System.getProperty("file.separator") + "partition");
-        /**
-         * Global Difference Directory
-         */
-        IMAGES_OUTPUT_GLOBALDIFFERENCE_DIR = new File("public" + System.getProperty("file.separator") + "images"
+        File IMAGES_OUTPUT_GLOBALDIFFERENCE_DIR = new File("public" + System.getProperty("file.separator") + "images"
                 + System.getProperty("file.separator") + "output/globaldifference");
 
-        /**
-         * Global Difference Binary Directory
-         */
-        IMAGES_OUTPUT_GLOBALDIFFERENCEBINARY_DIR = new File(
+        File IMAGES_OUTPUT_GLOBALDIFFERENCEBINARY_DIR = new File(
                 "public" + System.getProperty("file.separator") + "images" + System.getProperty("file.separator")
                         + "output" + System.getProperty("file.separator") + "globaldifferencebinary");
 
-        /**
-         * Global Difference Binary RGB Directory
-         */
-        IMAGES_OUTPUT_GLOBALDIFFERENCEBINARYRGB_DIR = new File(
+        File IMAGES_OUTPUT_GLOBALDIFFERENCEBINARYRGB_DIR = new File(
                 "public" + System.getProperty("file.separator") + "images" + System.getProperty("file.separator")
                         + "output" + System.getProperty("file.separator") + "globaldifferencebinaryRGB");
 
-        /**
-         * Minimized Global Difference
-         */
-        IMAGES_OUTPUT_MINIMIZEDGLOBALDIFFERENCEBINARY_DIR = new File("public" + System.getProperty("file.separator")
+        File IMAGES_OUTPUT_MINIMIZEDGLOBALDIFFERENCEBINARY_DIR = new File("public" + System.getProperty("file.separator")
                 + "images" + System.getProperty("file.separator") + "minimizedglobaldifferencebinary");
 
-        /**
-         * Horizontal Average RGB
-         */
-        IMAGES_OUTPUT_HORIZONTALAVERAGERGB_DIR = new File("public" + System.getProperty("file.separator") + "images"
+        File IMAGES_OUTPUT_HORIZONTALAVERAGERGB_DIR = new File("public" + System.getProperty("file.separator") + "images"
                 + System.getProperty("file.separator") + "horizontalaveragergb");
 
-        /**
-         * Square Local Average
-         */
-        IMAGES_OUTPUT_SQUARELOCALAVERAGE_DIR = new File("public" + System.getProperty("file.separator") + "images"
+        File IMAGES_OUTPUT_SQUARELOCALAVERAGE_DIR = new File("public" + System.getProperty("file.separator") + "images"
                 + System.getProperty("file.separator") + "squarelocalaverage");
 
-        /**
-         * Convolution
-         */
         IMAGES_OUTPUT_CONVOLUTION_DIR = new File("public" + System.getProperty("file.separator") + "images"
                 + System.getProperty("file.separator") + "convolution");
 
-        IMAGES_OTHER_DIR.mkdirs();
-        IMAGES_OUTPUT_PARTITION_DIR.mkdirs();
-        IMAGES_OUTPUT_RESIZED_DIR.mkdirs();
-        IMAGES_INPUT_DIR.mkdirs();
-        IMAGES_OUTPUT_GLOBALDIFFERENCE_DIR.mkdirs();
-        IMAGES_OUTPUT_GLOBALDIFFERENCEBINARY_DIR.mkdirs();
-        IMAGES_OUTPUT_GLOBALDIFFERENCEBINARYRGB_DIR.mkdirs();
-        IMAGES_OUTPUT_MINIMIZEDGLOBALDIFFERENCEBINARY_DIR.mkdirs();
-        IMAGES_OUTPUT_HORIZONTALAVERAGERGB_DIR.mkdirs();
-        IMAGES_OUTPUT_SQUARELOCALAVERAGE_DIR.mkdirs();
-        IMAGES_OUTPUT_CONVOLUTION_DIR.mkdirs();
+        File[] files = new File[]{IMAGES_OTHER_DIR,
+                IMAGES_OUTPUT_PARTITION_DIR,
+                IMAGES_OUTPUT_RESIZED_DIR,
+                IMAGES_INPUT_DIR,
+                IMAGES_OUTPUT_GLOBALDIFFERENCE_DIR,
+                IMAGES_OUTPUT_GLOBALDIFFERENCEBINARY_DIR,
+                IMAGES_OUTPUT_GLOBALDIFFERENCEBINARYRGB_DIR,
+                IMAGES_OUTPUT_MINIMIZEDGLOBALDIFFERENCEBINARY_DIR,
+                IMAGES_OUTPUT_HORIZONTALAVERAGERGB_DIR,
+                IMAGES_OUTPUT_SQUARELOCALAVERAGE_DIR,
+                IMAGES_OUTPUT_CONVOLUTION_DIR};
+        for (File p : files) {
+            boolean isDirectoryCreated = p.exists();
+            if (!isDirectoryCreated) {
+                isDirectoryCreated = p.mkdir();
+            }
+            if (isDirectoryCreated) {
+                logger.info("created the directory " + p.getPath());
+            }
+        }
     }
 
     public static String toSixtyTwoRadix(final int i) {
@@ -200,9 +186,9 @@ public class Tools {
     }
 
     public static ArrayList<Integer> convertIntArrayToIntArrayList(final int[] array) {
-        final ArrayList<Integer> arrayList = new ArrayList<Integer>();
-        for (int a = 0; a < array.length; a++) {
-            arrayList.add(array[a]);
+        final ArrayList<Integer> arrayList = new ArrayList<>();
+        for (int anArray : array) {
+            arrayList.add(anArray);
         }
 
         return arrayList;

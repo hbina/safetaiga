@@ -2,7 +2,7 @@ package com.akarin.webapp.util;
 
 public class AkarinMath {
 
-    public static double generalizedLNorm(double[] numbers, double p) {
+    private static double generalizedLNorm(double[] numbers, double p) {
         double result = 0f;
 
         for (int a = 0; a < numbers.length; a++) {
@@ -14,7 +14,7 @@ public class AkarinMath {
         return result;
     }
 
-    public static double euclideanNorm(double[] numbers) {
+    private static double euclideanNorm(double[] numbers) {
         return generalizedLNorm(numbers, 2);
     }
 

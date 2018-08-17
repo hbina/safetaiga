@@ -33,7 +33,7 @@ public class ViewUtil {
         // Tools.print("END:addGzipHeader");
     };
 
-    private static Logger logger = LoggerFactory.getLogger(ViewUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(ViewUtil.class);
 
     // Renders a template given a model and a request
     // The request is needed to check the user session for language settings
@@ -44,7 +44,6 @@ public class ViewUtil {
         model.put(Reference.VelocityVariables.WEBPAGE_DEFAULT_ICON, System.getProperty("file.separator") + "other"
                 + System.getProperty("file.separator") + "akarin_pic.ico");
 
-        /** Basic links that are not dynamic like :boardlink or :threadid **/
         model.put(Reference.VelocityVariables.ROOT_LINK, Reference.Web.ROOT);
         model.put(Reference.VelocityVariables.ROOT_NAME, Reference.Names.ROOT);
 
@@ -77,7 +76,7 @@ public class ViewUtil {
                                             final String returnName) {
         logger.info(System.lineSeparator() + "nAn error rendering page has occured" + System.lineSeparator());
 
-        final Map<String, Object> model = new HashMap<String, Object>();
+        final Map<String, Object> model = new HashMap<>();
         model.put(Reference.CommonStrings.ERROR, errorMessage);
         model.put(Reference.CommonStrings.RETURNLINK, returnLink);
         model.put(Reference.CommonStrings.RETURNNAME, returnName);

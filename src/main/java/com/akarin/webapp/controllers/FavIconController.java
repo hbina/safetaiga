@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class FavIconController {
-    
-    Logger logger = LoggerFactory.getLogger(FavIconController.class);
+class FavIconController {
+
+    private final Logger logger = LoggerFactory.getLogger(FavIconController.class);
 
     @GetMapping("favicon.ico")
     @ResponseBody
     void returnNoFavicon() {
-        logger.debug("What are you doing here?");
+        logger.info("What are you doing here?");
     }
 }

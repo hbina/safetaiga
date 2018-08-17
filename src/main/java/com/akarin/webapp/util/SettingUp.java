@@ -9,7 +9,6 @@ import com.akarin.webapp.imageprocessing.ImagePartition;
 import com.akarin.webapp.imageprocessing.ImageProcessingTools;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.FrameGrabber.Exception;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +23,8 @@ import java.sql.Statement;
 
 public class SettingUp {
 
-    private static AnimeObject[] animeArray = new AnimeObject[]{new AnimeObject("eureka", 50)};
-    private static Logger logger = LoggerFactory.getLogger(SettingUp.class);
-    private static FFmpegFrameGrabber g;
+    private static final AnimeObject[] animeArray = new AnimeObject[]{new AnimeObject("eureka", 50)};
+    private static final Logger logger = LoggerFactory.getLogger(SettingUp.class);
 
     public static void insertPartitionDumpToDatabase() {
 
@@ -66,15 +64,12 @@ public class SettingUp {
                         logger.info("Executing script:" + insertScript);
                         stmt.executeUpdate(insertScript);
 
-                    } catch (final IOException e) {
+                    } catch (final IOException | URISyntaxException e) {
                         logger.info("id:" + panelNumber);
                         logger.info(e.getMessage());
                     } catch (final SQLException e) {
                         logger.info("id:" + panelNumber);
                         logger.info("query:" + insertScript);
-                        logger.info(e.getMessage());
-                    } catch (final URISyntaxException e) {
-                        logger.info("id:" + panelNumber);
                         logger.info(e.getMessage());
                     }
                 }
@@ -82,29 +77,30 @@ public class SettingUp {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void createImageInfo() {
         try {
-            /**
-             * Create required folders
-             */
             final File DEV_OUTPUT_IMAGES_OUTPUT_PARTITION = new File("dev_output/images/output/partition");
-            DEV_OUTPUT_IMAGES_OUTPUT_PARTITION.mkdirs();
+            boolean isDirectoryExists = DEV_OUTPUT_IMAGES_OUTPUT_PARTITION.exists();
+            if (!isDirectoryExists) {
+                isDirectoryExists = DEV_OUTPUT_IMAGES_OUTPUT_PARTITION.mkdirs();
+            }
+            if (isDirectoryExists) {
+                logger.info("the directory " + DEV_OUTPUT_IMAGES_OUTPUT_PARTITION.getPath() + " was created");
+            }
 
-            String animeName = "";
-            for (int animeNumber = 0; animeNumber < animeArray.length; animeNumber++) {
-                animeName = animeArray[animeNumber].getName();
-                for (int episode = 1; episode <= animeArray[animeNumber].getNumberOfEpisodes(); episode++) {
+            String animeName;
+            for (AnimeObject anAnimeArray : animeArray) {
+                animeName = anAnimeArray.getName();
+                for (int episode = 1; episode <= anAnimeArray.getNumberOfEpisodes(); episode++) {
                     final Java2DFrameConverter frameConverter = new Java2DFrameConverter();
 
-                    /**
-                     * GLOBAL VARIABLES
-                     */
                     int frameIterator = 0; // the frame iterator
                     int panelIterator = 0; // the panel iterator
                     BufferedImage image; // the image
                     Frame frame;
 
-                    g = new FFmpegFrameGrabber("videos/" + animeName + "/" + animeName + "_" + episode + ".mkv");
+                    FFmpegFrameGrabber g = new FFmpegFrameGrabber("videos/" + animeName + "/" + animeName + "_" + episode + ".mkv");
                     g.start();
 
                     while ((frame = g.grabImage()) != null) {
@@ -140,25 +136,17 @@ public class SettingUp {
                                 }
                             }
 
-                            /**
-                             * BASIC HISTOGRAM HASHING
-                             */
                             if (BasicHistogramHash.activeBool) {
                                 try (Connection connection = DatabaseManager.getConnection()) {
-                                    final Statement statement = connection.createStatement();
+                                    Statement statement = connection.createStatement();
                                     statement.executeUpdate("INSERT INTO imagedb_test (hash) VALUES ('"
                                             + ImageHashing.basicHistogramHash(ImageHashing.getRGBHistogram(image))
                                             + "');");
-                                } catch (final SQLException e) {
-                                    logger.warn(e.getMessage());
-                                } catch (final URISyntaxException e) {
+                                } catch (final SQLException | URISyntaxException e) {
                                     logger.warn(e.getMessage());
                                 }
                             }
 
-                            /**
-                             * CHECK PANEL DIFFERENCE
-                             */
                             if (CheckPanelDifference.activeBool) {
 
                                 if (panelIterator == 0) {
@@ -190,8 +178,6 @@ public class SettingUp {
                     g.stop();
                 }
             }
-        } catch (final Exception e) {
-            logger.warn(e.getMessage());
         } catch (final IOException e) {
             logger.warn(e.getMessage());
         }
@@ -208,45 +194,45 @@ public class SettingUp {
         }
     }
 
-    public static class CheckPanelDifference {
-        public static boolean activeBool = false;
+    static class CheckPanelDifference {
+        static final boolean activeBool = false;
         public static boolean writeLogBool = false;
 
-        public static int[][][] oldArray;
-        public static int[][][] newArray;
-        public static int[][][] panelDifferenceCountArray;
+        static int[][][] oldArray;
+        static int[][][] newArray;
+        static int[][][] panelDifferenceCountArray;
 
-        public static boolean[][][] panelDifferenceArray;
+        static boolean[][][] panelDifferenceArray;
     }
 
-    public static class Partition {
-        public static boolean activeBool = true;
-        public static boolean writeLogBool = false;
-        public static boolean writeToDatabase = true;
+    static class Partition {
+        static final boolean activeBool = true;
+        static final boolean writeLogBool = false;
+        static final boolean writeToDatabase = true;
         public static boolean printBool = false;
 
-        public static int[][][] tripleArray;
+        static int[][][] tripleArray;
 
-        public static String imageDir;
-        public static String textDir;
+        static String imageDir;
+        static String textDir;
     }
 
-    public static class GlobalDifference {
-        public static boolean activeBool = false;
+    static class GlobalDifference {
+        static final boolean activeBool = false;
+        static final boolean writeLogBool = false;
+
+        static int[][][] tripleArray;
+
+        static String imageDir;
+        static String textDir;
+    }
+
+    static class BasicHistogramHash {
+        static final boolean activeBool = false;
         public static boolean writeLogBool = false;
-
-        public static int[][][] tripleArray;
-
-        public static String imageDir;
-        public static String textDir;
     }
 
-    public static class BasicHistogramHash {
-        public static boolean activeBool = false;
-        public static boolean writeLogBool = false;
-    }
-
-    public static class globalAverageRGB {
+    private static class globalAverageRGB {
         public static float[][][] average = new float[ImageProcessingTools.DIVISOR_VALUE][ImageProcessingTools.DIVISOR_VALUE][3];
     }
 }
