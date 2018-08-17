@@ -49,11 +49,7 @@ public class TextboardManager {
     }
 
     public static boolean checkIfTextIsAcceptable(final String givenText) {
-        if (givenText.length() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return givenText.length() != 0;
     }
 
     public static String getPREVIOUSBOARDLINK(final String previousBoardLink) {

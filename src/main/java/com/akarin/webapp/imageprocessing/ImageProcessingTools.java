@@ -93,11 +93,7 @@ public class ImageProcessingTools {
         for (int y = 0; y < oldArray.length; y++) { // Y-axis
             for (int x = 0; x < oldArray[y].length; x++) { // X-axis
                 for (int z = 0; z < oldArray[y][x].length; z++) {
-                    if (Math.abs(oldArray[y][x][z] - newArray[y][x][z]) > BUFFER_VALUE) {
-                        changeBool[y][x][z] = true;
-                    } else {
-                        changeBool[y][x][z] = false;
-                    }
+                    changeBool[y][x][z] = Math.abs(oldArray[y][x][z] - newArray[y][x][z]) > BUFFER_VALUE;
                 }
             }
         }

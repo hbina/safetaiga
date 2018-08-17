@@ -11,6 +11,8 @@ import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber.Exception;
 import org.bytedeco.javacv.Java2DFrameConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,7 +24,8 @@ import java.sql.Statement;
 
 public class SettingUp {
 
-    public static AnimeObject[] animeArray = new AnimeObject[]{new AnimeObject("eureka", 50)};
+    private static AnimeObject[] animeArray = new AnimeObject[]{new AnimeObject("eureka", 50)};
+    private static Logger logger = LoggerFactory.getLogger(SettingUp.class);
     private static FFmpegFrameGrabber g;
 
     public static void insertPartitionDumpToDatabase() {
@@ -30,10 +33,10 @@ public class SettingUp {
         String insertScript = "";
         int[][][] tripleArray;
 
-        Tools.coutln("beginning to insert " + animeArray.length + " anime into the database");
+        logger.info("beginning to insert " + animeArray.length + " anime into the database");
 
         for (int animeNumber = 0; animeNumber < animeArray.length; animeNumber++) {
-            Tools.coutln("animeNumber:" + animeNumber);
+            logger.info("animeNumber:" + animeNumber);
             try {
                 final int[] tmpPanels = new int[animeArray[animeNumber].getNumberOfEpisodes()];
                 for (int a = 1; a <= animeArray[animeNumber].getNumberOfEpisodes(); a++) {
@@ -42,8 +45,8 @@ public class SettingUp {
                 }
                 animeArray[animeNumber].setPanels(tmpPanels);
             } catch (final IOException e) {
-                Tools.coutln("FAIL READING DESCRIPTION TEXT");
-                Tools.coutln(e.getMessage());
+                logger.info("FAIL READING DESCRIPTION TEXT");
+                logger.info(e.getMessage());
             }
             for (int episodeNumber = 1; episodeNumber <= animeArray[animeNumber]
                     .getNumberOfEpisodes(); episodeNumber++) {
@@ -60,19 +63,19 @@ public class SettingUp {
                         insertScript = ScriptCreator.insertIntoImagedbAnimeRgbInteger(animeArray[animeNumber].getName(),
                                 episodeNumber, panelNumber, tripleArray);
 
-                        Tools.coutln("Executing script:" + insertScript);
+                        logger.info("Executing script:" + insertScript);
                         stmt.executeUpdate(insertScript);
 
                     } catch (final IOException e) {
-                        Tools.coutln("id:" + panelNumber);
-                        Tools.coutln(e.getMessage());
+                        logger.info("id:" + panelNumber);
+                        logger.info(e.getMessage());
                     } catch (final SQLException e) {
-                        Tools.coutln("id:" + panelNumber);
-                        Tools.coutln("query:" + insertScript);
-                        Tools.coutln(e.getMessage());
+                        logger.info("id:" + panelNumber);
+                        logger.info("query:" + insertScript);
+                        logger.info(e.getMessage());
                     } catch (final URISyntaxException e) {
-                        Tools.coutln("id:" + panelNumber);
-                        Tools.coutln(e.getMessage());
+                        logger.info("id:" + panelNumber);
+                        logger.info(e.getMessage());
                     }
                 }
             }
@@ -113,7 +116,7 @@ public class SettingUp {
                                 Partition.tripleArray = ImagePartition.getPartitionArray(image);
 
                                 if (Partition.writeToDatabase) {
-                                    Tools.coutln(animeName + " " + episode + " " + frameIterator);
+                                    logger.info(animeName + " " + episode + " " + frameIterator);
                                     DatabaseManager.insertPartitionHash(animeName, episode, frameIterator,
                                             ImageHashing.partitionHash(Partition.tripleArray));
                                 }
@@ -147,9 +150,9 @@ public class SettingUp {
                                             + ImageHashing.basicHistogramHash(ImageHashing.getRGBHistogram(image))
                                             + "');");
                                 } catch (final SQLException e) {
-                                    e.printStackTrace();
+                                    logger.warn(e.getMessage());
                                 } catch (final URISyntaxException e) {
-                                    e.printStackTrace();
+                                    logger.warn(e.getMessage());
                                 }
                             }
 
@@ -188,9 +191,9 @@ public class SettingUp {
                 }
             }
         } catch (final Exception e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         } catch (final IOException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
 
     }
@@ -201,7 +204,7 @@ public class SettingUp {
             DatabaseManager.createTableThreads();
             DatabaseManager.createTablePosts();
         } catch (SQLException | URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 

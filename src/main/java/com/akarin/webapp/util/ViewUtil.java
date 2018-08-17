@@ -2,6 +2,8 @@ package com.akarin.webapp.util;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.eclipse.jetty.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.*;
 import spark.template.velocity.VelocityTemplateEngine;
 
@@ -30,6 +32,8 @@ public class ViewUtil {
         response.header("Content-Encoding", "gzip");
         // Tools.print("END:addGzipHeader");
     };
+
+    private static Logger logger = LoggerFactory.getLogger(ViewUtil.class);
 
     // Renders a template given a model and a request
     // The request is needed to check the user session for language settings
@@ -71,7 +75,7 @@ public class ViewUtil {
     // The request is needed to know where the user is
     public static String renderErrorMessage(final Request request, final String errorMessage, final String returnLink,
                                             final String returnName) {
-        Tools.coutln(System.lineSeparator() + "nAn error rendering page has occured" + System.lineSeparator());
+        logger.info(System.lineSeparator() + "nAn error rendering page has occured" + System.lineSeparator());
 
         final Map<String, Object> model = new HashMap<String, Object>();
         model.put(Reference.CommonStrings.ERROR, errorMessage);

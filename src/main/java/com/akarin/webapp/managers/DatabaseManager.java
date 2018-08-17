@@ -1,8 +1,11 @@
 package com.akarin.webapp.managers;
 
+import com.akarin.webapp.Main;
 import com.akarin.webapp.util.Reference;
 import com.akarin.webapp.util.ScriptCreator;
 import com.akarin.webapp.util.Tools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -19,27 +22,28 @@ import java.util.Map;
 
 public class DatabaseManager {
 
+    private static Logger logger = LoggerFactory.getLogger(DatabaseManager.class);
     private static String DATABASE_USERNAME = "postgres";
     private static String DATABASE_PASSWORD = "1234";
 
     public static void setDbLogin() {
-        Tools.coutln("Current dir:" + System.getProperty("user.dir"));
+        logger.info("Current dir:" + System.getProperty("user.dir"));
         try {
             BufferedReader br = new BufferedReader(new FileReader("database_login.txt"));
             StringBuilder sb = new StringBuilder();
             DATABASE_USERNAME = br.readLine();
             DATABASE_PASSWORD = br.readLine();
-            Tools.coutln("Using db with" + System.getProperty("line.separator") + "username:" + DATABASE_USERNAME
+            logger.info("Using db with" + System.getProperty("line.separator") + "username:" + DATABASE_USERNAME
                     + System.getProperty("line.separator") + "password:" + DATABASE_PASSWORD);
             br.close();
         } catch (FileNotFoundException e) {
-            Tools.coutln("Please provide the necessary files for database setup");
+            logger.info("Please provide the necessary files for database setup");
             e.printStackTrace();
         } catch (IOException e) {
-            Tools.coutln("An IO exception error have occured");
+            logger.info("An IO exception error have occured");
             e.printStackTrace();
         } finally {
-            Tools.coutln("Database setup successfull");
+            logger.info("Database setup successfull");
         }
     }
 
@@ -285,9 +289,10 @@ public class DatabaseManager {
 
             pstmt.executeUpdate();
         } catch (final SQLException e) {
-            Tools.cout("duplicate key ");
+            logger.warn("duplicate key ");
+            logger.trace(e.getMessage());
         } catch (final URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -312,9 +317,9 @@ public class DatabaseManager {
 
             model.put("partitionHashResult", partitionHashResult);
         } catch (final SQLException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         } catch (final URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 }

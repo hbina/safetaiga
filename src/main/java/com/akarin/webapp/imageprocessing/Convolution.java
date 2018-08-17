@@ -21,7 +21,7 @@ public class Convolution {
             }
         }
         if (checkZero != 0) {
-            System.out.println("non-zero matrix");
+            throw new IllegalArgumentException("non-zero matrix");
         }
         final int colorCount = 3;
         final int[][][] tmpMatrix = new int[sourceMatrix.length][sourceMatrix[0].length][colorCount];

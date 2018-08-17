@@ -23,7 +23,7 @@ public class RootController {
     @Deprecated
     public static Route serveRootPage = new Route() {
         @Override
-        public Object handle(Request request, Response response) throws Exception {
+        public Object handle(Request request, Response response) {
             Map<String, Object> model = new HashMap<>();
             return ViewUtil.render(request, model, Reference.Templates.ROOT, "ROOT PAGE", "OK");
         }

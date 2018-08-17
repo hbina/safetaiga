@@ -27,7 +27,7 @@ public class TextboardController {
     @Deprecated
     public static Route serveTextboardHome = new Route() {
         @Override
-        public Object handle(Request request, Response response) throws Exception {
+        public Object handle(Request request, Response response) {
             final Map<String, Object> model = new HashMap<>();
 
             try {
@@ -52,7 +52,7 @@ public class TextboardController {
     @Deprecated
     public static Route serveTextboardBoard = new Route() {
         @Override
-        public Object handle(Request request, Response response) throws Exception {
+        public Object handle(Request request, Response response) {
             final Map<String, Object> model = new HashMap<>();
 
             // Obtain the request parameters
@@ -81,7 +81,7 @@ public class TextboardController {
     @Deprecated
     public static Route serveTextboardThread = new Route() {
         @Override
-        public Object handle(Request request, Response response) throws Exception {
+        public Object handle(Request request, Response response) {
             final Map<String, Object> model = new HashMap<>();
 
             // Obtain the request parameters

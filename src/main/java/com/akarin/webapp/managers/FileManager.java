@@ -2,12 +2,14 @@ package com.akarin.webapp.managers;
 
 import com.akarin.webapp.util.Tools;
 import com.akarin.webapp.imageprocessing.ImageProcessingTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
 public class FileManager {
 
-    private static boolean logging = true;
+    private static Logger logger = LoggerFactory.getLogger(FileManager.class);
 
     public static String readFile(final String filename) throws IOException {
 
@@ -37,7 +39,7 @@ public class FileManager {
         int xInt = 0; // xLong is a counter to how many integers we have
         // iterated in the string
         while ((currentLine = br.readLine()) != null) { // y-axis of text
-            Tools.coutln(currentLine, false);
+            logger.info(currentLine, false);
             final char[] currentLineCharArray = currentLine.toCharArray();
             for (int a = 0; a < currentLineCharArray.length; a++) { // x-axis of
                 // text
@@ -76,7 +78,7 @@ public class FileManager {
         int xInt = 0; // xLong is a counter to how many integers we have
         // iterated in the string
         while ((currentLine = br.readLine()) != null) { // y-axis of text
-            Tools.coutln(currentLine, false);
+            logger.info(currentLine, false);
             final char[] currentLineCharArray = currentLine.toCharArray();
             for (int a = 0; a < currentLineCharArray.length; a++) { // x-axis of
                 // text
@@ -104,25 +106,24 @@ public class FileManager {
     }
 
     public static void log(final String text, final String pathFile) {
-        if (logging) {
-            Tools.coutln("\nFROM:WriteFile:START:writeStringToFile");
-            Tools.coutln("writing to:" + pathFile);
-            FileWriter write;
-            try {
-                write = new FileWriter(pathFile);
-                final PrintWriter print_line = new PrintWriter(write);
-                print_line.printf("%s", text);
-                print_line.close();
-            } catch (final IOException e) {
-                Tools.coutln("FAILURE WRITING FILE" + "\n" + "pathFile:" + pathFile + "\n" + "text:" + text);
-                Tools.coutln("message" + e.getMessage());
-            }
-            Tools.coutln("END:writeStringToFile\n");
+        logger.info("\nFROM:WriteFile:START:writeStringToFile");
+        logger.info("writing to:" + pathFile);
+        FileWriter write;
+        try {
+            write = new FileWriter(pathFile);
+            final PrintWriter printLine = new PrintWriter(write);
+            printLine.printf("%s", text);
+            printLine.close();
+        } catch (final IOException e) {
+            logger.warn("FAILURE WRITING FILE" + "\n" + "pathFile:" + pathFile + "\n" + "text:" + text);
+            logger.warn(e.getMessage());
         }
+        logger.info("END:writeStringToFile\n");
     }
+    
 
     public static void writeTripleArrayToString(final int[][][] tripleArray, final String pathFile) {
-        Tools.coutln("writing to:" + pathFile);
+        logger.info("writing to:" + pathFile);
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(new File(pathFile)));
@@ -138,19 +139,19 @@ public class FileManager {
                 }
             }
         } catch (final Exception e) {
-            Tools.coutln(e.getMessage());
+            logger.warn(e.getMessage());
         } finally {
             try {
                 // Close the writer regardless of what happens...
                 writer.close();
             } catch (final Exception e) {
-                e.printStackTrace();
+                logger.warn(e.getMessage());
             }
         }
     }
 
     public static void writeTripleArrayToString(final float[][][] partitionArrayRGB, final String pathFile) {
-        Tools.coutln("writing to:" + pathFile);
+        logger.info("writing to:" + pathFile);
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(new File(pathFile)));
@@ -166,13 +167,13 @@ public class FileManager {
                 }
             }
         } catch (final Exception e) {
-            Tools.coutln(e.getMessage());
+            logger.warn(e.getMessage());
         } finally {
             try {
                 // Close the writer regardless of what happens...
                 writer.close();
             } catch (final Exception e) {
-                e.printStackTrace();
+                logger.warn(e.getMessage());
             }
         }
     }

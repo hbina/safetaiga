@@ -26,7 +26,7 @@ public class ImageProcessingController {
 
     public static Route serveImageUpload = new Route() {
         @Override
-        public Object handle(final Request request, final Response response) throws Exception {
+        public Object handle(final Request request, final Response response) {
             Tools.coutln("serveImageUpload");
             final Map<String, Object> model = new HashMap<String, Object>();
             /**
@@ -113,14 +113,14 @@ public class ImageProcessingController {
             model.put("ORIGINAL_IMAGE_MESSAGE", "The original image, resized:");
             // 7 to remove the substring 'public/'
             Tools.coutln("Original image directory:" + outputOriginalImage);
-            model.put("ORIGINAL_IMAGE_FILE", outputResizedImage.substring(7, outputResizedImage.length()));
+            model.put("ORIGINAL_IMAGE_FILE", outputResizedImage.substring(7));
             /**
              * Partitioned image
              */
             model.put("CONVOLUTION_IMAGE_MESSAGE", "Convoluted image");
             // 7 to remove the substring 'public/'
             Tools.coutln("Convolution image directory:" + outputConvolutionImage);
-            model.put("CONVOLUTION_IMAGE_FILE", outputConvolutionImage.substring(7, outputConvolutionImage.length()));
+            model.put("CONVOLUTION_IMAGE_FILE", outputConvolutionImage.substring(7));
 
             final long tEnd = System.currentTimeMillis();
             final long tDelta = tEnd - tStart;

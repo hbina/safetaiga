@@ -5,6 +5,8 @@ import com.akarin.webapp.structure.IntegerPair;
 import com.akarin.webapp.util.ScriptCreator;
 import com.akarin.webapp.util.Tools;
 import com.akarin.webapp.imageprocessing.ImageProcessingTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
 import java.net.URISyntaxException;
@@ -17,6 +19,7 @@ public class ImageSearchManager {
 
     private static boolean BOOL_SCRIPT = false;
     private static boolean BOOL_MATCHING_NAME = true;
+    private static Logger logger = LoggerFactory.getLogger(ImageSearchManager.class);
 
     public static void insertImageDataToDatabase(final String ipAddress, final BufferedImage image) {
         final String script = "INSERT INTO imagedb_user_image_request_byte (request_ip, imagefile) VALUES (?,?)";
@@ -28,9 +31,9 @@ public class ImageSearchManager {
             pst.executeUpdate();
 
         } catch (final SQLException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         } catch (final URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -50,12 +53,12 @@ public class ImageSearchManager {
             int valueIterator = -1; // use this to check if the algorithm even found any
 
             final String findMatchingImageDataRandomized = ScriptCreator.findMatchingImageDataRandomized(array);
-            Tools.coutln(findMatchingImageDataRandomized, BOOL_SCRIPT);
+            logger.info(findMatchingImageDataRandomized, BOOL_SCRIPT);
 
             final ResultSet rs = stmt.executeQuery(findMatchingImageDataRandomized);
 
             while (rs.next()) {
-                Tools.coutln("matching name:" + rs.getString("name") + " " + rs.getString("episode") + " "
+                logger.info("matching name:" + rs.getString("name") + " " + rs.getString("episode") + " "
                                 + rs.getString("panel") + "@" + ((Integer.valueOf(rs.getString("panel")) / (24 * 60)) + ":"
                                 + (Integer.valueOf(rs.getString("panel")) % (24))),
                         BOOL_MATCHING_NAME);
@@ -80,10 +83,10 @@ public class ImageSearchManager {
             }
 
             if (values.isEmpty()) {
-                Tools.coutln("Test 1: None found");
+                logger.info("Test 1: None found");
                 model.put("test_1_boolean", false);
             } else {
-                Tools.coutln("Test 1: Found");
+                logger.info("Test 1: Found");
                 model.put("test_1_boolean", true);
                 model.put("test_1_weight", matchResultMap.get(values.get(maxIndex).getKey(2)).b);
                 model.put("test_1_result", values.get(maxIndex));
@@ -91,9 +94,9 @@ public class ImageSearchManager {
                         + (values.get(maxIndex).getPanel() % (24)));
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         } catch (final URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -111,11 +114,11 @@ public class ImageSearchManager {
             // any
 
             final String findMatchingImageDataRandomizedV2 = ScriptCreator.findMatchingImageDataRandomizedV2(array);
-            Tools.coutln(findMatchingImageDataRandomizedV2, BOOL_SCRIPT);
+            logger.info(findMatchingImageDataRandomizedV2, BOOL_SCRIPT);
             final ResultSet rs = stmt.executeQuery(findMatchingImageDataRandomizedV2);
 
             while (rs.next()) {
-                Tools.coutln("matching name:" + rs.getString("name") + " " + rs.getString("episode") + " "
+                logger.info("matching name:" + rs.getString("name") + " " + rs.getString("episode") + " "
                                 + rs.getString("panel") + "@" + ((Integer.valueOf(rs.getString("panel")) / (24 * 60)) + ":"
                                 + (Integer.valueOf(rs.getString("panel")) % (24))),
                         BOOL_MATCHING_NAME);
@@ -145,10 +148,10 @@ public class ImageSearchManager {
             }
 
             if (values.isEmpty()) {
-                Tools.coutln("Test 2: None found");
+                logger.info("Test 2: None found");
                 model.put("test_2_boolean", false);
             } else {
-                Tools.coutln("Test 2: Found");
+                logger.info("Test 2: Found");
                 model.put("test_2_boolean", true);
                 model.put("test_2_weight", matchResultMap.get(values.get(maxIndex).getKey(2)).b);
                 model.put("test_2_result", values.get(maxIndex));
@@ -156,9 +159,9 @@ public class ImageSearchManager {
                         + (values.get(maxIndex).getPanel() % (24)));
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         } catch (final URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -178,7 +181,7 @@ public class ImageSearchManager {
                     for (int c = 0; c < 3; c++) {
                         findMatchingImageDataIncremental = ScriptCreator.findMatchingImageDataIncremental(a, b, c,
                                 array[a][b][c]);
-                        Tools.coutln("Execute Query:" + findMatchingImageDataIncremental, BOOL_SCRIPT);
+                        logger.info("Execute Query:" + findMatchingImageDataIncremental, BOOL_SCRIPT);
 
                         rs = stmt.executeQuery(findMatchingImageDataIncremental);
 
@@ -198,10 +201,10 @@ public class ImageSearchManager {
             }
 
             if (!test3Found) {
-                Tools.coutln("Test 3: None found");
+                logger.info("Test 3: None found");
                 model.put("test_3_boolean", false);
             } else {
-                Tools.coutln("Test 3: Found");
+                logger.info("Test 3: Found");
                 model.put("test_3_boolean", true);
                 values = new AnimePanel[matchResultMap.size()];
 
@@ -227,7 +230,7 @@ public class ImageSearchManager {
                     }
                 }
                 if (maxIndex != -1) {
-                    Tools.coutln(maxValue + " " + values[maxIndex].getKey());
+                    logger.info(maxValue + " " + values[maxIndex].getKey());
                     model.put("test_3_weight", maxValue);
                     model.put("test_3_result", new AnimePanel(values[maxIndex].getKey().split(":")[0],
                             values[maxIndex].getKey().split(":")[1], values[maxIndex].getKey().split(":")[2]));
@@ -235,13 +238,13 @@ public class ImageSearchManager {
                     model.put("test_5_time", "" + (Integer.valueOf(values[maxIndex].getKey().split(":")[2]) / (24 * 60))
                             + ":" + (Integer.valueOf(values[maxIndex].getKey().split(":")[2]) % (24)));
                 } else {
-                    Tools.coutln("maxIndex is -1");
+                    logger.info("maxIndex is -1");
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         } catch (final URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -262,7 +265,7 @@ public class ImageSearchManager {
                     rs = stmt.executeQuery(findMatchingImageDataIncrementalRGB);
 
                     while (rs.next()) {
-                        Tools.coutln("matching name:" + rs.getString("name") + " " + rs.getString("episode") + " "
+                        logger.info("matching name:" + rs.getString("name") + " " + rs.getString("episode") + " "
                                 + rs.getString("panel"), false);
                         final String key = "" + rs.getString("name") + ":" + rs.getInt(2) + ":" + rs.getInt(3);
                         if (!(matchResult.containsKey(key))) {
@@ -277,10 +280,10 @@ public class ImageSearchManager {
             }
 
             if (!test4Found) {
-                Tools.coutln("Test 4: None found");
+                logger.info("Test 4: None found");
                 model.put("test_4_boolean", false);
             } else {
-                Tools.coutln("Test 4: Found");
+                logger.info("Test 4: Found");
                 model.put("test_4_boolean", true);
                 values = new AnimePanel[matchResult.size()];
 
@@ -306,7 +309,7 @@ public class ImageSearchManager {
                     }
                 }
                 if (maxIndex != -1) {
-                    Tools.coutln(maxValue + " " + values[maxIndex].getKey());
+                    logger.info(maxValue + " " + values[maxIndex].getKey());
                     model.put("test_4_weight", maxValue);
                     model.put("test_4_result", new AnimePanel(values[maxIndex].getKey().split(":")[0],
                             values[maxIndex].getKey().split(":")[1], values[maxIndex].getKey().split(":")[2]));
@@ -314,13 +317,13 @@ public class ImageSearchManager {
                     model.put("test_5_time", "" + (Integer.valueOf(values[maxIndex].getKey().split(":")[2]) / (24 * 60))
                             + ":" + (Integer.valueOf(values[maxIndex].getKey().split(":")[2]) % (24)));
                 } else {
-                    Tools.coutln("maxIndex is -1");
+                    logger.info("maxIndex is -1");
                 }
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         } catch (final URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -334,14 +337,14 @@ public class ImageSearchManager {
             AnimePanel result;
 
             final String findMatchingImageDataBruteForce = ScriptCreator.findMatchingImageDataBruteForce(array);
-            Tools.coutln(findMatchingImageDataBruteForce, BOOL_SCRIPT);
+            logger.info(findMatchingImageDataBruteForce, BOOL_SCRIPT);
 
             final ResultSet rs = stmt.executeQuery(findMatchingImageDataBruteForce);
 
             if (rs.next()) {
-                Tools.coutln("Test 5: Found");
+                logger.info("Test 5: Found");
 
-                Tools.coutln("matching name:" + rs.getString("name") + " " + rs.getString("episode") + " "
+                logger.info("matching name:" + rs.getString("name") + " " + rs.getString("episode") + " "
                                 + rs.getString("panel") + "@" + ((Integer.valueOf(rs.getString("panel")) / (24 * 60)) + ":"
                                 + (Integer.valueOf(rs.getString("panel")) % (24))),
                         BOOL_MATCHING_NAME);
@@ -351,16 +354,12 @@ public class ImageSearchManager {
                 model.put("test_5_result", result);
                 model.put("test_5_time", "" + (result.getPanel() / (24 * 60)) + ":" + (result.getPanel() % (24)));
             } else {
-                Tools.coutln("TEST 5: No match found");
+                logger.info("TEST 5: No match found");
             }
         } catch (final SQLException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         } catch (final URISyntaxException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
-    }
-
-    public static void minimizedImage(final Map<String, Object> model, final int[][] array) {
-
     }
 }
