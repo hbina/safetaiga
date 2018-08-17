@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">	
+	<head>
+		<link rel="shortcut icon" href="$WEBPAGE_DEFAULT_ICON">
+		<meta charset="utf-8">
+		<title>Safe Taiga</title>
+		<meta name="description" content="A website for whatever">
+		<meta name="author" content="OCAkarin">
+		
+	</head>
+	
+	<body>
+	
+		<a href="$ROOT_LINK">$ROOT_NAME</a>
+		<a href="$TEXTBOARD_LINK">$TEXTBOARD_NAME</a>
+		<a href="$IMAGEPROCESSING_LINK">$IMAGEPROCESSING_NAME</a>
+		
+		<p>$WHERE_NAME : $WHERE_TEXT</p>
+		
+		<div>
+			<form method='post' enctype='multipart/form-data'>
+				<input type='file' name='uploaded_file' accept='image/*'>
+				<button>Upload picture</button>
+			</form>
+		</div>
+		
+		<div>
+		<h1>$ORIGINAL_IMAGE_MESSAGE</h1>
+		<br>
+		<img src='$ORIGINAL_IMAGE_FILE'>
+		</div>
+		
+		<div>
+		<h1>$CONVOLUTION_IMAGE_MESSAGE</h1>
+		<br>
+		<img src='$CONVOLUTION_IMAGE_FILE'>
+		</div>
+	</body>
+</html>

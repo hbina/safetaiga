@@ -1,0 +1,6 @@
+{
+  "name": "safe-taiga",
+  "description": "Website for whatever",
+  "image": "heroku/java",
+  "addons": [ "heroku-postgresql" ]
+}

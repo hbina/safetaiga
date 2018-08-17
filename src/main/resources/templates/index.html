@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Safetaiga Root</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="author" content="hanif.ariffin.4326@gmail.com">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
+</head>
+<body>
+<ul>
+    <li><a class="active" href="#home">Home</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about">About</a></li>
+</ul>
+<p>This page have been requested <span th:text="${visitor_counter}">100</span> times since last reboot</p>
+</body>
+</html>

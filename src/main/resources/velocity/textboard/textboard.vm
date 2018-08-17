@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="shortcut icon" href="$WEBPAGE_DEFAULT_ICON">
+		<meta charset="utf-8">
+		<title>Safe Taiga</title>
+		<meta name="description" content="A website for whatever">
+		<meta name="author" content="OCAkarin">
+		
+	</head>
+	
+	<body>
+	
+		<a href="$ROOT_LINK">$ROOT_NAME</a>
+		<a href="$TEXTBOARD_LINK">$TEXTBOARD_NAME</a>
+		<a href="$IMAGEPROCESSING_LINK">$IMAGEPROCESSING_NAME</a>
+		
+		<p>$WHERE_NAME : $WHERE_TEXT</p>
+		
+		<div>
+			#foreach( $board in $boardList )
+				<br>
+			    <div>
+			    	<p><a href='textboard/$board.boardlink'>$board.boardname</a> : $board.boarddescription</p>
+			    </div>
+			#end
+		</div>
+		
+		<div align="center">
+		 	<form  method="post">
+				Board link:<br>
+				<input type="text" name="$INPUT_BOARDLINK"><br>
+				Board name:<br>
+				<input type="text" name="$INPUT_BOARDNAME"><br>
+				Description:<br>
+				<input type="text" name="$INPUT_BOARDDESCRIPTION"><br><br>
+				<button type="submit">CREATE BOARD</button>
+			</form>
+		</div>
+		
+	</body>
+</html>
