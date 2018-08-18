@@ -25,7 +25,6 @@ public class DatabaseManager {
     private static String DATABASE_PASSWORD = "1234";
 
     public static void setDbLogin() {
-        logger.info("Current dir:" + System.getProperty("user.dir"));
         try {
             BufferedReader br = new BufferedReader(new FileReader("database_login.txt"));
             StringBuilder sb = new StringBuilder();
