@@ -1,7 +1,7 @@
 package com.akarin.webapp.util;
 
 import com.akarin.webapp.managers.DatabaseManager;
-import com.akarin.webapp.managers.FileManager;
+import com.akarin.webapp.managers.AkarinLogging;
 import com.akarin.webapp.structure.AnimeObject;
 import com.akarin.webapp.imageprocessing.ImageGlobalDifference;
 import com.akarin.webapp.imageprocessing.ImageHashing;
@@ -38,7 +38,7 @@ public class SettingUp {
             try {
                 final int[] tmpPanels = new int[animeArray[animeNumber].getNumberOfEpisodes()];
                 for (int a = 1; a <= animeArray[animeNumber].getNumberOfEpisodes(); a++) {
-                    tmpPanels[a - 1] = Integer.valueOf(FileManager.readFile(
+                    tmpPanels[a - 1] = Integer.valueOf(AkarinLogging.readFile(
                             "dev_output/description/" + animeArray[animeNumber].getName() + "_" + a + ".txt"));
                 }
                 animeArray[animeNumber].setPanels(tmpPanels);
@@ -54,7 +54,7 @@ public class SettingUp {
 
                         final Statement stmt = connection.createStatement();
 
-                        tripleArray = FileManager.parseIntegerPartitionTextOutput("dev_output/text/"
+                        tripleArray = AkarinLogging.parseIntegerPartitionTextOutput("dev_output/text/"
                                 + animeArray[animeNumber].getName() + "/" + animeArray[animeNumber].getName() + "_"
                                 + episodeNumber + "_" + panelNumber + ".txt");
 
@@ -174,7 +174,7 @@ public class SettingUp {
                         }
                         frameIterator++;
                     }
-                    FileManager.log("" + panelIterator, "dev_output/description/" + animeName + "_" + episode + ".txt");
+                    AkarinLogging.log("" + panelIterator, "dev_output/description/" + animeName + "_" + episode + ".txt");
                     g.stop();
                 }
             }

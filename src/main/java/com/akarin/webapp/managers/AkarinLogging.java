@@ -6,10 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
-public class FileManager {
+public class AkarinLogging {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(AkarinLogging.class);
 
+    @Deprecated
     public static String readFile(final String filename) throws IOException {
 
         StringBuilder readString = new StringBuilder();
@@ -26,6 +27,7 @@ public class FileManager {
         return readString.toString();
     }
 
+    @Deprecated
     public static int[][][] parseIntegerPartitionTextOutput(final String filename) throws IOException {
 
         final BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -65,6 +67,7 @@ public class FileManager {
         return partitionArrayRGB;
     }
 
+    @Deprecated
     public static float[][][] parseFloatPartitionTextOutput(final String filename) throws IOException {
 
         final BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -104,6 +107,7 @@ public class FileManager {
         return partitionArrayRGB;
     }
 
+    @Deprecated
     public static void log(final String text, final String pathFile) {
         logger.info("\nFROM:WriteFile:START:writeStringToFile");
         logger.info("writing to:" + pathFile);
@@ -120,7 +124,7 @@ public class FileManager {
         logger.info("END:writeStringToFile\n");
     }
 
-
+    @Deprecated
     public static void writeTripleArrayToString(final int[][][] tripleArray, final String pathFile) {
         logger.info("writing to:" + pathFile);
         try {
@@ -143,6 +147,7 @@ public class FileManager {
         }
     }
 
+    @Deprecated
     public static void writeTripleArrayToString(final float[][][] partitionArrayRGB, final String pathFile) {
         logger.info("writing to:" + pathFile);
         BufferedWriter writer;
@@ -162,5 +167,6 @@ public class FileManager {
             writer.close();
         } catch (final Exception e) {
             logger.warn(e.getMessage());
-        }}
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.akarin.webapp;
 
 import com.akarin.webapp.managers.DatabaseManager;
+import com.akarin.webapp.storage.FileManager;
 import com.akarin.webapp.storage.StorageProperties;
 import com.akarin.webapp.storage.StorageService;
 import com.akarin.webapp.util.SettingUp;
@@ -23,9 +24,10 @@ public class Main {
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-        Tools.createFolders();
+        FileManager.createFolders();
         DatabaseManager.setDbLogin();
         SettingUp.prepareDatabase();
+        
     }
 
     @Deprecated
@@ -41,7 +43,7 @@ public class Main {
             //port(Integer.valueOf(System.getenv("PORT")));
         }
 
-        Tools.createFolders();
+        FileManager.createFolders();
         //staticFiles.externalLocation("public");
         //staticFiles.expireTime(600L);
 
