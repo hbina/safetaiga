@@ -27,7 +27,7 @@ public class Main {
         FileManager.createFolders();
         DatabaseManager.setDbLogin();
         SettingUp.prepareDatabase();
-        
+
     }
 
     @Deprecated

@@ -11,7 +11,7 @@ class FavIconController {
 
     private final Logger logger = LoggerFactory.getLogger(FavIconController.class);
 
-    @GetMapping("favicon.ico")
+    @GetMapping("/favicon.ico")
     @ResponseBody
     void returnNoFavicon() {
         logger.info("What are you doing here?");

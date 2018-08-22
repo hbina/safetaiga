@@ -1,5 +1,6 @@
 package com.akarin.webapp.controllers;
 
+import com.akarin.webapp.storage.FileManager;
 import com.akarin.webapp.util.Reference;
 import com.akarin.webapp.util.Tools;
 import com.akarin.webapp.util.ViewUtil;
@@ -36,7 +37,7 @@ class ImageProcessingController {
         // Begin to evaluate time taken to process the image
         final long tStart = System.currentTimeMillis();
 
-        final Path tempFile = Files.createTempFile(Tools.IMAGES_INPUT_DIR.toPath(), "", ".png");
+        final Path tempFile = Files.createTempFile(FileManager.IMAGES_INPUT_DIR.toPath(), "", ".png");
         logger.info("tempFile created at " + tempFile.toString());
         request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
 
@@ -57,11 +58,11 @@ class ImageProcessingController {
                 tempFile.getFileName().toString().length() - 4);
 
         // Files directory
-        final String outputOriginalImage = Tools.IMAGES_INPUT_DIR.toPath() + System.getProperty("file.separator")
+        final String outputOriginalImage = FileManager.IMAGES_INPUT_DIR.toPath() + System.getProperty("file.separator")
                 + filename + ".png";
-        final String outputResizedImage = Tools.IMAGES_OUTPUT_RESIZED_DIR.toPath() + System.getProperty("file.separator")
+        final String outputResizedImage = FileManager.IMAGES_OUTPUT_RESIZED_DIR.toPath() + System.getProperty("file.separator")
                 + filename + ".png";
-        final String outputConvolutionImage = Tools.IMAGES_OUTPUT_CONVOLUTION_DIR.toPath()
+        final String outputConvolutionImage = FileManager.IMAGES_OUTPUT_CONVOLUTION_DIR.toPath()
                 + System.getProperty("file.separator") + filename + ".png";
 
         originalImage = ImageIO.read(new File(outputOriginalImage));

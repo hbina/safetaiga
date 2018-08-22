@@ -26,7 +26,6 @@ class FileUploadController {
         this.storageService = storageService;
     }
 
-    @SuppressWarnings("SameReturnValue")
     @GetMapping("/fileupload")
     public String listUploadedFiles(Model model) {
 
@@ -47,8 +46,7 @@ class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @SuppressWarnings("SameReturnValue")
-    @PostMapping("/")
+    @PostMapping("/fileupload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
@@ -56,7 +54,7 @@ class FileUploadController {
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return "redirect:/fileupload";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

@@ -9,6 +9,7 @@ import java.util.Map;
 
 class ManifestoController {
 
+    @Deprecated
     public static Route serveManifestoPage = (request, response) -> {
         final Map<String, Object> model = new HashMap<>();
 
