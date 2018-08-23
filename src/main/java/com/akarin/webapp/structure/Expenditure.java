@@ -12,6 +12,11 @@ public class Expenditure {
     private final String name;
     private final double price;
 
+    /**
+     *
+     * @param name
+     * @param price
+     */
     public Expenditure(String name, double price) {
         this.name = name;
         this.price = price;

@@ -1,5 +1,6 @@
 package com.akarin.webapp.databases;
 
+import com.akarin.webapp.structure.Expenditure;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,23 +8,29 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.ArrayList;
 
 import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 
 public class YaaposDb {
 
-    public static String getExpendituresGivenUserId(final String userId, final String weekId) throws SQLException, URISyntaxException, IOException {
+    public static ArrayList<Expenditure> getExpendituresGivenUserId(final int userId, final int weekId) throws SQLException, URISyntaxException, IOException {
         final Connection connection = getConnection();
 
-        final String script = "SELECT * FROM spending WHERE spending.userId = ? AND spending.weekId = ?;";
+        final String script = "SELECT * FROM yaapos_spending WHERE yaapos_spending.userId = ? AND yaapos_spending.weekId = ?;";
         final PreparedStatement pstmt = connection.prepareStatement(script);
 
-        pstmt.setString(1, userId);
-        pstmt.setString(2, weekId);
+        pstmt.setInt(1, userId);
+        pstmt.setInt(2, weekId);
         final ResultSet rs = pstmt.executeQuery();
+
+        ArrayList<Expenditure> als = new ArrayList<>();
+        while (rs.next()) {
+            als.add(new Expenditure(rs.getString("yaaposName"), rs.getDouble("price")));
+        }
         pstmt.close();
 
-        return getJsonArrayFromResultSet(rs).toString();
+        return als;
     }
 
     public static JSONArray getJsonArrayFromResultSet(ResultSet rs)
