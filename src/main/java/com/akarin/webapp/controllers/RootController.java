@@ -1,7 +1,7 @@
 package com.akarin.webapp.controllers;
 
-import com.akarin.webapp.util.Reference;
 import com.akarin.webapp.storage.StorageService;
+import com.akarin.webapp.util.Reference;
 import com.akarin.webapp.util.ViewUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,6 @@ class RootController {
     private final AtomicLong counter = new AtomicLong();
     private StorageService storageService;
 
-    @SuppressWarnings("SameReturnValue")
     @RequestMapping("/")
     public String getIndex(Map<String, Object> model) {
         model.put("visitor_counter", String.valueOf(counter.incrementAndGet()));

@@ -1,11 +1,10 @@
 package com.akarin.webapp.controllers;
 
-import com.akarin.webapp.storage.FileManager;
-import com.akarin.webapp.util.Reference;
-import com.akarin.webapp.util.Tools;
-import com.akarin.webapp.util.ViewUtil;
 import com.akarin.webapp.imageprocessing.DifferenceVector;
 import com.akarin.webapp.imageprocessing.ImageProcessingTools;
+import com.akarin.webapp.storage.FileManager;
+import com.akarin.webapp.util.Reference;
+import com.akarin.webapp.util.ViewUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Route;
@@ -44,7 +43,7 @@ class ImageProcessingController {
         try (InputStream input = request.raw().getPart("uploaded_file").getInputStream()) {
             Files.copy(input, tempFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (final Exception e) {
-            logger.warn(e.getMessage());
+            logger.error(e.getMessage());
             return ViewUtil.renderErrorMessage(request, e.getMessage(),
                     Reference.CommonStrings.LINK_IMAGEPROCESSING, Reference.Names.IMAGEPROCESSING);
         }

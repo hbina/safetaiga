@@ -20,14 +20,13 @@ import java.util.Arrays;
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
 public class Main {
-    private final Logger logger = LoggerFactory.getLogger(Main.class);
+    private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
         FileManager.createFolders();
         DatabaseManager.setDbLogin();
         SettingUp.prepareDatabase();
-
     }
 
     @Deprecated

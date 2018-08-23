@@ -14,7 +14,6 @@ import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 
 public class TextboardDb {
 
-
     public static Map<String, Object> getAllBoards(final Map<String, Object> model) throws SQLException, URISyntaxException {
         final Connection connection = getConnection();
 

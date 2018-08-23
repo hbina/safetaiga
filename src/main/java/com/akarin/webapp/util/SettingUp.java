@@ -1,12 +1,14 @@
 package com.akarin.webapp.util;
 
-import com.akarin.webapp.managers.DatabaseManager;
-import com.akarin.webapp.managers.AkarinLogging;
-import com.akarin.webapp.structure.AnimeObject;
+import com.akarin.webapp.databases.ImageProcessingDb;
+import com.akarin.webapp.databases.TextboardDb;
 import com.akarin.webapp.imageprocessing.ImageGlobalDifference;
 import com.akarin.webapp.imageprocessing.ImageHashing;
 import com.akarin.webapp.imageprocessing.ImagePartition;
 import com.akarin.webapp.imageprocessing.ImageProcessingTools;
+import com.akarin.webapp.managers.AkarinLogging;
+import com.akarin.webapp.managers.DatabaseManager;
+import com.akarin.webapp.structure.AnimeObject;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
@@ -113,7 +115,7 @@ public class SettingUp {
 
                                 if (Partition.writeToDatabase) {
                                     logger.info(animeName + " " + episode + " " + frameIterator);
-                                    DatabaseManager.insertPartitionHash(animeName, episode, frameIterator,
+                                    ImageProcessingDb.insertPartitionHash(animeName, episode, frameIterator,
                                             ImageHashing.partitionHash(Partition.tripleArray));
                                 }
 
@@ -186,9 +188,9 @@ public class SettingUp {
 
     public static void prepareDatabase() {
         try {
-            DatabaseManager.createTableBoards();
-            DatabaseManager.createTableThreads();
-            DatabaseManager.createTablePosts();
+            TextboardDb.createTableBoards();
+            TextboardDb.createTableThreads();
+            TextboardDb.createTablePosts();
         } catch (SQLException | URISyntaxException e) {
             logger.warn(e.getMessage());
         }
