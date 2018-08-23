@@ -30,13 +30,11 @@ public class DatabaseManager {
             logger.info("Using db with username:" + DATABASE_USERNAME + " password:" + DATABASE_PASSWORD);
             br.close();
         } catch (FileNotFoundException e) {
-            logger.info("Please provide the necessary files for database setup");
-            e.printStackTrace();
+            //logger.error(e.getMessage());
+            logger.error("Please provide the necessary files for database setup");
         } catch (IOException e) {
-            logger.info("An IO exception error have occurred");
-            e.printStackTrace();
-        } finally {
-            logger.info("Database setup successful");
+            //logger.error(e.getMessage());
+            logger.error("An IO exception error have occurred");
         }
     }
 
