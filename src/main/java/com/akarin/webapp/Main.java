@@ -22,7 +22,7 @@ import java.util.Arrays;
 public class Main {
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         SpringApplication.run(Main.class, args);
         FileManager.createFolders();
         DatabaseManager.setDbLogin();
