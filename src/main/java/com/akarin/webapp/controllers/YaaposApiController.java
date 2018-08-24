@@ -28,10 +28,10 @@ public class YaaposApiController {
     }
 
     @RequestMapping("yaapos/spending")
-    public ArrayList<Expenditure> spending(@RequestParam(value = "userId", defaultValue = "userId") int userId, @RequestParam(value = "weekId", defaultValue = "weekId") int weekId) {
+    public ArrayList<Expenditure> spending(@RequestParam(value = "userId") int userId, @RequestParam(value = "week") int week) {
         ArrayList<Expenditure> expenditures = new ArrayList<>();
         try {
-            expenditures = YaaposDb.getExpendituresGivenUserId(userId, weekId);
+            expenditures = YaaposDb.getExpendituresGivenUserId(userId, week);
         } catch (SQLException e) {
             logger.error(e.getMessage());
         } catch (URISyntaxException e) {

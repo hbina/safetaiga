@@ -14,19 +14,19 @@ import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 
 public class YaaposDb {
 
-    public static ArrayList<Expenditure> getExpendituresGivenUserId(final int userId, final int weekId) throws SQLException, URISyntaxException, IOException {
+    public static ArrayList<Expenditure> getExpendituresGivenUserId(final int userId, final int week) throws SQLException, URISyntaxException, IOException {
         final Connection connection = getConnection();
 
-        final String script = "SELECT * FROM yaapos_spending WHERE yaapos_spending.userId = ? AND yaapos_spending.weekId = ?;";
+        final String script = "SELECT * FROM yaapos_spending WHERE yaapos_spending.userId = ? AND yaapos_spending.week = ?;";
         final PreparedStatement pstmt = connection.prepareStatement(script);
 
         pstmt.setInt(1, userId);
-        pstmt.setInt(2, weekId);
+        pstmt.setInt(2, week);
         final ResultSet rs = pstmt.executeQuery();
 
         ArrayList<Expenditure> als = new ArrayList<>();
         while (rs.next()) {
-            als.add(new Expenditure(rs.getString("yaaposName"), rs.getDouble("price")));
+            als.add(new Expenditure(rs.getString("name"), rs.getDouble("price")));
         }
         pstmt.close();
 

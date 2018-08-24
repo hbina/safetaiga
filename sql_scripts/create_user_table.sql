@@ -1,3 +1,1 @@
-CREATE TABLE user(
- user_id serial PRIMARY KEY
-)
+CREATE TABLE yaapos_user(userId SERIAL, name TEXT NOT NULL, PRIMARY KEY(userId));
