@@ -2,16 +2,19 @@ package com.akarin.webapp.controllers;
 
 import com.akarin.webapp.databases.YaaposDb;
 import com.akarin.webapp.structure.Expenditure;
+import com.akarin.webapp.structure.PostMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 
 @RestController
 public class YaaposApiController {
@@ -27,11 +30,11 @@ public class YaaposApiController {
         return als;
     }
 
-    @RequestMapping("yaapos/spending")
-    public ArrayList<Expenditure> spending(@RequestParam(value = "userId") int userId, @RequestParam(value = "week") int week) {
+    @GetMapping("yaapos/spending")
+    public ArrayList<Expenditure> getYaaposSpending(@RequestParam(value = "userId") int userId, @RequestParam(value = "spendingWeekId") int spendingWeekId) {
         ArrayList<Expenditure> expenditures = new ArrayList<>();
         try {
-            expenditures = YaaposDb.getExpendituresGivenUserId(userId, week);
+            expenditures = YaaposDb.getExpendituresGivenUserId(userId, spendingWeekId);
         } catch (SQLException e) {
             logger.error(e.getMessage());
         } catch (URISyntaxException e) {
@@ -40,5 +43,32 @@ public class YaaposApiController {
             logger.error(e.getMessage());
         }
         return expenditures;
+    }
+
+    @PostMapping("yaapos/spending")
+    public PostMessage postYaaposSpending(@RequestParam(value = "userId") int userId,
+                                          @RequestParam(value = "spendingName") String spendingName,
+                                          @RequestParam(value = "spendingPrice") double spendingPrice,
+                                          @RequestParam(value = "spendingDescription") String spendingDescription,
+                                          @RequestParam(value = "spendingWeekId") int spendingWeekId) {
+
+        try {
+            final Connection connection = getConnection();
+            final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
+            final PreparedStatement pitt = connection.prepareStatement(script);
+
+            pitt.setInt(1, userId);
+            pitt.setString(2, spendingName);
+            pitt.setDouble(3, spendingPrice);
+            pitt.setString(4, spendingDescription);
+            pitt.setInt(5, spendingWeekId);
+            pitt.executeUpdate();
+            pitt.close();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new PostMessage("ok");
     }
 }

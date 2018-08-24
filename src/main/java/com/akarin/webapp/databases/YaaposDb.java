@@ -17,7 +17,7 @@ public class YaaposDb {
     public static ArrayList<Expenditure> getExpendituresGivenUserId(final int userId, final int week) throws SQLException, URISyntaxException, IOException {
         final Connection connection = getConnection();
 
-        final String script = "SELECT * FROM yaapos_spending WHERE yaapos_spending.userId = ? AND yaapos_spending.week = ?;";
+        final String script = "SELECT * FROM yaapos_spending WHERE yaapos_spending.userId = ? AND yaapos_spending.spendingWeekId = ?;";
         final PreparedStatement pstmt = connection.prepareStatement(script);
 
         pstmt.setInt(1, userId);
@@ -26,7 +26,7 @@ public class YaaposDb {
 
         ArrayList<Expenditure> als = new ArrayList<>();
         while (rs.next()) {
-            als.add(new Expenditure(rs.getString("name"), rs.getDouble("price")));
+            als.add(new Expenditure(rs.getString("spendingName"), rs.getDouble("spendingPrice")));
         }
         pstmt.close();
 

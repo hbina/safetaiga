@@ -28,8 +28,8 @@ public class SettingUp {
     private static final AnimeObject[] animeArray = new AnimeObject[]{new AnimeObject("eureka", 50)};
     private static final Logger logger = LoggerFactory.getLogger(SettingUp.class);
 
+    @Deprecated
     public static void insertPartitionDumpToDatabase() {
-
         String insertScript = "";
         int[][][] tripleArray;
 
@@ -79,7 +79,7 @@ public class SettingUp {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @Deprecated
     public static void createImageInfo() {
         try {
             final File DEV_OUTPUT_IMAGES_OUTPUT_PARTITION = new File("dev_output/images/output/partition");
