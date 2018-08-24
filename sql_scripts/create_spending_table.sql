@@ -1,1 +1,0 @@
-CREATE TABLE IF NOT EXISTS yaapos_spending(itemId SERIAL, userId INT, name TEXT NOT NULL, price DECIMAL, description TEXT, week INT, PRIMARY KEY (itemId), FOREIGN KEY (userId) REFERENCES yaapos_user(userId));

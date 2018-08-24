@@ -1,1 +1,0 @@
-CREATE TABLE yaapos_user(userId SERIAL, name TEXT NOT NULL, PRIMARY KEY(userId));
