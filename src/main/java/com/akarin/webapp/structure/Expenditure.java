@@ -9,17 +9,16 @@ import java.util.ArrayList;
 
 public class Expenditure {
 
-    private final String name;
-    private final double price;
+    private final String spendingName;
+    private final double spendingPrice;
 
     /**
-     *
-     * @param name
-     * @param price
+     * @param spendingName
+     * @param spendingPrice
      */
-    public Expenditure(String name, double price) {
-        this.name = name;
-        this.price = price;
+    public Expenditure(String spendingName, double spendingPrice) {
+        this.spendingName = spendingName;
+        this.spendingPrice = spendingPrice;
     }
 
     public static ArrayList<Expenditure> getArrayListFromJsonString(String jsonString) throws JsonParseException, JsonMappingException,
@@ -35,11 +34,11 @@ public class Expenditure {
         return navigation;
     }
 
-    public String getName() {
-        return name;
+    public String getSpendingName() {
+        return spendingName;
     }
 
-    public double getPrice() {
-        return price;
+    public double getSpendingPrice() {
+        return spendingPrice;
     }
 }
