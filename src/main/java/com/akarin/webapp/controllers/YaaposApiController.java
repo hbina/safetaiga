@@ -3,7 +3,6 @@ package com.akarin.webapp.controllers;
 import com.akarin.webapp.databases.YaaposDb;
 import com.akarin.webapp.structure.ExpenditureLog;
 import com.akarin.webapp.structure.PostMessage;
-import jdk.internal.jline.internal.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +44,7 @@ public class YaaposApiController {
         }
 
         if (!expenditureLogs.isPropertyGood()) {
-            Log.debug(this.getClass().toString(), "Yaapos JSON API class was not successfully populated");
+            logger.debug(this.getClass().toString(), "Yaapos JSON API class was not successfully populated");
         }
         return expenditureLogs;
     }
