@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS yaapos_spending;
-CREATE TABLE IF NOT EXISTS yaapos_spending(spendingId SERIAL, userId INT, spendingName TEXT NOT NULL, spendingPrice DECIMAL, spendingDescription TEXT, spendingWeekId INT, PRIMARY KEY (spendingId), FOREIGN KEY (userId) REFERENCES yaapos_user(userId));
-
 DROP TABLE IF EXISTS yaapos_user;
+
 CREATE TABLE IF NOT EXISTS yaapos_user(userId SERIAL, userName TEXT NOT NULL, PRIMARY KEY(userId));
+CREATE TABLE IF NOT EXISTS yaapos_spending(spendingId SERIAL, userId INT, spendingName TEXT NOT NULL, spendingPrice DECIMAL, spendingDescription TEXT, spendingWeekId INT, PRIMARY KEY (spendingId), FOREIGN KEY (userId) REFERENCES yaapos_user(userId));
 
 INSERT INTO yaapos_user (userName) VALUES ('name1');
 INSERT INTO yaapos_user (userName) VALUES ('name2');
@@ -12,16 +12,16 @@ INSERT INTO yaapos_user (userName) VALUES ('name5');
 
 SELECT * FROM yaapos_user;
 
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (1, 'spending-name-1', 123.45, 'spending-description-1', 1);
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (2, 'spending-name-2', 123.45, 'spending-description-1', 2);
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (3, 'spending-name-3', 123.45, 'spending-description-1', 3);
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (4, 'spending-name-4', 123.45, 'spending-description-1', 4);
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (5, 'spending-name-5', 123.45, 'spending-description-1', 5);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (1, 'spending-spendingName-1', 123.45, 'spending-description-1', 1);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (2, 'spending-spendingName-2', 123.45, 'spending-description-1', 2);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (3, 'spending-spendingName-3', 123.45, 'spending-description-1', 3);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (4, 'spending-spendingName-4', 123.45, 'spending-description-1', 4);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (5, 'spending-spendingName-5', 123.45, 'spending-description-1', 5);
 
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (1, 'spending-name-1', 123.45, 'spending-description-1', 1);
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (2, 'spending-name-2', 123.45, 'spending-description-2', 2);
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (3, 'spending-name-3', 123.45, 'spending-description-3', 3);
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (4, 'spending-name-4', 123.45, 'spending-description-4', 4);
-INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (5, 'spending-name-5', 123.45, 'spending-description-5', 5);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (1, 'spending-spendingName-1', 123.45, 'spending-description-1', 1);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (2, 'spending-spendingName-2', 123.45, 'spending-description-2', 2);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (3, 'spending-spendingName-3', 123.45, 'spending-description-3', 3);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (4, 'spending-spendingName-4', 123.45, 'spending-description-4', 4);
+INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (5, 'spending-spendingName-5', 123.45, 'spending-description-5', 5);
 
 SELECT * FROM yaapos_spending ORDER BY yaapos_spending.spendingId ASC;
