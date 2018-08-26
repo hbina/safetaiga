@@ -1,8 +1,9 @@
 package com.akarin.webapp.controllers;
 
 import com.akarin.webapp.databases.YaaposDb;
-import com.akarin.webapp.structure.Expenditure;
+import com.akarin.webapp.structure.ExpenditureLog;
 import com.akarin.webapp.structure.PostMessage;
+import jdk.internal.jline.internal.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +32,10 @@ public class YaaposApiController {
     }
 
     @GetMapping("yaapos/spending")
-    public ArrayList<Expenditure> getYaaposSpending(@RequestParam(value = "userId") int userId, @RequestParam(value = "spendingWeekId") int spendingWeekId) {
-        ArrayList<Expenditure> expenditures = new ArrayList<>();
+    public ExpenditureLog getYaaposSpending(@RequestParam(value = "userId") int userId, @RequestParam(value = "spendingWeekId") int spendingWeekId) {
+        ExpenditureLog expenditureLogs = new ExpenditureLog();
         try {
-            expenditures = YaaposDb.getExpendituresGivenUserId(userId, spendingWeekId);
+            expenditureLogs = YaaposDb.getExpendituresGivenUserId(userId, spendingWeekId);
         } catch (SQLException e) {
             logger.error(e.getMessage());
         } catch (URISyntaxException e) {
@@ -42,7 +43,11 @@ public class YaaposApiController {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-        return expenditures;
+
+        if (!expenditureLogs.isPropertyGood()) {
+            Log.debug(this.getClass().toString(), "Yaapos JSON API class was not successfully populated");
+        }
+        return expenditureLogs;
     }
 
     @PostMapping("yaapos/spending")

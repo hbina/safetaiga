@@ -1,6 +1,7 @@
 package com.akarin.webapp.databases;
 
-import com.akarin.webapp.structure.Expenditure;
+import com.akarin.webapp.structure.ExpenditureItem;
+import com.akarin.webapp.structure.ExpenditureLog;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,13 +9,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.*;
-import java.util.ArrayList;
 
 import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 
 public class YaaposDb {
 
-    public static ArrayList<Expenditure> getExpendituresGivenUserId(final int userId, final int week) throws SQLException, URISyntaxException, IOException {
+    public static ExpenditureLog getExpendituresGivenUserId(final int userId, final int week) throws SQLException, URISyntaxException, IOException {
         final Connection connection = getConnection();
 
         final String script = "SELECT * FROM yaapos_spending WHERE yaapos_spending.userId = ? AND yaapos_spending.spendingWeekId = ?;";
@@ -24,12 +24,12 @@ public class YaaposDb {
         pstmt.setInt(2, week);
         final ResultSet rs = pstmt.executeQuery();
 
-        ArrayList<Expenditure> als = new ArrayList<>();
+        ExpenditureLog als = new ExpenditureLog();
         while (rs.next()) {
-            als.add(new Expenditure(rs.getString("spendingName"), rs.getDouble("spendingPrice")));
+            als.addItem(new ExpenditureItem(rs.getString("spendingName"), rs.getDouble("spendingPrice")));
         }
         pstmt.close();
-
+        als.setPropertyAsGood();
         return als;
     }
 
