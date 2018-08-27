@@ -5,42 +5,17 @@ package com.akarin.webapp.structure;
  */
 public class YaaposJsonApiClass {
 
-    public static final int YAAPOS_API_CALL_ERROR_CODE = -1;
-    public static final String YAAPOS_API_CALL_DEFAULT_MESSAGE = "This is the default message returned by Yaapos API call";
-    public static final String YAAPOS_API_CALL_IS_GOOD = "The JSON API class was successfully populated";
-    public static final int YAAPOS_API_CALL_CODE_GOOD = 0;
+    public String returnMessage = "DEFAULT_STRING";
 
-    private String returnMessage;
-    private int returnStatus;
-
-    public YaaposJsonApiClass() {
-        returnMessage = YAAPOS_API_CALL_DEFAULT_MESSAGE;
-        returnStatus = YAAPOS_API_CALL_ERROR_CODE;
+    public YaaposJsonApiClass(String returnMessage) {
+        this.returnMessage = returnMessage;
     }
 
     public String getReturnMessage() {
         return returnMessage;
     }
 
-    public void setReturnMessage(String message) {
-        this.returnMessage = message;
-    }
-
-    public int getReturnStatus() {
-        return returnStatus;
-    }
-
-    public void setReturnStatus(int returnStatus) {
-        this.returnStatus = returnStatus;
-    }
-
-    public YaaposJsonApiClass setPropertyAsGood() {
-        returnMessage = YAAPOS_API_CALL_IS_GOOD;
-        returnStatus = YAAPOS_API_CALL_CODE_GOOD;
-        return this;
-    }
-
-    public boolean isPropertyGood() {
-        return (returnMessage.equals(YAAPOS_API_CALL_IS_GOOD) && returnStatus == YAAPOS_API_CALL_CODE_GOOD);
+    public void setReturnMessage(String returnMessage) {
+        this.returnMessage = returnMessage;
     }
 }

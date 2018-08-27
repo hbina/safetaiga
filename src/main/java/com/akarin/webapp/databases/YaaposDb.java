@@ -24,12 +24,11 @@ public class YaaposDb {
         pstmt.setInt(2, week);
         final ResultSet rs = pstmt.executeQuery();
 
-        ExpenditureLog als = new ExpenditureLog();
+        ExpenditureLog als = new ExpenditureLog("Created from getExpenditureGivenUserId");
         while (rs.next()) {
-            als.addItem(new ExpenditureItem(rs.getString("spendingName"), rs.getDouble("spendingPrice")));
+            als.addItem(new ExpenditureItem(rs.getInt("userId"), rs.getString("spendingName"), rs.getDouble("spendingPrice"), rs.getString("spendingDescription"), rs.getInt("spendingWeekId")));
         }
         pstmt.close();
-        als.setPropertyAsGood();
         return als;
     }
 

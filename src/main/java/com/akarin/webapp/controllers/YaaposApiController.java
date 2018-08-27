@@ -3,10 +3,8 @@ package com.akarin.webapp.controllers;
 import com.akarin.webapp.databases.YaaposDb;
 import com.akarin.webapp.structure.ExpenditureItem;
 import com.akarin.webapp.structure.ExpenditureLog;
-import com.akarin.webapp.structure.YaaposJsonApiClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +34,7 @@ public class YaaposApiController {
 
     @RequestMapping("yaapos/get")
     public ExpenditureLog getYaaposSpending(@RequestParam(value = "userId") int userId, @RequestParam(value = "spendingWeekId") int spendingWeekId) {
-        ExpenditureLog expenditureLogs = new ExpenditureLog();
+        ExpenditureLog expenditureLogs = new ExpenditureLog("Created from function getYaaposSpending");
         try {
             expenditureLogs = YaaposDb.getExpendituresGivenUserId(userId, spendingWeekId);
         } catch (SQLException e) {
@@ -46,19 +44,15 @@ public class YaaposApiController {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-
-        if (!expenditureLogs.isPropertyGood()) {
-            logger.debug(this.getClass().toString(), "Yaapos JSON API class was not successfully populated");
-        }
         return expenditureLogs;
     }
 
     @RequestMapping("yaapos/post")
-    public YaaposJsonApiClass postYaaposSpending(@RequestParam(value = "userId") int userId,
-                                                 @RequestParam(value = "spendingName") String spendingName,
-                                                 @RequestParam(value = "spendingPrice") double spendingPrice,
-                                                 @RequestParam(value = "spendingDescription") String spendingDescription,
-                                                 @RequestParam(value = "spendingWeekId") int spendingWeekId) {
+    public ExpenditureItem postYaaposSpending(@RequestParam(value = "userId") int userId,
+                                              @RequestParam(value = "spendingName") String spendingName,
+                                              @RequestParam(value = "spendingPrice") double spendingPrice,
+                                              @RequestParam(value = "spendingDescription") String spendingDescription,
+                                              @RequestParam(value = "spendingWeekId") int spendingWeekId) {
         try {
             final Connection connection = getConnection();
             final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
@@ -72,11 +66,11 @@ public class YaaposApiController {
             pitt.executeUpdate();
             pitt.close();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
-        YaaposJsonApiClass yacc = new YaaposJsonApiClass();
-        return yacc.setPropertyAsGood();
+
+        return new ExpenditureItem(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId);
     }
 }

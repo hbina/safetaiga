@@ -6,7 +6,8 @@ public class ExpenditureLog extends YaaposJsonApiClass {
 
     private ArrayList<ExpenditureItem> expenditureItemsList;
 
-    public ExpenditureLog() {
+    public ExpenditureLog(String message) {
+        super(message);
         expenditureItemsList = new ArrayList<>();
     }
 

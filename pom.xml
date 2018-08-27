@@ -26,7 +26,7 @@
 
 
     <dependencies>
-        <!-- old dependencies -->
+        <!-- DEPENDENCIES USED BY DEPRECATED METHODS-->
         <!-- https://mvnrepository.com/artifact/com.sparkjava/spark-template-velocity -->
         <dependency>
             <groupId>com.sparkjava</groupId>
@@ -65,6 +65,12 @@
 
         <!-- NEWER -->
         <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.2</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
