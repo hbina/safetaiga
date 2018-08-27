@@ -34,9 +34,10 @@ public class YaaposJsonApiClass {
         this.returnStatus = returnStatus;
     }
 
-    public void setPropertyAsGood() {
+    public YaaposJsonApiClass setPropertyAsGood() {
         returnMessage = YAAPOS_API_CALL_IS_GOOD;
         returnStatus = YAAPOS_API_CALL_CODE_GOOD;
+        return this;
     }
 
     public boolean isPropertyGood() {

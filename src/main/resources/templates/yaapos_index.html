@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>SafeTaiga YAAPOS API</title>
+</head>
+<body>
+<h1>YAAPOS Form</h1>
+<form action="#" th:action="@{/yaapos/post}" th:object="${ExpenditureItem}" method="post">
+    <p>Name: <input type="text" th:field="*{spendingName}"/></p>
+    <p>Price: <input type="number" step="0.01" th:field="*{spendingPrice}"/></p>
+    <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+</form>
+</body>
+</html>

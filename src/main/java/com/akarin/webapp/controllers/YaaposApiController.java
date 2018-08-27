@@ -1,11 +1,15 @@
 package com.akarin.webapp.controllers;
 
 import com.akarin.webapp.databases.YaaposDb;
+import com.akarin.webapp.structure.ExpenditureItem;
 import com.akarin.webapp.structure.ExpenditureLog;
-import com.akarin.webapp.structure.PostMessage;
+import com.akarin.webapp.structure.YaaposJsonApiClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -21,8 +25,8 @@ public class YaaposApiController {
 
     private static final Logger logger = LoggerFactory.getLogger(YaaposApiController.class);
 
-    @RequestMapping("yaapos/json")
-    public ArrayList<String> greeting(@RequestParam(value = "firstName", defaultValue = "first") String firstName, @RequestParam(value = "lastName", defaultValue = "last") String lastName) {
+    @RequestMapping("yaapos/test")
+    public ArrayList<String> yaaposTest(@RequestParam(value = "firstName", defaultValue = "first") String firstName, @RequestParam(value = "lastName", defaultValue = "last") String lastName) {
         ArrayList<String> als = new ArrayList<>();
         als.add(firstName);
         als.add(lastName);
@@ -30,7 +34,7 @@ public class YaaposApiController {
         return als;
     }
 
-    @GetMapping("yaapos/spending")
+    @RequestMapping("yaapos/get")
     public ExpenditureLog getYaaposSpending(@RequestParam(value = "userId") int userId, @RequestParam(value = "spendingWeekId") int spendingWeekId) {
         ExpenditureLog expenditureLogs = new ExpenditureLog();
         try {
@@ -49,13 +53,12 @@ public class YaaposApiController {
         return expenditureLogs;
     }
 
-    @PostMapping("yaapos/spending")
-    public PostMessage postYaaposSpending(@RequestParam(value = "userId") int userId,
-                                          @RequestParam(value = "spendingName") String spendingName,
-                                          @RequestParam(value = "spendingPrice") double spendingPrice,
-                                          @RequestParam(value = "spendingDescription") String spendingDescription,
-                                          @RequestParam(value = "spendingWeekId") int spendingWeekId) {
-
+    @RequestMapping("yaapos/post")
+    public YaaposJsonApiClass postYaaposSpending(@RequestParam(value = "userId") int userId,
+                                                 @RequestParam(value = "spendingName") String spendingName,
+                                                 @RequestParam(value = "spendingPrice") double spendingPrice,
+                                                 @RequestParam(value = "spendingDescription") String spendingDescription,
+                                                 @RequestParam(value = "spendingWeekId") int spendingWeekId) {
         try {
             final Connection connection = getConnection();
             final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
@@ -73,6 +76,7 @@ public class YaaposApiController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new PostMessage("ok");
+        YaaposJsonApiClass yacc = new YaaposJsonApiClass();
+        return yacc.setPropertyAsGood();
     }
 }
