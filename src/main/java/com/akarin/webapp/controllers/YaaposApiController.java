@@ -3,7 +3,7 @@ package com.akarin.webapp.controllers;
 import com.akarin.webapp.databases.YaaposDb;
 import com.akarin.webapp.structure.ExpenditureItem;
 import com.akarin.webapp.structure.ExpenditureLog;
-import org.graalvm.compiler.api.replacements.Snippet;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -47,11 +47,11 @@ public class YaaposApiController {
     }
 
     @PostMapping("/yaapos/user/{userId}/spendingWeekId/{spendingWeekId}")
-    public ExpenditureItem postYaaposSpending(@Snippet.NonNullParameter @PathVariable(value = "userId") int userId,
-                                              @Snippet.NonNullParameter @RequestParam(value = "spendingName") String spendingName,
-                                              @Snippet.NonNullParameter @RequestParam(value = "spendingPrice") double spendingPrice,
+    public ExpenditureItem postYaaposSpending(@NonNull @PathVariable(value = "userId") int userId,
+                                              @NonNull @RequestParam(value = "spendingName") String spendingName,
+                                              @NonNull @RequestParam(value = "spendingPrice") double spendingPrice,
                                               @RequestParam(value = "spendingDescription") String spendingDescription,
-                                              @Snippet.NonNullParameter @PathVariable(value = "spendingWeekId") int spendingWeekId) {
+                                              @NonNull @PathVariable(value = "spendingWeekId") int spendingWeekId) {
         try (Connection connection = getConnection()) {
             logger.info(String.format("Insert into the database a new expenditure item with the following properties(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (%s,%s,%s,%s,%s)", userId, spendingName, spendingPrice, spendingDescription, spendingWeekId));
             final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
