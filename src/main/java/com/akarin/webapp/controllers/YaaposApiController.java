@@ -46,12 +46,12 @@ public class YaaposApiController {
         return expenditureLogs;
     }
 
-    @PostMapping("/yaapos/post")
-    public ExpenditureItem postYaaposSpending(@Snippet.NonNullParameter @RequestParam(value = "userId") int userId,
+    @PostMapping("/yaapos/user/{userId}/spendingWeekId/{spendingWeekId}")
+    public ExpenditureItem postYaaposSpending(@Snippet.NonNullParameter @PathVariable(value = "userId") int userId,
                                               @Snippet.NonNullParameter @RequestParam(value = "spendingName") String spendingName,
                                               @Snippet.NonNullParameter @RequestParam(value = "spendingPrice") double spendingPrice,
                                               @RequestParam(value = "spendingDescription") String spendingDescription,
-                                              @Snippet.NonNullParameter @RequestParam(value = "spendingWeekId") int spendingWeekId) {
+                                              @Snippet.NonNullParameter @PathVariable(value = "spendingWeekId") int spendingWeekId) {
         try (Connection connection = getConnection()) {
             logger.info(String.format("Insert into the database a new expenditure item with the following properties(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (%s,%s,%s,%s,%s)", userId, spendingName, spendingPrice, spendingDescription, spendingWeekId));
             final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
