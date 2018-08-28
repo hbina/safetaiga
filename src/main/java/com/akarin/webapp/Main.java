@@ -30,7 +30,7 @@ public class Main {
     }
 
     @Deprecated
-    public static void oldMain(final String[] args) {
+    public static void oldMain() {
         final long tStart = System.currentTimeMillis();
 
         if (System.getenv("IS_HEROKU") == null) {

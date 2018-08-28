@@ -40,11 +40,11 @@ public class DatabaseManager {
             logger.info("Using db with username:" + DATABASE_USERNAME + " password:" + DATABASE_PASSWORD);
             br.close();
         } catch (FileNotFoundException e) {
-            //logger.error(e.getMessage());
-            logger.error("Please provide the necessary files for database setup");
+            //logger.info(e.getMessage());
+            logger.info("Please provide the necessary files for database setup");
         } catch (IOException e) {
-            //logger.error(e.getMessage());
-            logger.error("An IO exception error have occurred");
+            //logger.info(e.getMessage());
+            logger.info("An IO exception error have occurred");
         }
     }
 
@@ -54,13 +54,11 @@ public class DatabaseManager {
         String dbUrl;
 
         if (System.getenv("DATABASE_URL") != null) {
-            logger.debug("DATABASE_URL FOUND");
             final URI dbUri = new URI(System.getenv("DATABASE_URL"));
             username = dbUri.getUserInfo().split(":")[0];
             password = dbUri.getUserInfo().split(":")[1];
             dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
         } else {
-            logger.debug("DATABASE_URL NOT FOUND: .env file is not provided, try to use a local psql database instead");
             dbUrl = "jdbc:postgresql://" + "localhost" + ":" + "5432" + "/" + username;
         }
 

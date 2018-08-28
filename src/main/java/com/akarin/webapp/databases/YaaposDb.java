@@ -14,7 +14,7 @@ import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 
 public class YaaposDb {
 
-    public static ExpenditureLog getExpendituresGivenUserId(final int userId, final int week) throws SQLException, URISyntaxException, IOException {
+    public static void getExpendituresGivenUserId(ExpenditureLog el, final int userId, final int week) throws SQLException, URISyntaxException, IOException {
         final Connection connection = getConnection();
 
         final String script = "SELECT * FROM yaapos_spending WHERE yaapos_spending.userId = ? AND yaapos_spending.spendingWeekId = ?;";
@@ -24,12 +24,10 @@ public class YaaposDb {
         pstmt.setInt(2, week);
         final ResultSet rs = pstmt.executeQuery();
 
-        ExpenditureLog als = new ExpenditureLog("Created from getExpenditureGivenUserId");
         while (rs.next()) {
-            als.addItem(new ExpenditureItem(rs.getInt("userId"), rs.getString("spendingName"), rs.getDouble("spendingPrice"), rs.getString("spendingDescription"), rs.getInt("spendingWeekId")));
+            el.addItem(new ExpenditureItem(rs.getInt("userId"), rs.getString("spendingName"), rs.getDouble("spendingPrice"), rs.getString("spendingDescription"), rs.getInt("spendingWeekId")));
         }
         pstmt.close();
-        return als;
     }
 
     public static JSONArray getJsonArrayFromResultSet(ResultSet rs)

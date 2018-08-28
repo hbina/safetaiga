@@ -20,8 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
-//import java.akarin.akarin.util.ArrayList;
-
+@SuppressWarnings("unused")
 class ImageProcessingController {
 
     private static final Logger logger = LoggerFactory.getLogger(ImageProcessingController.class);
@@ -43,7 +42,7 @@ class ImageProcessingController {
         try (InputStream input = request.raw().getPart("uploaded_file").getInputStream()) {
             Files.copy(input, tempFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (final Exception e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             return ViewUtil.renderErrorMessage(request, e.getMessage(),
                     Reference.CommonStrings.LINK_IMAGEPROCESSING, Reference.Names.IMAGEPROCESSING);
         }

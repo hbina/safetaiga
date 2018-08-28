@@ -2,7 +2,7 @@
 <!--suppress XmlHighlighting -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Safetaiga Root</title>
+    <title th:text="${visitor_counter}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="author" content="hanif.ariffin.4326@gmail.com">
     <!-- <link rel="stylesheet" th:href="@{/css/navbar.css}"/>-->
@@ -11,6 +11,6 @@
 <ul>
     <li><a href="/yaapos">yaapos API</a></li>
 </ul>
-<p>This page have been requested <span th:text="${visitor_counter}">100</span> times since last reboot</p>
+<p>This page have been requested <span th:text="${visitor_counter}">0</span> times since last reboot</p>
 </body>
 </html>
