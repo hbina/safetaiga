@@ -1,2 +1,2 @@
-DROP TABLE IF EXISTS yaapos_user;
 CREATE TABLE IF NOT EXISTS yaapos_user(userId SERIAL, userName TEXT NOT NULL, PRIMARY KEY(userId));
+TRUNCATE yaapos_user;

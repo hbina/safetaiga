@@ -63,11 +63,22 @@ public class YaaposRestController {
                 logger.info(String.format("Insert into the database a new expenditure item with the following properties(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (%s,%s,%s,%s,%s)", userId, spendingName, spendingPrice, spendingDescription, spendingWeekId));
                 final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
                 final PreparedStatement pitt = connection.prepareStatement(script);
+
                 pitt.setInt(1, userId);
+                item.setUserId(userId);
+
                 pitt.setString(2, spendingName);
+                item.setSpendingName(spendingName);
+
                 pitt.setDouble(3, spendingPrice);
+                item.setSpendingPrice(spendingPrice);
+
                 pitt.setString(4, spendingDescription);
+                item.setSpendingDescription(spendingDescription);
+
                 pitt.setInt(5, spendingWeekId);
+                item.setSpendingWeekId(spendingWeekId);
+                
                 pitt.executeUpdate();
                 pitt.close();
             } catch (URISyntaxException e) {
@@ -75,7 +86,6 @@ public class YaaposRestController {
             } catch (SQLException e) {
                 logger.info(e.getMessage());
             }
-
             returnMessage = "Database operation did not throw any exception";
         } else {
             returnMessage = "The parameters provided failed to pass the test" + "spendingName:" + checkSpendingName(spendingName) + " spendingPrice:" +
@@ -101,7 +111,7 @@ public class YaaposRestController {
     }
 
     private boolean checkSpendingName(String spendingName) {
-        return spendingName.length() > 0;
+        return spendingName != null && spendingName.length() > 0;
     }
 
     private boolean checkUserId(int userId) {

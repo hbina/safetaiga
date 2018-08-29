@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS yaapos_spending;
-DROP TABLE IF EXISTS yaapos_user;
-
 CREATE TABLE IF NOT EXISTS yaapos_user(userId SERIAL, userName TEXT NOT NULL, PRIMARY KEY(userId));
 CREATE TABLE IF NOT EXISTS yaapos_spending(spendingId SERIAL, userId INT, spendingName TEXT NOT NULL, spendingPrice DECIMAL, spendingDescription TEXT, spendingWeekId INT, PRIMARY KEY (spendingId), FOREIGN KEY (userId) REFERENCES yaapos_user(userId));
+
+TRUNCATE yaapos_spending;
+TRUNCATE yaapos_user;
 
 INSERT INTO yaapos_user (userName) VALUES ('name1');
 INSERT INTO yaapos_user (userName) VALUES ('name2');

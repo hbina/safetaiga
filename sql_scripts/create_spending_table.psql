@@ -1,2 +1,2 @@
-DROP TABLE IF EXISTS yaapos_spending;
 CREATE TABLE IF NOT EXISTS yaapos_spending(spendingId SERIAL, userId INT, spendingName TEXT NOT NULL, spendingPrice DECIMAL, spendingDescription TEXT, spendingWeekId INT, PRIMARY KEY (spendingId), FOREIGN KEY (userId) REFERENCES yaapos_user(userId));
+TRUNCATE yaapos_spending;
