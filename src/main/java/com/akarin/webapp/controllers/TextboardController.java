@@ -6,6 +6,8 @@ import com.akarin.webapp.util.Reference;
 import com.akarin.webapp.util.Tools;
 import com.akarin.webapp.util.ViewUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import spark.Route;
 
 import java.net.URISyntaxException;

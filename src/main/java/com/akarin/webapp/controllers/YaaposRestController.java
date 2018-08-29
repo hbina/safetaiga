@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 
 @RestController
-public class YaaposApiController {
+public class YaaposRestController {
 
-    private static final Logger logger = LoggerFactory.getLogger(YaaposApiController.class);
+    private static final Logger logger = LoggerFactory.getLogger(YaaposRestController.class);
 
     @RequestMapping("/yaapos/test")
     public ArrayList<String> yaaposTest(@RequestParam(value = "firstName", defaultValue = "first") String firstName, @RequestParam(value = "lastName", defaultValue = "last") String lastName) {

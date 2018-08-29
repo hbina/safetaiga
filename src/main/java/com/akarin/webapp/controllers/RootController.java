@@ -5,7 +5,6 @@ import com.akarin.webapp.util.Reference;
 import com.akarin.webapp.util.ViewUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import spark.Route;
 
@@ -13,6 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * TODO: How do large enterprises handle links? What if an intern drops a random link handler? or override others?? What about the hassle maintaining them??
+ */
 
 @Controller
 class RootController {
@@ -24,21 +26,21 @@ class RootController {
     };
     private final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping("/")
+    @RequestMapping("/textboard")
+    public static String getTextboardIndex() {
+        return "textboard_index";
+    }
+
+    @RequestMapping(path = "/")
     public String getIndex(Map<String, Object> model) {
         model.put("visitor_counter", String.valueOf(counter.incrementAndGet()));
         return "index";
     }
 
-    @RequestMapping("/yaapos")
+    // TODO: Show user statistics in here
+    @RequestMapping(path = "/yaapos")
     public String yaaposIndexPage(Model model) {
-        model.addAttribute("ExpenditureItem", new ExpenditureItem());
+        model.addAttribute("ExpenditureItem", new ExpenditureItem()); // TODO: This should be in yaapos/submit or something
         return "yaapos_index";
-    }
-
-    @RequestMapping(path="/yaapos/user/{username}")
-    public String getYaaposUser(@PathVariable("username") String username, Map<String, Object> model) {
-        model.put("username_attribute", username);
-        return "yaapos_user_index";
     }
 }

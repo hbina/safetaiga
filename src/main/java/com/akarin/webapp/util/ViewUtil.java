@@ -35,9 +35,17 @@ public class ViewUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(ViewUtil.class);
 
-    // Renders a template given a model and a request
-    // The request is needed to check the user session for language settings
-    // and to see if the user is logged in
+
+    /**
+     * TODO: Something similar to this that will check for all the internal links (store them in an array and populate the top like 4chan....Actually why didn't we recreate Textboard again???
+     *
+     * @param request
+     * @param model
+     * @param templatePath
+     * @param where
+     * @param message
+     * @return
+     */
     public static String render(final Request request, final Map<String, Object> model, final String templatePath,
                                 final String where, final String message) {
 
