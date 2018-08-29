@@ -1,7 +1,7 @@
 package com.akarin.webapp.structure;
 
 @SuppressWarnings("unused")
-public class ExpenditureItem {
+public class ExpenditureItem extends YaaposJsonApiClass {
 
     private int userId;
     private String spendingName;
@@ -10,14 +10,30 @@ public class ExpenditureItem {
     private int spendingWeekId;
 
     public ExpenditureItem() {
+        super("DEFAULT_RETURN_MESSAGE");
     }
 
     public ExpenditureItem(int userId, String spendingName, double spendingPrice, String spendingDescription, int spendingWeekId) {
+        super("DEFAULT_RETURN_MESSAGE");
         this.userId = userId;
         this.spendingName = spendingName;
         this.spendingPrice = spendingPrice;
         this.spendingDescription = spendingDescription;
         this.spendingWeekId = spendingWeekId;
+    }
+
+    public ExpenditureItem(String returnMessage, int userId, String spendingName, double spendingPrice, String spendingDescription, int spendingWeekId) {
+        super(returnMessage);
+        this.userId = userId;
+        this.spendingName = spendingName;
+        this.spendingPrice = spendingPrice;
+        this.spendingDescription = spendingDescription;
+        this.spendingWeekId = spendingWeekId;
+    }
+
+    public ExpenditureItem(String returnMessage) {
+        super(returnMessage);
+
     }
 
     public String getSpendingName() {

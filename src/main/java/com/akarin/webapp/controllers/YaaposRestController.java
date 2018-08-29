@@ -3,7 +3,6 @@ package com.akarin.webapp.controllers;
 import com.akarin.webapp.databases.YaaposDb;
 import com.akarin.webapp.structure.ExpenditureItem;
 import com.akarin.webapp.structure.ExpenditureLog;
-import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -46,29 +45,66 @@ public class YaaposRestController {
         return expenditureLogs;
     }
 
-    @PostMapping("/yaapos/user/{userId}/spendingWeekId/{spendingWeekId}")
-    public ExpenditureItem postYaaposSpending(@NonNull @PathVariable(value = "userId") int userId,
-                                              @NonNull @RequestParam(value = "spendingName") String spendingName,
-                                              @NonNull @RequestParam(value = "spendingPrice") double spendingPrice,
+    @PostMapping("/yaapos/user")
+    public ExpenditureItem postYaaposSpending(@RequestParam(value = "userId") int userId,
+                                              @RequestParam(value = "spendingName") String spendingName,
+                                              @RequestParam(value = "spendingPrice") double spendingPrice,
                                               @RequestParam(value = "spendingDescription") String spendingDescription,
-                                              @NonNull @PathVariable(value = "spendingWeekId") int spendingWeekId) {
-        try (Connection connection = getConnection()) {
-            logger.info(String.format("Insert into the database a new expenditure item with the following properties(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (%s,%s,%s,%s,%s)", userId, spendingName, spendingPrice, spendingDescription, spendingWeekId));
-            final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
-            final PreparedStatement pitt = connection.prepareStatement(script);
-            pitt.setInt(1, userId);
-            pitt.setString(2, spendingName);
-            pitt.setDouble(3, spendingPrice);
-            pitt.setString(4, spendingDescription);
-            pitt.setInt(5, spendingWeekId);
-            pitt.executeUpdate();
-            pitt.close();
-        } catch (URISyntaxException e) {
-            logger.info(e.getMessage());
-        } catch (SQLException e) {
-            logger.info(e.getMessage());
+                                              @RequestParam(value = "spendingWeekId") int spendingWeekId) throws IllegalArgumentException {
+        String returnMessage;
+        ExpenditureItem item = new ExpenditureItem();
+        if (checkUserId(userId) &&
+                checkSpendingName(spendingName) &&
+                checkSpendingPrice(spendingPrice) &&
+                checkSpendingDescription(spendingDescription) &&
+                checkSpendingWeekId(spendingWeekId)) {
+
+            try (Connection connection = getConnection()) {
+                logger.info(String.format("Insert into the database a new expenditure item with the following properties(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (%s,%s,%s,%s,%s)", userId, spendingName, spendingPrice, spendingDescription, spendingWeekId));
+                final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
+                final PreparedStatement pitt = connection.prepareStatement(script);
+                pitt.setInt(1, userId);
+                pitt.setString(2, spendingName);
+                pitt.setDouble(3, spendingPrice);
+                pitt.setString(4, spendingDescription);
+                pitt.setInt(5, spendingWeekId);
+                pitt.executeUpdate();
+                pitt.close();
+            } catch (URISyntaxException e) {
+                logger.info(e.getMessage());
+            } catch (SQLException e) {
+                logger.info(e.getMessage());
+            }
+
+            returnMessage = "Database operation did not throw any exception";
+        } else {
+            returnMessage = "The parameters provided failed to pass the test" + "spendingName:" + checkSpendingName(spendingName) + " spendingPrice:" +
+                    checkSpendingPrice(spendingPrice) + " spendingDescription:" +
+                    checkSpendingDescription(spendingDescription) + " spendingWeekId:" +
+                    checkSpendingWeekId(spendingWeekId);
         }
 
-        return new ExpenditureItem(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId);
+        item.setReturnMessage(returnMessage);
+        return item;
+    }
+
+    private boolean checkSpendingWeekId(int spendingWeekId) {
+        return spendingWeekId > 0;
+    }
+
+    private boolean checkSpendingDescription(String spendingDescription) {
+        return true;
+    }
+
+    private boolean checkSpendingPrice(double spendingPrice) {
+        return spendingPrice > 0;
+    }
+
+    private boolean checkSpendingName(String spendingName) {
+        return spendingName.length() > 0;
+    }
+
+    private boolean checkUserId(int userId) {
+        return userId > 0;
     }
 }
