@@ -26,7 +26,7 @@ class RootController {
     };
     private final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping("/textboard")
+    @RequestMapping(path = "/textboard")
     public static String getTextboardIndex() {
         return "textboard_index";
     }

@@ -26,7 +26,7 @@ class FileUploadController {
         this.storageService = storageService;
     }
 
-    @GetMapping("/fileupload")
+    @GetMapping(path = "/fileupload")
     public String listUploadedFiles(Model model) {
 
         model.addAttribute("files", storageService.loadAll().map(
@@ -37,7 +37,7 @@ class FileUploadController {
         return "uploadForm";
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping(path = "/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
@@ -46,7 +46,7 @@ class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping("/fileupload")
+    @PostMapping(path = "/fileupload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 

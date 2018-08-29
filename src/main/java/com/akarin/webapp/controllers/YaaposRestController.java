@@ -21,7 +21,7 @@ public class YaaposRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(YaaposRestController.class);
 
-    @RequestMapping("/yaapos/test")
+    @RequestMapping(path = "/yaapos/test")
     public ArrayList<String> yaaposTest(@RequestParam(value = "firstName", defaultValue = "first") String firstName, @RequestParam(value = "lastName", defaultValue = "last") String lastName) {
         ArrayList<String> als = new ArrayList<>();
         als.add(firstName);
@@ -30,7 +30,7 @@ public class YaaposRestController {
         return als;
     }
 
-    @GetMapping("/yaapos/user/{userId}/spendingWeekId/{spendingWeekId}")
+    @RequestMapping(path = "/yaapos/user/{userId}/spendingWeekId/{spendingWeekId}")
     public ExpenditureLog getYaaposSpending(@PathVariable(value = "userId") int userId, @PathVariable(value = "spendingWeekId") int spendingWeekId) {
         ExpenditureLog expenditureLogs = new ExpenditureLog(String.format("This is the ExpenditureLog for user:%s spendingWeekId:%s", userId, spendingWeekId));
         try {
@@ -45,7 +45,7 @@ public class YaaposRestController {
         return expenditureLogs;
     }
 
-    @PostMapping("/yaapos/user")
+    @RequestMapping(path = "/yaapos/user")
     public ExpenditureItem postYaaposSpending(@RequestParam(value = "userId") int userId,
                                               @RequestParam(value = "spendingName") String spendingName,
                                               @RequestParam(value = "spendingPrice") double spendingPrice,
@@ -78,7 +78,7 @@ public class YaaposRestController {
 
                 pitt.setInt(5, spendingWeekId);
                 item.setSpendingWeekId(spendingWeekId);
-                
+
                 pitt.executeUpdate();
                 pitt.close();
             } catch (URISyntaxException e) {
