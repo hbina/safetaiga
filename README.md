@@ -1,4 +1,4 @@
-# java + spark web
+# java + spring-boot
 
 Serves as an REST(hopefully) endpoints for YAAPOS. 
 Which is a tool that allows you to track how much you have spent over a lifetime, as when you start using it. 

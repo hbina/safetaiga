@@ -53,12 +53,7 @@ public class YaaposRestController {
                                               @RequestParam(value = "spendingWeekId") int spendingWeekId) throws IllegalArgumentException {
         String returnMessage;
         ExpenditureItem item = new ExpenditureItem();
-        if (checkUserId(userId) &&
-                checkSpendingName(spendingName) &&
-                checkSpendingPrice(spendingPrice) &&
-                checkSpendingDescription(spendingDescription) &&
-                checkSpendingWeekId(spendingWeekId)) {
-
+        if (checkUserId(userId) && checkSpendingName(spendingName) && checkSpendingPrice(spendingPrice) && checkSpendingDescription(spendingDescription) && checkSpendingWeekId(spendingWeekId)) {
             try (Connection connection = getConnection()) {
                 logger.info(String.format("Insert into the database a new expenditure item with the following properties(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (%s,%s,%s,%s,%s)", userId, spendingName, spendingPrice, spendingDescription, spendingWeekId));
                 final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
