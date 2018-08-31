@@ -3,18 +3,12 @@ package com.akarin.webapp.controllers;
 import com.akarin.webapp.databases.YaaposDb;
 import com.akarin.webapp.structure.ExpenditureItem;
 import com.akarin.webapp.structure.ExpenditureLog;
+import com.akarin.webapp.structure.YaaposUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
-import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 
 @RestController
 public class YaaposRestController {
@@ -32,80 +26,55 @@ public class YaaposRestController {
 
     @RequestMapping(path = "/yaapos/user/{userId}/spendingWeekId/{spendingWeekId}")
     public ExpenditureLog getYaaposSpending(@PathVariable(value = "userId") int userId, @PathVariable(value = "spendingWeekId") int spendingWeekId) {
-        ExpenditureLog expenditureLogs = new ExpenditureLog(String.format("This is the ExpenditureLog for user:%s spendingWeekId:%s", userId, spendingWeekId));
-        try {
-            YaaposDb.getExpendituresGivenUserId(expenditureLogs, userId, spendingWeekId);
-        } catch (SQLException e) {
-            logger.info(e.getMessage());
-        } catch (URISyntaxException e) {
-            logger.info(e.getMessage());
-        } catch (IOException e) {
-            logger.info(e.getMessage());
-        }
-        return expenditureLogs;
+        ExpenditureLog expenditureLog = new ExpenditureLog(String.format("This is the ExpenditureLog for user:%s spendingWeekId:%s", userId, spendingWeekId));
+        /**
+         * TODO: If user is requesting something that does not exist then it should return the appropriate message telling that
+         */
+        YaaposDb.getExpendituresGivenUserIdAndWeek(expenditureLog, userId, spendingWeekId);
+        return expenditureLog;
     }
 
-    @RequestMapping(path = "/yaapos/user")
+    @RequestMapping(path = "/yaapos/user/submit")
     public ExpenditureItem postYaaposSpending(@RequestParam(value = "userId") int userId,
                                               @RequestParam(value = "spendingName") String spendingName,
                                               @RequestParam(value = "spendingPrice") double spendingPrice,
-                                              @RequestParam(value = "spendingDescription") String spendingDescription,
-                                              @RequestParam(value = "spendingWeekId") int spendingWeekId) throws IllegalArgumentException {
+                                              @RequestParam(value = "spendingDescription") String spendingDescription) throws IllegalArgumentException {
         String returnMessage;
-        ExpenditureItem item = new ExpenditureItem();
-        if (checkUserId(userId) && checkSpendingName(spendingName) && checkSpendingPrice(spendingPrice) && checkSpendingDescription(spendingDescription) && checkSpendingWeekId(spendingWeekId)) {
-            try (Connection connection = getConnection()) {
-                logger.info(String.format("Insert into the database a new expenditure item with the following properties(userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (%s,%s,%s,%s,%s)", userId, spendingName, spendingPrice, spendingDescription, spendingWeekId));
-                final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingWeekId) VALUES (?, ?, ?, ?, ?);";
-                final PreparedStatement pitt = connection.prepareStatement(script);
-
-                pitt.setInt(1, userId);
-                item.setUserId(userId);
-
-                pitt.setString(2, spendingName);
-                item.setSpendingName(spendingName);
-
-                pitt.setDouble(3, spendingPrice);
-                item.setSpendingPrice(spendingPrice);
-
-                pitt.setString(4, spendingDescription);
-                item.setSpendingDescription(spendingDescription);
-
-                pitt.setInt(5, spendingWeekId);
-                item.setSpendingWeekId(spendingWeekId);
-
-                pitt.executeUpdate();
-                pitt.close();
-            } catch (URISyntaxException e) {
-                logger.info(e.getMessage());
-            } catch (SQLException e) {
-                logger.info(e.getMessage());
-            }
+        long spendingUnixTime = System.currentTimeMillis();
+        ExpenditureItem newExpenditure = new ExpenditureItem(userId, spendingName, spendingPrice, spendingDescription, spendingUnixTime);
+        if (checkUserId(userId) && checkStringIsNoNullAndEmpty(spendingName) && checkSpendingPrice(spendingPrice)) {
+            YaaposDb.postYaaposSpendingGivenExpenditureItems(newExpenditure);
             returnMessage = "Database operation did not throw any exception";
         } else {
-            returnMessage = "The parameters provided failed to pass the test" + "spendingName:" + checkSpendingName(spendingName) + " spendingPrice:" +
-                    checkSpendingPrice(spendingPrice) + " spendingDescription:" +
-                    checkSpendingDescription(spendingDescription) + " spendingWeekId:" +
-                    checkSpendingWeekId(spendingWeekId);
+            returnMessage = "The parameters provided failed to pass the test" + "spendingName:" + checkStringIsNoNullAndEmpty(spendingName) + " spendingPrice:" +
+                    checkSpendingPrice(spendingPrice) + " spendingDescription:";
         }
 
-        item.setReturnMessage(returnMessage);
-        return item;
+        newExpenditure.setReturnMessage(returnMessage);
+        return newExpenditure;
     }
 
-    private boolean checkSpendingWeekId(int spendingWeekId) {
-        return spendingWeekId > 0;
-    }
+    @RequestMapping(path = "/yaapos/user/register")
+    public YaaposUser registerYaaposUser(@RequestParam(value = "userName") String userName) throws IllegalArgumentException {
+        String returnMessage;
+        long userRegistrationUnixTime = System.currentTimeMillis();
+        YaaposUser newUser = new YaaposUser(userName, userRegistrationUnixTime);
+        if (checkStringIsNoNullAndEmpty(userName)) {
+            YaaposDb.registerYaaposUser(newUser);
+            returnMessage = "Database operation did not throw any exception";
+        } else {
+            returnMessage = "The parameters provided failed to pass the test" + " userName:" + checkStringIsNoNullAndEmpty(userName);
+        }
 
-    private boolean checkSpendingDescription(String spendingDescription) {
-        return true;
+        newUser.setReturnMessage(returnMessage);
+        return newUser;
     }
 
     private boolean checkSpendingPrice(double spendingPrice) {
         return spendingPrice > 0;
     }
 
-    private boolean checkSpendingName(String spendingName) {
+    private boolean checkStringIsNoNullAndEmpty(String spendingName) {
         return spendingName != null && spendingName.length() > 0;
     }
 

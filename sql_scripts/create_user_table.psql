@@ -1,2 +1,2 @@
-CREATE TABLE IF NOT EXISTS yaapos_user(userId SERIAL, userName TEXT NOT NULL, PRIMARY KEY(userId));
+CREATE TABLE IF NOT EXISTS yaapos_user(userId SERIAL, userName TEXT NOT NULL, userRegistrationUnixTime BIGINT NOT NULL, PRIMARY KEY(userId));
 TRUNCATE yaapos_user;

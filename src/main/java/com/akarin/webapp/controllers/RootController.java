@@ -1,6 +1,7 @@
 package com.akarin.webapp.controllers;
 
 import com.akarin.webapp.structure.ExpenditureItem;
+import com.akarin.webapp.structure.YaaposUser;
 import com.akarin.webapp.util.Reference;
 import com.akarin.webapp.util.ViewUtil;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,7 @@ class RootController {
     @RequestMapping(path = "/yaapos")
     public String yaaposIndexPage(Model model) {
         model.addAttribute("ExpenditureItem", new ExpenditureItem()); // TODO: This should be in yaapos/submit or something
+        model.addAttribute("YaaposUser", new YaaposUser()); // TODO: This should be in yaapos/submit or something
         return "yaapos_index";
     }
 }

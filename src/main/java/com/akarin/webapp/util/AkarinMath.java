@@ -2,6 +2,8 @@ package com.akarin.webapp.util;
 
 public class AkarinMath {
 
+    public static final int SECONDS_IN_A_WEEK = 604800;
+
     private static double generalizedLNorm(double[] numbers, double p) {
         double result = 0f;
 
@@ -34,5 +36,9 @@ public class AkarinMath {
             convert[a] = (double) numbers[a];
         }
         return generalizedLNorm(convert, p);
+    }
+
+    public static int evaluateWeeksGivenUnixTimes(int begin, int end) {
+        return (end - begin) % SECONDS_IN_A_WEEK;
     }
 }

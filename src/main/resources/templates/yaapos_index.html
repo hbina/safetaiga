@@ -5,13 +5,18 @@
     <title>SafeTaiga YAAPOS API</title>
 </head>
 <body>
+<h1>Registration Form</h1>
+<form action="#" th:action="@{/yaapos/user/register}" th:object="${YaaposUser}" method="post">
+    <p>userName: <input type="text" th:field="*{userName}"/></p>
+    <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+</form>
+
 <h1>YAAPOS Form</h1>
-<form action="#" th:action="@{/yaapos/user/}" th:object="${ExpenditureItem}" method="post">
+<form action="#" th:action="@{/yaapos/user/submit}" th:object="${ExpenditureItem}" method="post">
     <p>ID: <input type="number" th:field="*{userId}"/></p>
     <p>Name: <input type="text" th:field="*{spendingName}"/></p>
     <p>Price: <input type="number" step="0.01" th:field="*{spendingPrice}"/></p>
     <p>Description: <input type="text" th:field="*{spendingDescription}"/></p>
-    <p>Week ID: <input type="number" th:field="*{spendingWeekId}"/></p>
     <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
 </form>
 </body>
