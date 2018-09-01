@@ -9,6 +9,7 @@ mvnw.cmd
 *.jpg
 
 public
+auth0.properties
 
 
 # Created by https://www.gitignore.io/api/java,maven,gradle,images,eclipse,java-web,intellij+all
