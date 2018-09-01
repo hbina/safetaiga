@@ -26,7 +26,7 @@ public class Main {
         SpringApplication.run(Main.class, args);
         FileManager.createFolders();
         DatabaseManager.setDbLogin();
-        SettingUp.prepareDatabase();
+        SettingUp.prepareDatabases();
     }
 
     @Deprecated
@@ -60,7 +60,7 @@ public class Main {
         //get("*", (req, res) -> {throw new Exception("Exceptions everywhere!");});
 
         DatabaseManager.setDbLogin();
-        SettingUp.prepareDatabase();
+        SettingUp.prepareDatabases();
         // SettingUp.createImageInfo();
 
         final long tEnd = System.currentTimeMillis();

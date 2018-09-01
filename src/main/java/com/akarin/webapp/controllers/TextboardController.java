@@ -22,13 +22,7 @@ class TextboardController {
     private static final Route serveTextboardHome = (request, response) -> {
         final Map<String, Object> model = new HashMap<>();
 
-        try {
-            TextboardDb.getAllBoards(model);
-        } catch (SQLException | URISyntaxException e) {
-            e.printStackTrace();
-            return ViewUtil.renderErrorMessage(request, e.getMessage(), Reference.CommonStrings.LINK_ROOT,
-                    Reference.Names.ROOT);
-        }
+        TextboardDb.getAllBoards(model);
 
         // Populate the rest of the html-forms
         model.put(Reference.VelocityVariables.INPUT_BOARDLINK, Reference.VelocityVariables.INPUT_BOARDLINK);
@@ -50,14 +44,7 @@ class TextboardController {
         // Put request parameters into the map
         model.put(TextboardManager.BOARDLINK, boardLink);
 
-        // Retrieve the list of threads of a given board from the database
-        try {
-            TextboardDb.getThreadsGivenBoardLink(boardLink, model);
-        } catch (SQLException | URISyntaxException e) {
-            e.printStackTrace();
-            return ViewUtil.renderErrorMessage(request, e.getMessage(), Reference.CommonStrings.LINK_TEXTBOARD,
-                    Reference.Names.TEXTBOARD);
-        }
+        TextboardDb.getThreadsGivenBoardLink(boardLink, model);
 
         // Populate the rest of the html-forms
         model.put(Reference.VelocityVariables.INPUT_THREADTEXT, Reference.VelocityVariables.INPUT_THREADTEXT);
@@ -78,14 +65,7 @@ class TextboardController {
         model.put(TextboardManager.BOARDLINK, boardLink);
         model.put(TextboardManager.THREADID, threadId);
 
-        try {
-            TextboardDb.getPostsGivenThreadId(threadId, model);
-        } catch (SQLException | URISyntaxException e) {
-            e.printStackTrace();
-            return ViewUtil.renderErrorMessage(request, e.getMessage(),
-                    TextboardManager.getPREVIOUSBOARDLINK(boardLink),
-                    Reference.Web.TEXTBOARD_ROOT + "/" + boardLink);
-        }
+        TextboardDb.getPostsGivenThreadId(threadId, model);
 
         // Populate html-form
         model.put(Reference.VelocityVariables.INPUT_POSTTEXT, Reference.VelocityVariables.INPUT_POSTTEXT);
@@ -103,17 +83,11 @@ class TextboardController {
                 .queryParams(Reference.VelocityVariables.INPUT_BOARDDESCRIPTION);
 
         if (TextboardManager.checkIfBoardIsAvailable(requestedBoardLink)) {
-            try {
-                TextboardDb.createBoard(requestedBoardLink, requestedBoardName, requestedBoardDescription);
-            } catch (SQLException | URISyntaxException e) {
-                e.printStackTrace();
-                return ViewUtil.renderErrorMessage(request, e.getMessage(), Reference.CommonStrings.LINK_TEXTBOARD,
-                        Reference.Names.TEXTBOARD);
-            }
+            TextboardDb.createBoard(requestedBoardLink, requestedBoardName, requestedBoardDescription);
         }
-
         return serveTextboardHome.handle(request, response);
     };
+
     @Deprecated
     public static Route handleCreateThread = (request, response) -> {
 
@@ -122,13 +96,7 @@ class TextboardController {
         final String requestedThreadText = request.queryParams(Reference.VelocityVariables.INPUT_THREADTEXT);
 
         if (TextboardManager.checkIfTextIsAcceptable(requestedThreadText)) {
-            try {
-                TextboardDb.createThread(currentBoard, requestedThreadText);
-            } catch (SQLException | URISyntaxException e) {
-                e.printStackTrace();
-                return ViewUtil.renderErrorMessage(request, e.getMessage(), Reference.CommonStrings.LINK_TEXTBOARD,
-                        Reference.Names.TEXTBOARD);
-            }
+            TextboardDb.createThread(currentBoard, requestedThreadText);
         }
 
         return serveTextboardBoard.handle(request, response);

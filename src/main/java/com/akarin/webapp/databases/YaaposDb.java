@@ -26,30 +26,31 @@ public class YaaposDb {
 
             // Resolves Unix difference
             final String script = "SELECT * FROM yaapos_user WHERE yaapos_user.userId = ?;";
-            final PreparedStatement pitt = connection.prepareStatement(script);
-            pitt.setInt(1, userId);
+            final PreparedStatement stmt = connection.prepareStatement(script);
+            stmt.setInt(1, userId);
 
-            logger.info(pitt.toString());
-            final ResultSet rs = pitt.executeQuery();
+            logger.info(stmt.toString());
+            final ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 long userUnixRegistrationTime = rs.getLong("userRegistrationUnixTime");
-                pitt.close();
+                stmt.close();
 
                 // Perform query on the Unix range
                 long lowerBoundWeekUnix = userUnixRegistrationTime + ((week - 1) * AkarinMath.SECONDS_IN_A_WEEK);
                 long upperBoundWeekUnix = lowerBoundWeekUnix + AkarinMath.SECONDS_IN_A_WEEK;
                 logger.info(String.format("User registered at userUnixRegistrationTime:%s lowerBoundWeekUnix: %s upperBoundWeekUnix: %s", userUnixRegistrationTime, lowerBoundWeekUnix, upperBoundWeekUnix));
                 final String script2 = "SELECT * FROM yaapos_spending WHERE yaapos_spending.userId = ? AND yaapos_spending.spendingUnixTime BETWEEN ? AND ?;";
-                final PreparedStatement pitt2 = connection.prepareStatement(script2);
-                pitt2.setInt(1, userId);
-                pitt2.setLong(2, lowerBoundWeekUnix);
-                pitt2.setLong(3, upperBoundWeekUnix);
+                final PreparedStatement stmt2 = connection.prepareStatement(script2);
+                stmt2.setInt(1, userId);
+                stmt2.setLong(2, lowerBoundWeekUnix);
+                stmt2.setLong(3, upperBoundWeekUnix);
 
-                final ResultSet rs2 = pitt2.executeQuery();
+                logger.info(stmt2.toString());
+                final ResultSet rs2 = stmt2.executeQuery();
                 while (rs2.next()) {
                     el.addItem(new ExpenditureItem(rs2.getInt("userId"), rs2.getString("spendingName"), rs2.getDouble("spendingPrice"), rs2.getString("spendingDescription"), rs2.getLong("spendingUnixTime")));
                 }
-                pitt2.close();
+                stmt2.close();
             }
         } catch (SQLException e) {
             logger.info(e.getSQLState());
@@ -62,17 +63,17 @@ public class YaaposDb {
     public static void postYaaposSpendingGivenExpenditureItems(ExpenditureItem item) {
         try (Connection connection = getConnection()) {
             final String script = "INSERT INTO yaapos_spending (userId, spendingName, spendingPrice, spendingDescription, spendingUnixTime) VALUES (?, ?, ?, ?, ?);";
-            final PreparedStatement pitt = connection.prepareStatement(script);
+            final PreparedStatement stmt = connection.prepareStatement(script);
 
-            pitt.setInt(1, item.getUserId());
-            pitt.setString(2, item.getSpendingName());
-            pitt.setDouble(3, item.getSpendingPrice());
-            pitt.setString(4, item.getSpendingDescription());
-            pitt.setLong(5, item.getSpendingUnixTime());
+            stmt.setInt(1, item.getUserId());
+            stmt.setString(2, item.getSpendingName());
+            stmt.setDouble(3, item.getSpendingPrice());
+            stmt.setString(4, item.getSpendingDescription());
+            stmt.setLong(5, item.getSpendingUnixTime());
 
-            logger.info(pitt.toString());
-            pitt.executeUpdate();
-            pitt.close();
+            logger.info(stmt.toString());
+            stmt.executeUpdate();
+            stmt.close();
         } catch (URISyntaxException e) {
             logger.info(e.getMessage());
         } catch (SQLException e) {
@@ -84,14 +85,46 @@ public class YaaposDb {
     public static void registerYaaposUser(YaaposUser newUser) {
         try (Connection connection = getConnection()) {
             final String script = "INSERT INTO yaapos_user (userName, userRegistrationUnixTime) VALUES (?, ?);";
-            final PreparedStatement pitt = connection.prepareStatement(script);
+            final PreparedStatement stmt = connection.prepareStatement(script);
 
-            pitt.setString(1, newUser.getUserName());
-            pitt.setLong(2, newUser.getUserRegistrationUnixTime());
+            stmt.setString(1, newUser.getUserName());
+            stmt.setLong(2, newUser.getUserRegistrationUnixTime());
 
-            logger.info(pitt.toString());
-            pitt.executeUpdate();
-            pitt.close();
+            logger.info(stmt.toString());
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (URISyntaxException e) {
+            logger.info(e.getMessage());
+        } catch (SQLException e) {
+            logger.info(e.getSQLState());
+            logger.info(e.getMessage());
+        }
+    }
+
+    public static void createYaaposSpending() {
+        try (Connection connection = getConnection()) {
+            final String script = "CREATE TABLE IF NOT EXISTS yaapos_spending(spendingId SERIAL, userId INTEGER, spendingName TEXT NOT NULL, spendingPrice DECIMAL, spendingDescription TEXT, spendingUnixTime BIGINT NOT NULL, PRIMARY KEY (spendingId), FOREIGN KEY (userId) REFERENCES yaapos_user(userId));";
+            final PreparedStatement stmt = connection.prepareStatement(script);
+
+            logger.info(stmt.toString());
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (URISyntaxException e) {
+            logger.info(e.getMessage());
+        } catch (SQLException e) {
+            logger.info(e.getSQLState());
+            logger.info(e.getMessage());
+        }
+    }
+
+    public static void createYaaposUser() {
+        try (Connection connection = getConnection()) {
+            final String script = "CREATE TABLE IF NOT EXISTS yaapos_user(userId SERIAL, userName TEXT NOT NULL, userRegistrationUnixTime BIGINT NOT NULL, PRIMARY KEY(userId));";
+            final PreparedStatement stmt = connection.prepareStatement(script);
+
+            logger.info(stmt.toString());
+            stmt.executeUpdate();
+            stmt.close();
         } catch (URISyntaxException e) {
             logger.info(e.getMessage());
         } catch (SQLException e) {

@@ -15,8 +15,6 @@ public class DifferenceVector {
 
     private static final int VECTOR_DIFF_FLOOR_VALUE = 1;
     private static final Logger logger = LoggerFactory.getLogger(DifferenceVector.class);
-    //(int) AkarinMath
-    //	.euclideanNorm(new int[] { ImageProcessingTools.MAX_RGB_VALUE, ImageProcessingTools.MAX_RGB_VALUE });
 
     @SuppressWarnings("ConstantConditions")
     public static int[][][] getVectorizedRgbImage(BufferedImage givenImage) {
@@ -155,17 +153,14 @@ public class DifferenceVector {
                             }
                         }
                     }
-                    //writer.print(internalDebugStr);
+                    writer.print(internalDebugStr);
                 }
             }
             writer.close();
-        } catch (
-
-                FileNotFoundException | IndexOutOfBoundsException | UnsupportedEncodingException e) {
-            logger.warn(e.getMessage());
-        } catch (Exception e) {
-            logger.warn("an unspecified exception occured.");
-            logger.warn(e.getMessage());
+        } catch (FileNotFoundException e) {
+            logger.info(e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            logger.info(e.getMessage());
         }
         return result;
     }

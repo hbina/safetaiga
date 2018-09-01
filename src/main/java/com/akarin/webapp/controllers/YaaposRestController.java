@@ -6,7 +6,10 @@ import com.akarin.webapp.structure.ExpenditureLog;
 import com.akarin.webapp.structure.YaaposUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
@@ -42,12 +45,12 @@ public class YaaposRestController {
         String returnMessage;
         long spendingUnixTime = System.currentTimeMillis();
         ExpenditureItem newExpenditure = new ExpenditureItem(userId, spendingName, spendingPrice, spendingDescription, spendingUnixTime);
-        if (checkUserId(userId) && checkStringIsNoNullAndEmpty(spendingName) && checkSpendingPrice(spendingPrice)) {
+        if (checkIntIsPositive(userId) && checkStringIsNoNullAndEmpty(spendingName) && checkDoubleIsPositive(spendingPrice)) {
             YaaposDb.postYaaposSpendingGivenExpenditureItems(newExpenditure);
             returnMessage = "Database operation did not throw any exception";
         } else {
             returnMessage = "The parameters provided failed to pass the test" + "spendingName:" + checkStringIsNoNullAndEmpty(spendingName) + " spendingPrice:" +
-                    checkSpendingPrice(spendingPrice) + " spendingDescription:";
+                    checkDoubleIsPositive(spendingPrice);
         }
 
         newExpenditure.setReturnMessage(returnMessage);
@@ -70,15 +73,15 @@ public class YaaposRestController {
         return newUser;
     }
 
-    private boolean checkSpendingPrice(double spendingPrice) {
-        return spendingPrice > 0;
+    private boolean checkDoubleIsPositive(double a) {
+        return a > 0;
     }
 
-    private boolean checkStringIsNoNullAndEmpty(String spendingName) {
-        return spendingName != null && spendingName.length() > 0;
+    private boolean checkStringIsNoNullAndEmpty(String a) {
+        return a != null && a.length() > 0;
     }
 
-    private boolean checkUserId(int userId) {
-        return userId > 0;
+    private boolean checkIntIsPositive(int a) {
+        return a > 0;
     }
 }

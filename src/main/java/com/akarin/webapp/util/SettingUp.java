@@ -2,6 +2,7 @@ package com.akarin.webapp.util;
 
 import com.akarin.webapp.databases.ImageProcessingDb;
 import com.akarin.webapp.databases.TextboardDb;
+import com.akarin.webapp.databases.YaaposDb;
 import com.akarin.webapp.imageprocessing.ImageGlobalDifference;
 import com.akarin.webapp.imageprocessing.ImageHashing;
 import com.akarin.webapp.imageprocessing.ImagePartition;
@@ -186,14 +187,12 @@ public class SettingUp {
 
     }
 
-    public static void prepareDatabase() {
-        try {
-            TextboardDb.createTableBoards();
+    public static void prepareDatabases() {
+        TextboardDb.createTableBoards();
             TextboardDb.createTableThreads();
             TextboardDb.createTablePosts();
-        } catch (SQLException | URISyntaxException e) {
-            logger.warn(e.getMessage());
-        }
+            YaaposDb.createYaaposUser();
+            YaaposDb.createYaaposSpending();
     }
 
     static class CheckPanelDifference {
