@@ -14,11 +14,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 import java.util.Arrays;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
+@PropertySources({
+        @PropertySource("classpath:application.properties"),
+        @PropertySource("classpath:auth0.properties")
+})
 public class Main {
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
 

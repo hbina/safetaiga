@@ -64,10 +64,11 @@
         </dependency>
 
         <!-- NEWER -->
+        <!-- https://mvnrepository.com/artifact/com.auth0/mvc-auth-commons -->
         <dependency>
             <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>3.4.0</version>
+            <artifactId>mvc-auth-commons</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
