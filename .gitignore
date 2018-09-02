@@ -7,7 +7,7 @@ mvnw.cmd
 *.png
 *.jpeg
 *.jpg
-
+*.sh
 auth0.properties
 functions/
 public/
