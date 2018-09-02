@@ -4,7 +4,6 @@ import com.akarin.webapp.managers.DatabaseManager;
 import com.akarin.webapp.storage.FileManager;
 import com.akarin.webapp.storage.StorageProperties;
 import com.akarin.webapp.storage.StorageService;
-import com.akarin.webapp.util.AppConfig;
 import com.akarin.webapp.util.SettingUp;
 import com.akarin.webapp.util.Tools;
 import org.slf4j.Logger;
@@ -24,7 +23,7 @@ import java.util.Arrays;
 @EnableConfigurationProperties(StorageProperties.class)
 @PropertySources({
         @PropertySource("classpath:application.properties")
-       //@PropertySource("classpath:auth0.properties")
+        //@PropertySource("classpath:auth0.properties")
 })
 public class Main {
     private final static Logger logger = LoggerFactory.getLogger(Main.class);

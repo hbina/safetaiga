@@ -24,7 +24,7 @@ public class LogoutController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     protected String logout(final HttpServletRequest req) {
-        logger.debug("Performing logout");
+        logger.info("Performing logout");
         invalidateSession(req);
         String returnTo = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
         String logoutUrl = String.format("https://%s/v2/logout?client_id=%s&returnTo=%s", domain, clientId, returnTo);

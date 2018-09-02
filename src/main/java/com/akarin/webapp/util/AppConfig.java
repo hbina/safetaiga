@@ -16,20 +16,19 @@ public class AppConfig {
      * This is your auth0 domain (tenant you have created when registering with auth0 - account name)
      */
     //@Value(value = "${com.auth0.domain}")
-    private String domain = System.getenv().get("AUTH0_DOMAIN");
+    // private String domain;
 
     /**
      * This is the client id of your auth0 application (see Settings page on auth0 dashboard)
      */
     //@Value(value = "${com.auth0.clientId}")
-    private String clientId = System.getenv().get("AUTH0_DOMAIN");
+    //private String clientId;
 
     /**
      * This is the client secret of your auth0 application (see Settings page on auth0 dashboard)
      */
     //@Value(value = "${com.auth0.clientSecret}")
-    private String clientSecret = System.getenv().get("AUTH0_DOMAIN");
-
+    // private String clientSecret;
     @Bean
     public FilterRegistrationBean filterRegistration() {
         final FilterRegistrationBean registration = new FilterRegistrationBean();
