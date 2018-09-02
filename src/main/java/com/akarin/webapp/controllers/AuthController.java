@@ -24,7 +24,7 @@ public class AuthController {
                 .build();
         logger.info(String.format("Auth0 domain: %s", config.getDomain()));
         logger.info(String.format("Auth0 clientId: %s", config.getClientId()));
-        logger.info(String.format("Auth0 clientSecret: %s", giconfig.getClientSecret()));
+        logger.info(String.format("Auth0 clientSecret: %s", config.getClientSecret()));
         userInfoAudience = String.format("https://%s/userinfo", config.getDomain());
     }
 
