@@ -23,8 +23,8 @@ import java.util.Arrays;
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
 @PropertySources({
-        @PropertySource("classpath:application.properties"),
-        @PropertySource("classpath:auth0.properties")
+        @PropertySource("classpath:application.properties")
+       //@PropertySource("classpath:auth0.properties")
 })
 public class Main {
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
