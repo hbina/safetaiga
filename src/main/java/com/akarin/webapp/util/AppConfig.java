@@ -14,19 +14,19 @@ public class AppConfig {
      * This is your auth0 domain (tenant you have created when registering with auth0 - account name)
      */
     @Value(value = "${com.auth0.domain}")
-    private String domain;
+    private String domain = null;
 
     /**
      * This is the client id of your auth0 application (see Settings page on auth0 dashboard)
      */
     @Value(value = "${com.auth0.clientId}")
-    private String clientId;
+    private String clientId = null;
 
     /**
      * This is the client secret of your auth0 application (see Settings page on auth0 dashboard)
      */
     @Value(value = "${com.auth0.clientSecret}")
-    private String clientSecret;
+    private String clientSecret = null;
 
     @Bean
     public FilterRegistrationBean filterRegistration() {
@@ -38,14 +38,26 @@ public class AppConfig {
     }
 
     public String getDomain() {
-        return domain;
+        if (domain != null) {
+            return domain;
+        } else {
+            return System.getenv().get("AUTH0_DOMAIN");
+        }
     }
 
     public String getClientId() {
-        return clientId;
+        if (clientId != null) {
+            return clientId;
+        } else {
+            return System.getenv().get("AUTH0_CLIENT_ID");
+        }
     }
 
     public String getClientSecret() {
-        return clientSecret;
+        if (clientSecret != null) {
+            return clientSecret;
+        } else {
+            return System.getenv().get("AUTH0_CLIENT_SECRET");
+        }
     }
 }

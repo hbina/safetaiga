@@ -4,6 +4,7 @@ import com.akarin.webapp.managers.DatabaseManager;
 import com.akarin.webapp.storage.FileManager;
 import com.akarin.webapp.storage.StorageProperties;
 import com.akarin.webapp.storage.StorageService;
+import com.akarin.webapp.util.AppConfig;
 import com.akarin.webapp.util.SettingUp;
 import com.akarin.webapp.util.Tools;
 import org.slf4j.Logger;
@@ -38,15 +39,8 @@ public class Main {
     @Deprecated
     public static void oldMain() {
         final long tStart = System.currentTimeMillis();
-
-        if (System.getenv("IS_HEROKU") == null) {
-            Tools.cout("Debug screen enabled");
-            Tools.coutln("No .env file specified, defaulting to port:5000");
-            //port(5000);
-        } else {
-            Tools.coutln("Debug screen disabled");
-            //port(Integer.valueOf(System.getenv("PORT")));
-        }
+        Tools.coutln("Debug screen disabled");
+        //port(Integer.valueOf(System.getenv("PORT")));
 
         FileManager.createFolders();
         //staticFiles.externalLocation("public");
