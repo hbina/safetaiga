@@ -22,9 +22,9 @@ public class AuthController {
     public AuthController(AppConfig config) {
         controller = AuthenticationController.newBuilder(config.getDomain(), config.getClientId(), config.getClientSecret())
                 .build();
-        //logger.info(String.format("Auth0 domain: %s", System.getenv().get("AUTH0_DOMAIN")));
-        //logger.info(String.format("Auth0 clientId: %s", System.getenv().get("AUTH0_CLIENT_ID")));
-        //logger.info(String.format("Auth0 clientSecret: %s", System.getenv().get("AUTH0_CLIENT_SECRET")));
+        logger.info(String.format("Auth0 domain: %s", config.getDomain()));
+        logger.info(String.format("Auth0 clientId: %s", config.getClientId()));
+        logger.info(String.format("Auth0 clientSecret: %s", config.getClientSecret()));
         userInfoAudience = String.format("https://%s/userinfo", config.getDomain());
     }
 
