@@ -1,1 +1,5 @@
-mvn clean install && mvn spring-boot:run
+export AUTH0_DOMAIN=red-cake-4507.auth0.com
+export AUTH0_CLIENT_ID=J8yZj1YpzOUYXGedgov-adv4mCcPVDsl
+export AUTH0_CLIENT_SECRET=MW6szxzJVW93Tct6nZTlTbrRZKeSU6ZSML_BeEtP-SCh1ohhQ32VoybsiRPUSPmM
+mvn clean install
+mvn spring-boot:run

@@ -20,7 +20,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     protected String login(final HttpServletRequest req) {
         logger.info("Performing login");
-        String redirectUri = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/callback";
+        String redirectUri = req.getScheme() + "://" + req.getServerName() + ":/callback";
         String authorizeUrl = controller.buildAuthorizeUrl(req, redirectUri);
         logger.info(String.format("redirectUri: %s", redirectUri));
         logger.info(String.format("authorizeUrl: %s", authorizeUrl));
