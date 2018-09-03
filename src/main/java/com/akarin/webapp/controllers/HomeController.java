@@ -10,15 +10,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+import static com.akarin.webapp.util.Tools.printHttpServletRequest;
+
 @SuppressWarnings("unused")
 @Controller
 public class HomeController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @RequestMapping(value = "/portal/home", method = RequestMethod.GET)
     protected String home(final Map<String, Object> model, final HttpServletRequest req) {
-        logger.info("Home page");
+        logger.info("A user is accessing homepage");
+        logger.info(String.format("req:%s", printHttpServletRequest(req)));
         String accessToken = (String) SessionUtils.get(req, "accessToken");
         String idToken = (String) SessionUtils.get(req, "idToken");
         if (accessToken != null) {

@@ -15,6 +15,7 @@ public class AppConfig {
 
     @Bean
     public FilterRegistrationBean filterRegistration() {
+        logger.info("filterRegistration");
         final FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new Auth0Filter());
         registration.addUrlPatterns("/portal/*");

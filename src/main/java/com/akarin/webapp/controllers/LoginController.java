@@ -9,19 +9,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.akarin.webapp.util.Tools.printHttpServletRequest;
+
 @SuppressWarnings("unused")
 @Controller
 public class LoginController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     private AuthController controller;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     protected String login(final HttpServletRequest req) {
-        logger.info("Performing login");
-String redirectUri = System.getenv().get("AUTH0_CALLBACK_URL");
-        //String redirectUri = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/callback";
+        logger.info("A user is accessing the login page");
+        logger.info(String.format("req:%s", printHttpServletRequest(req)));
+        String redirectUri = System.getenv().get("AUTH0_CALLBACK_URL");
+        //String redirectUri = req.getScheme() + "://" + req.getServerName() + "/callback";
         String authorizeUrl = controller.buildAuthorizeUrl(req, redirectUri);
         logger.info(String.format("redirectUri: %s", redirectUri));
         logger.info(String.format("authorizeUrl: %s", authorizeUrl));

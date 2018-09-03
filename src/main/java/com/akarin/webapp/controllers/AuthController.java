@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.akarin.webapp.util.Tools.printHttpServletRequest;
+
 @Component
 public class AuthController {
 
-    private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationController controller;
     private final String userInfoAudience;
 
@@ -28,13 +30,17 @@ public class AuthController {
         userInfoAudience = String.format("https://%s/userinfo", config.getDomain());
     }
 
-    public Tokens handle(HttpServletRequest request) throws IdentityVerificationException {
-        return controller.handle(request);
+    public Tokens handle(HttpServletRequest req) throws IdentityVerificationException {
+        logger.info("Handling request");
+        logger.info(String.format("req:%s", printHttpServletRequest(req)));
+        return controller.handle(req);
     }
 
-    public String buildAuthorizeUrl(HttpServletRequest request, String redirectUri) {
+    public String buildAuthorizeUrl(HttpServletRequest req, String redirectUri) {
+        logger.info(String.format("Building authorization URL with redirectUri:%s", redirectUri));
+        logger.info(String.format("req:%s", printHttpServletRequest(req)));
         return controller
-                .buildAuthorizeUrl(request, redirectUri)
+                .buildAuthorizeUrl(req, redirectUri)
                 .withAudience(userInfoAudience)
                 .build();
     }

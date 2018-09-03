@@ -3,8 +3,11 @@ package com.akarin.webapp.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
 
 public class Tools {
 
@@ -133,5 +136,25 @@ public class Tools {
         return arrayList;
     }
 
+    public static String printHttpServletRequest(HttpServletRequest request) {
+        String returnString = "begin content" + System.getProperty("line.separator");
+        Enumeration<String> params = request.getParameterNames();
+        while (params.hasMoreElements()) {
+            String paramName = params.nextElement();
+            returnString += paramName + ":" + request.getParameter(paramName) + System.getProperty("line.separator");
+        }
+        returnString += "end content";
+        return returnString;
+    }
 
+    public static String printHttpServletResponse(HttpServletResponse request) {
+        String returnString = "begin content" + System.getProperty("line.separator");
+        Iterator<String> params = request.getHeaderNames().iterator();
+        while (params.hasNext()) {
+            String paramName = params.next();
+            returnString += "paramName" + ":" + request.getHeader(paramName) + System.getProperty("line.separator");
+        }
+        returnString += "end content";
+        return returnString;
+    }
 }
