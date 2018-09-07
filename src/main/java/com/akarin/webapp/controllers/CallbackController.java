@@ -58,6 +58,8 @@ public class CallbackController {
             Tokens tokens = controller.handle(req);
             SessionUtils.set(req, "accessToken", tokens.getAccessToken());
             SessionUtils.set(req, "idToken", tokens.getIdToken());
+            logger.info(String.format("accessToken:%s ", tokens.getAccessToken()));
+            logger.info(String.format("idToken:%s", tokens.getIdToken()));
             res.sendRedirect(redirectOnSuccess);
         } catch (IdentityVerificationException e) {
             logger.info(e.getMessage());

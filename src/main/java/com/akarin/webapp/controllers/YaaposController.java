@@ -10,7 +10,7 @@ import java.util.Map;
 public class YaaposController {
 
 
-    @RequestMapping(path = "/yaapos/user/{username}")
+    @RequestMapping(path = "portal/{username}")
     public String getYaaposUser(@PathVariable("username") String username, Map<String, Object> model) {
         model.put("username_attribute", username);
         return "yaapos_user_index";
