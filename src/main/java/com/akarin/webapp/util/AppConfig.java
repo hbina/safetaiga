@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@SuppressWarnings("unused")
 @Component
 @Configuration
 public class AppConfig {
@@ -24,14 +23,20 @@ public class AppConfig {
     }
 
     public String getDomain() {
-        return System.getenv().get("AUTH0_DOMAIN");
+        String domain = System.getenv("AUTH0_DOMAIN");
+        logger.info(domain);
+        return domain;
     }
 
     public String getClientId() {
-        return System.getenv().get("AUTH0_CLIENT_ID");
+        String clientId = System.getenv("AUTH0_CLIENT_ID");
+        logger.info(clientId);
+        return clientId;
     }
 
     public String getClientSecret() {
-        return System.getenv().get("AUTH0_CLIENT_SECRET");
+        String clientSecret = System.getenv("AUTH0_CLIENT_SECRET");
+        logger.info(clientSecret);
+        return clientSecret;
     }
 }
