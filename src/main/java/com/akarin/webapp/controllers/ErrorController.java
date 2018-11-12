@@ -20,7 +20,8 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     protected String error(final RedirectAttributes redirectAttributes) throws IOException {
         logger.error("Handling error");
         redirectAttributes.addFlashAttribute("error", true);
-        return "redirect:/login";
+        logger.info(redirectAttributes.toString());
+        return "redirect:/";
     }
 
     @Override
