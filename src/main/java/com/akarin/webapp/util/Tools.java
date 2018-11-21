@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 
 public class Tools {
 
@@ -137,24 +136,22 @@ public class Tools {
     }
 
     public static String printHttpServletRequest(HttpServletRequest request) {
-        String returnString = "begin content" + System.getProperty("line.separator");
+        StringBuilder returnString = new StringBuilder("begin content" + System.getProperty("line.separator"));
         Enumeration<String> params = request.getParameterNames();
         while (params.hasMoreElements()) {
             String paramName = params.nextElement();
-            returnString += paramName + ":" + request.getParameter(paramName) + System.getProperty("line.separator");
+            returnString.append(paramName).append(":").append(request.getParameter(paramName)).append(System.getProperty("line.separator"));
         }
-        returnString += "end content";
-        return returnString;
+        returnString.append("end content");
+        return returnString.toString();
     }
 
     public static String printHttpServletResponse(HttpServletResponse request) {
-        String returnString = "begin content" + System.getProperty("line.separator");
-        Iterator<String> params = request.getHeaderNames().iterator();
-        while (params.hasNext()) {
-            String paramName = params.next();
-            returnString += "paramName" + ":" + request.getHeader(paramName) + System.getProperty("line.separator");
+        StringBuilder returnString = new StringBuilder("begin content" + System.getProperty("line.separator"));
+        for (String paramName : request.getHeaderNames()) {
+            returnString.append("paramName" + ":").append(request.getHeader(paramName)).append(System.getProperty("line.separator"));
         }
-        returnString += "end content";
-        return returnString;
+        returnString.append("end content");
+        return returnString.toString();
     }
 }

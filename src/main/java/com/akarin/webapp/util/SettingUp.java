@@ -107,74 +107,72 @@ public class SettingUp {
                     g.start();
 
                     while ((frame = g.grabImage()) != null) {
-                        if ((frameIterator % ImageProcessingTools.FRAME_SKIP) == 0) {
-                            image = frameConverter.getBufferedImage(frame);
-                            image = ImageProcessingTools.resizeImage(image);
+                        image = frameConverter.getBufferedImage(frame);
+                        image = ImageProcessingTools.resizeImage(image);
 
-                            if (Partition.activeBool) {
-                                Partition.tripleArray = ImagePartition.getPartitionArray(image);
+                        if (Partition.activeBool) {
+                            Partition.tripleArray = ImagePartition.getPartitionArray(image);
 
-                                if (Partition.writeToDatabase) {
-                                    logger.info(animeName + " " + episode + " " + frameIterator);
-                                    ImageProcessingDb.insertPartitionHash(animeName, episode, frameIterator,
-                                            ImageHashing.partitionHash(Partition.tripleArray));
-                                }
-
-                                if (Partition.writeLogBool) {
-                                    Partition.imageDir = "dev_output/images/output/partition/" + animeName + "/"
-                                            + animeName + "_" + episode + "_" + panelIterator + ".png";
-                                    Partition.textDir = "dev_output/text/partition/" + animeName + "/" + animeName + "_"
-                                            + episode + "_" + panelIterator + ".txt";
-                                }
+                            if (Partition.writeToDatabase) {
+                                logger.info(animeName + " " + episode + " " + frameIterator);
+                                ImageProcessingDb.insertPartitionHash(animeName, episode, frameIterator,
+                                        ImageHashing.partitionHash(Partition.tripleArray));
                             }
 
-                            if (GlobalDifference.activeBool) {
-                                GlobalDifference.tripleArray = ImageGlobalDifference.getGlobalDifference(image);
-
-                                if (GlobalDifference.writeLogBool) {
-                                    GlobalDifference.imageDir = "dev_output/images/output/globaldifference/" + animeName
-                                            + "/" + animeName + "_" + episode + "_" + panelIterator + ".png";
-                                    GlobalDifference.textDir = "dev_output/text/globaldifference/" + animeName + "/"
-                                            + animeName + "_" + episode + "_" + panelIterator + ".txt";
-                                }
+                            if (Partition.writeLogBool) {
+                                Partition.imageDir = "dev_output/images/output/partition/" + animeName + "/"
+                                        + animeName + "_" + episode + "_" + panelIterator + ".png";
+                                Partition.textDir = "dev_output/text/partition/" + animeName + "/" + animeName + "_"
+                                        + episode + "_" + panelIterator + ".txt";
                             }
+                        }
 
-                            if (BasicHistogramHash.activeBool) {
-                                try (Connection connection = DatabaseManager.getConnection()) {
-                                    Statement statement = connection.createStatement();
-                                    statement.executeUpdate("INSERT INTO imagedb_test (hash) VALUES ('"
-                                            + ImageHashing.basicHistogramHash(ImageHashing.getRGBHistogram(image))
-                                            + "');");
-                                } catch (final SQLException | URISyntaxException e) {
-                                    logger.warn(e.getMessage());
-                                }
+                        if (GlobalDifference.activeBool) {
+                            GlobalDifference.tripleArray = ImageGlobalDifference.getGlobalDifference(image);
+
+                            if (GlobalDifference.writeLogBool) {
+                                GlobalDifference.imageDir = "dev_output/images/output/globaldifference/" + animeName
+                                        + "/" + animeName + "_" + episode + "_" + panelIterator + ".png";
+                                GlobalDifference.textDir = "dev_output/text/globaldifference/" + animeName + "/"
+                                        + animeName + "_" + episode + "_" + panelIterator + ".txt";
                             }
+                        }
 
-                            if (CheckPanelDifference.activeBool) {
+                        if (BasicHistogramHash.activeBool) {
+                            try (Connection connection = DatabaseManager.getConnection()) {
+                                Statement statement = connection.createStatement();
+                                statement.executeUpdate("INSERT INTO imagedb_test (hash) VALUES ('"
+                                        + ImageHashing.basicHistogramHash(ImageHashing.getRGBHistogram(image))
+                                        + "');");
+                            } catch (final SQLException | URISyntaxException e) {
+                                logger.warn(e.getMessage());
+                            }
+                        }
 
-                                if (panelIterator == 0) {
-                                    CheckPanelDifference.oldArray = ImageProcessingTools
-                                            .getArrayFromBufferedImage(image);
-                                    CheckPanelDifference.panelDifferenceCountArray = new int[CheckPanelDifference.oldArray.length][CheckPanelDifference.oldArray[0].length][3];
-                                } else {
-                                    CheckPanelDifference.newArray = ImageProcessingTools
-                                            .getArrayFromBufferedImage(image);
-                                    CheckPanelDifference.panelDifferenceArray = ImageProcessingTools
-                                            .checkArrayDifference(CheckPanelDifference.oldArray,
-                                                    CheckPanelDifference.newArray);
-                                    for (int y = 0; y < CheckPanelDifference.oldArray.length; y++) {
-                                        for (int x = 0; x < CheckPanelDifference.oldArray[y].length; x++) {
-                                            for (int z = 0; z < CheckPanelDifference.oldArray[y][x].length; z++) {
-                                                if (CheckPanelDifference.panelDifferenceArray[y][x][z]) {
-                                                    CheckPanelDifference.panelDifferenceCountArray[y][x][z]++;
-                                                }
+                        if (CheckPanelDifference.activeBool) {
+
+                            if (panelIterator == 0) {
+                                CheckPanelDifference.oldArray = ImageProcessingTools
+                                        .getArrayFromBufferedImage(image);
+                                CheckPanelDifference.panelDifferenceCountArray = new int[CheckPanelDifference.oldArray.length][CheckPanelDifference.oldArray[0].length][3];
+                            } else {
+                                CheckPanelDifference.newArray = ImageProcessingTools
+                                        .getArrayFromBufferedImage(image);
+                                CheckPanelDifference.panelDifferenceArray = ImageProcessingTools
+                                        .checkArrayDifference(CheckPanelDifference.oldArray,
+                                                CheckPanelDifference.newArray);
+                                for (int y = 0; y < CheckPanelDifference.oldArray.length; y++) {
+                                    for (int x = 0; x < CheckPanelDifference.oldArray[y].length; x++) {
+                                        for (int z = 0; z < CheckPanelDifference.oldArray[y][x].length; z++) {
+                                            if (CheckPanelDifference.panelDifferenceArray[y][x][z]) {
+                                                CheckPanelDifference.panelDifferenceCountArray[y][x][z]++;
                                             }
                                         }
                                     }
                                 }
                             }
-                            panelIterator++;
                         }
+                        panelIterator++;
                         frameIterator++;
                     }
                     AkarinLogging.log("" + panelIterator, "dev_output/description/" + animeName + "_" + episode + ".txt");

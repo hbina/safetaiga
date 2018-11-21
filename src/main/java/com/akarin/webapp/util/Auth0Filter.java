@@ -12,12 +12,12 @@ import java.io.IOException;
 import static com.akarin.webapp.util.Tools.printHttpServletRequest;
 import static com.akarin.webapp.util.Tools.printHttpServletResponse;
 
-public class Auth0Filter implements Filter {
+class Auth0Filter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(Auth0Filter.class);
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override

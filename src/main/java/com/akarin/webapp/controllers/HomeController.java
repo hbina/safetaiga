@@ -18,6 +18,7 @@ public class HomeController {
 
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
+    @SuppressWarnings("SameReturnValue")
     @RequestMapping(value = "/portal/home", method = RequestMethod.GET)
     protected String home(final Map<String, Object> model, final HttpServletRequest req) {
         logger.info("A user is accessing homepage");

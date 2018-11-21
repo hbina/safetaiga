@@ -1,19 +1,17 @@
 package com.akarin.webapp.databases;
 
-import com.akarin.webapp.controllers.YaaposRestController;
 import com.akarin.webapp.structure.ExpenditureItem;
 import com.akarin.webapp.structure.ExpenditureLog;
 import com.akarin.webapp.structure.YaaposUser;
 import com.akarin.webapp.util.AkarinMath;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static com.akarin.webapp.managers.DatabaseManager.getConnection;
 

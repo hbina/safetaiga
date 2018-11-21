@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ExpenditureLog extends YaaposJsonApiClass {
 
-    private ArrayList<ExpenditureItem> expenditureItemsList;
+    private final ArrayList<ExpenditureItem> expenditureItemsList;
 
     public ExpenditureLog(String message) {
         super(message);

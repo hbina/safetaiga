@@ -26,6 +26,7 @@ public class DatabaseManager {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseManager.class);
     private static String DATABASE_USERNAME = "postgres";
     private static String DATABASE_PASSWORD = "1234";
+    private static String DATABASE_PORT = "5432";
     @Value("${spring.datasource.url}")
     private String dbUrl;
     @Autowired
@@ -37,6 +38,7 @@ public class DatabaseManager {
             StringBuilder sb = new StringBuilder();
             DATABASE_USERNAME = br.readLine();
             DATABASE_PASSWORD = br.readLine();
+            DATABASE_PORT = br.readLine();
             logger.info("Using db with username:" + DATABASE_USERNAME + " password:" + DATABASE_PASSWORD);
             br.close();
         } catch (FileNotFoundException e) {
@@ -59,14 +61,14 @@ public class DatabaseManager {
             password = dbUri.getUserInfo().split(":")[1];
             dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
         } else {
-            dbUrl = "jdbc:postgresql://" + "localhost" + ":" + "5432" + "/" + username;
+            dbUrl = "jdbc:postgresql://" + "localhost" + ":" + DATABASE_PORT + "/" + username;
         }
 
         return DriverManager.getConnection(dbUrl, username, password);
     }
 
     @Bean
-    public DataSource dataSource() throws SQLException {
+    public DataSource dataSource() {
         if (dbUrl == null || dbUrl.isEmpty()) {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(dbUrl);

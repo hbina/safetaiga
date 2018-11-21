@@ -2,8 +2,8 @@ package com.akarin.webapp.structure;
 
 public class YaaposUser extends YaaposJsonApiClass {
 
-    public static final String DEFAULT_USER_NAME = "DEFAULT_USER_NAME";
-    public static final long DEFAULT_USER_REGISTRATION_UNIX_TIME = 0L;
+    private static final String DEFAULT_USER_NAME = "DEFAULT_USER_NAME";
+    private static final long DEFAULT_USER_REGISTRATION_UNIX_TIME = 0L;
     private String userName;
     private long userRegistrationUnixTime;
 

@@ -16,8 +16,9 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     private static final String PATH = "/error";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @SuppressWarnings("SameReturnValue")
     @RequestMapping("/error")
-    protected String error(final RedirectAttributes redirectAttributes) throws IOException {
+    protected String error(final RedirectAttributes redirectAttributes) {
         logger.error("Handling error");
         redirectAttributes.addFlashAttribute("error", true);
         logger.info(redirectAttributes.toString());

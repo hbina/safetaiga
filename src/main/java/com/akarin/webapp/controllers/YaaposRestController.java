@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 @RestController
-public class YaaposRestController {
+class YaaposRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(YaaposRestController.class);
 
@@ -30,9 +30,6 @@ public class YaaposRestController {
     @RequestMapping(path = "/yaapos/user/{userId}/spendingWeekId/{spendingWeekId}")
     public ExpenditureLog getYaaposSpending(@PathVariable(value = "userId") int userId, @PathVariable(value = "spendingWeekId") int spendingWeekId) {
         ExpenditureLog expenditureLog = new ExpenditureLog(String.format("This is the ExpenditureLog for user:%s spendingWeekId:%s", userId, spendingWeekId));
-        /**
-         * TODO: If user is requesting something that does not exist then it should return the appropriate message telling that
-         */
         YaaposDb.getExpendituresGivenUserIdAndWeek(expenditureLog, userId, spendingWeekId);
         return expenditureLog;
     }

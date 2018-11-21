@@ -60,13 +60,13 @@ public class ScriptCreator {
     public static String insertBasicHistogramHash(final String name, final int episode, final int panel,
                                                   final String hash) {
         return "INSERT INTO imagedb_anime_basic_histogram_hash (name, episode, panel, hash) VALUES ('"
-                + name + "','" + Integer.toString(episode) + "','" + Integer.toString(panel) + "','" + hash + "');";
+                + name + "','" + episode + "','" + panel + "','" + hash + "');";
     }
 
     public static String insertIntoImagedbAnimeRgbInteger(final String name, final int episode, final int panel,
                                                           final int[][][] tripleArray) {
         String script = "INSERT INTO imagedb_anime_rgb_integer (name, episode, panel, pixel_rgb) VALUES ('" + name
-                + "','" + Integer.toString(episode) + "', '" + Integer.toString(panel) + "', ";
+                + "','" + episode + "', '" + panel + "', ";
         final String RGBArray = convertTripleArrayToQueryString(tripleArray);
         script += RGBArray + ");";
         return script;

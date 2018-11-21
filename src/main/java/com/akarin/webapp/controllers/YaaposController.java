@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
 
 @Controller
-public class YaaposController {
+class YaaposController {
 
 
+    @SuppressWarnings("SameReturnValue")
     @RequestMapping(path = "portal/{username}")
     public String getYaaposUser(@PathVariable("username") String username, Map<String, Object> model) {
         model.put("username_attribute", username);

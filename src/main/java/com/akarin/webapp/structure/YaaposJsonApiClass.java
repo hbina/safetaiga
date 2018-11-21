@@ -5,14 +5,14 @@ package com.akarin.webapp.structure;
  */
 public class YaaposJsonApiClass {
 
-    public static final String DEFAULT_RETURN_MESSAGE = "DEFAULT_RETURN_MESSAGE";
-    public String returnMessage;
+    private static final String DEFAULT_RETURN_MESSAGE = "DEFAULT_RETURN_MESSAGE";
+    private String returnMessage;
 
-    public YaaposJsonApiClass() {
+    YaaposJsonApiClass() {
         this.returnMessage = DEFAULT_RETURN_MESSAGE;
     }
 
-    public YaaposJsonApiClass(String returnMessage) {
+    YaaposJsonApiClass(String returnMessage) {
         this.returnMessage = returnMessage;
     }
 

@@ -20,6 +20,7 @@ public class TextboardDb {
 
     private static final Logger logger = LoggerFactory.getLogger(TextboardDb.class);
 
+    @SuppressWarnings("UnusedReturnValue")
     public static Map<String, Object> getAllBoards(final Map<String, Object> model) {
         try (Connection connection = getConnection()) {
             final ArrayList<Map<String, String>> arrayOfBoardsFromDatabase = new ArrayList<>();
@@ -49,6 +50,7 @@ public class TextboardDb {
         return model;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static Map<String, Object> getThreadsGivenBoardLink(final String boardLink, final Map<String, Object> model) {
         try (Connection connection = getConnection()) {
             final ArrayList<Map<String, String>> arrayOfThreadsFromDatabase = new ArrayList<>();
@@ -78,6 +80,7 @@ public class TextboardDb {
         return model;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static Map<String, Object> getPostsGivenThreadId(final String threadId, final Map<String, Object> model) {
         try (Connection connection = getConnection()) {
             final String scriptOpText = "SELECT threadText FROM threads WHERE threadId = ? LIMIT 1;";

@@ -5,7 +5,6 @@ import com.akarin.webapp.storage.FileManager;
 import com.akarin.webapp.storage.StorageProperties;
 import com.akarin.webapp.storage.StorageService;
 import com.akarin.webapp.util.SettingUp;
-import com.akarin.webapp.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -32,39 +31,6 @@ public class Main {
         FileManager.createFolders();
         DatabaseManager.setDbLogin();
         SettingUp.prepareDatabases();
-    }
-
-    @Deprecated
-    public static void oldMain() {
-        final long tStart = System.currentTimeMillis();
-        Tools.coutln("Debug screen disabled");
-        //port(Integer.valueOf(System.getenv("PORT")));
-
-        FileManager.createFolders();
-        //staticFiles.externalLocation("public");
-        //staticFiles.expireTime(600L);
-
-        //get(Reference.Web.ROOT, RootController.serveRootPage);
-        //get(Reference.Web.TEXTBOARD_ROOT, TextboardController.serveTextboardHome);
-        //get(Reference.Web.TEXTBOARD_BOARD, TextboardController.serveTextboardBoard);
-        //get(Reference.Web.TEXTBOARD_BOARD_THREAD, TextboardController.serveTextboardThread);
-        //get(Reference.Web.IMAGEPROCESSING_ROOT, ImageProcessingController.serveImageUpload);
-        //get(Reference.Web.MANIFESTO_ROOT, ManifestoController.serveManifestoPage);
-        //post(Reference.Web.TEXTBOARD_ROOT, TextboardController.handleCreateBoard);
-        //post(Reference.Web.TEXTBOARD_BOARD, TextboardController.handleCreateThread);
-        //post(Reference.Web.TEXTBOARD_BOARD_THREAD, TextboardController.handleCreatePost);
-        //post(Reference.Web.IMAGEPROCESSING_ROOT, ImageProcessingController.handleImageUpload);
-
-        //get("*", (req, res) -> {throw new Exception("Exceptions everywhere!");});
-
-        DatabaseManager.setDbLogin();
-        SettingUp.prepareDatabases();
-        // SettingUp.createImageInfo();
-
-        final long tEnd = System.currentTimeMillis();
-        final long tDelta = tEnd - tStart;
-        final double elapsedSeconds = tDelta / 1000.0;
-        Tools.coutln("Server startup takes " + elapsedSeconds + " seconds.");
     }
 
     @Bean

@@ -27,11 +27,13 @@ class RootController {
     };
     private final AtomicLong counter = new AtomicLong();
 
+    @SuppressWarnings("SameReturnValue")
     @RequestMapping(path = "/textboard")
     public static String getTextboardIndex() {
         return "textboard_index";
     }
 
+    @SuppressWarnings("SameReturnValue")
     @RequestMapping(path = "/")
     public String getIndex(Map<String, Object> model) {
         model.put("visitor_counter", String.valueOf(counter.incrementAndGet()));
@@ -39,6 +41,7 @@ class RootController {
     }
 
     // TODO: Show user statistics in here
+    @SuppressWarnings("SameReturnValue")
     @RequestMapping(path = "/yaapos")
     public String yaaposIndexPage(Model model) {
         model.addAttribute("ExpenditureItem", new ExpenditureItem()); // TODO: This should be in yaapos/submit or something

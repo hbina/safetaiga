@@ -14,14 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import static com.akarin.webapp.util.Tools.printHttpServletRequest;
 
 @Component
-public class AuthController {
+class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationController controller;
     private final String userInfoAudience;
 
     @Autowired
-    public AuthController(AppConfig config) {
+    private AuthController(AppConfig config) {
         controller = AuthenticationController.newBuilder(config.getDomain(), config.getClientId(), config.getClientSecret())
                 .build();
         logger.info(String.format("Auth0 domain: %s", config.getDomain()));

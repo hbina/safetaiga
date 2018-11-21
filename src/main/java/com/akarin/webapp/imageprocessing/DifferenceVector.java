@@ -157,9 +157,7 @@ public class DifferenceVector {
                 }
             }
             writer.close();
-        } catch (FileNotFoundException e) {
-            logger.info(e.getMessage());
-        } catch (UnsupportedEncodingException e) {
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
             logger.info(e.getMessage());
         }
         return result;
